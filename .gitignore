@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.next/
+.vercel/
+.railway/
+.env
+.env.*
+!.env.example
+desktop.ini
+*.log
+Thumbs.db
