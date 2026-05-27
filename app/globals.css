@@ -938,19 +938,16 @@ dd {
   background: var(--teal-dark);
   border-radius: var(--radius);
   color: white;
+  display: grid;
+  gap: 12px;
   padding: 18px;
 }
 
-.infographic-steps span {
-  background: var(--gold);
-  border-radius: var(--radius);
-  display: inline-flex;
-  font-weight: 900;
-  line-height: 1.1;
-  margin-bottom: 10px;
-  max-width: 100%;
-  padding: 8px 10px;
-  text-transform: uppercase;
+.infographic-steps h3 {
+  color: white;
+  font-size: clamp(24px, 4vw, 34px);
+  line-height: 1;
+  margin: 0;
 }
 
 .infographic-steps p {

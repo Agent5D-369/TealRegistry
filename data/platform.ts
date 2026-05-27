@@ -1,18 +1,15 @@
 export const tealBasics = [
   {
-    principle: "Evolutionary Purpose",
-    title: "Purpose leads the work",
-    body: "A Teal organization is guided by a living purpose, not only by quarterly targets or a founder's preferences.",
+    title: "Evolutionary Purpose",
+    body: "The organization is guided by a living purpose people can use when making real decisions. If the work is mainly driven by ego, extraction, optics, or short-term targets, the claim is not regenerative yet.",
   },
   {
-    principle: "Self-Management",
-    title: "Power is shared clearly",
-    body: "People know how decisions are made, who can decide what, and how to challenge choices safely.",
+    title: "Self-Organization",
+    body: "Power is distributed through clear agreements, not hidden hierarchy. People know how decisions get made, who holds which responsibilities, and how to challenge choices without punishment.",
   },
   {
-    principle: "Wholeness",
-    title: "People can bring their whole selves",
-    body: "Healthy teams make room for honesty, conflict repair, learning, care, and accountability.",
+    title: "Wholeness",
+    body: "People can bring truth, care, conflict, learning, and accountability into the work. A culture that requires masks, silence, fear, or burnout cannot credibly call itself Teal.",
   },
 ];
 

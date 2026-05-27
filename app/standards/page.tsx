@@ -5,8 +5,8 @@ import { tealBasics } from "@/data/platform";
 export default function StandardsPage() {
   return (
     <PageShell
-      title="What Teal means in plain language"
-      intro="Teal is not a vibe, color palette, or inspirational claim. It is a way of working that can be described, observed, and reviewed."
+      title="The three unwavering principles of Teal"
+      intro="Teal is not a vibe, a color palette, or a beautiful claim. A regenerative organization must show all three principles in real decisions: Evolutionary Purpose, Self-Organization, and Wholeness."
       actions={[
         { href: "/credentials", label: "See credential ladder" },
         { href: "/apply", label: "Apply for review", variant: "ghost" },
@@ -14,17 +14,17 @@ export default function StandardsPage() {
     >
       <section className="content-section teal-explainer">
         <div>
-          <h2>The simple version</h2>
+          <h2>You need all three.</h2>
           <p>
-            Teal organizations try to make work more human and more trustworthy at the same time.
-            The registry looks for signals that purpose, power, and people practices are real in
-            daily decisions, not only written in a values statement.
+            For a founder, funder, land steward, team member, or community partner, this is the
+            plain test: purpose without shared power becomes branding. Shared power without
+            wholeness becomes process theater. Wholeness without purpose can become a retreat from
+            responsibility. Teal Registry looks for all three working together.
           </p>
         </div>
         <div className="infographic-steps" aria-label="Teal plain-language infographic">
           {tealBasics.map((item) => (
             <article key={item.title}>
-              <span>{item.principle}</span>
               <h3>{item.title}</h3>
               <p>{item.body}</p>
             </article>
