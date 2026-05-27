@@ -467,7 +467,7 @@ dd {
   border-radius: var(--radius);
   display: grid;
   gap: 14px;
-  grid-template-rows: 190px auto;
+  grid-template-rows: 190px 1fr;
   overflow: hidden;
 }
 
@@ -482,28 +482,43 @@ dd {
 
 .badge-card div {
   border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
   padding: 16px;
 }
 
-.badge-card span {
+.badge-card span,
+.badge-card small {
   color: var(--gold);
   display: block;
   font-size: 12px;
   font-weight: 900;
-  margin-bottom: 6px;
   text-transform: uppercase;
+}
+
+.badge-card span {
+  margin-bottom: 6px;
 }
 
 .badge-card h3 {
   font-size: 21px;
   line-height: 1.1;
-  margin: 0 0 6px;
+  margin: 0 0 10px;
 }
 
 .badge-card p {
   color: var(--muted);
   font-size: 14px;
-  margin: 0;
+  line-height: 1.45;
+  margin: 0 0 14px;
+}
+
+.badge-card small {
+  border-top: 1px solid var(--border);
+  color: var(--teal-dark);
+  line-height: 1.35;
+  margin-top: auto;
+  padding-top: 12px;
 }
 
 .section-heading {

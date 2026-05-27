@@ -151,7 +151,8 @@ export default function Home() {
               <div>
                 <span>Step {level.level}</span>
                 <h3>{level.title}</h3>
-                <p>{level.claim}</p>
+                <p>{level.targetDescription}</p>
+                <small>Public meaning: {level.claim}</small>
               </div>
             </article>
           ))}

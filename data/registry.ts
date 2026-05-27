@@ -8,6 +8,7 @@ export type CredentialLevel = {
   note: string;
   badgeImage: string;
   claim: string;
+  targetDescription: string;
 };
 
 export type DirectoryRecord = {
@@ -44,6 +45,8 @@ export const credentialLevels: CredentialLevel[] = [
     note: "They have publicly committed to Teal practices. Teal Registry has not yet checked the evidence.",
     badgeImage: "/assets/badges/teal-aligned.png",
     claim: "Listed in registry",
+    targetDescription:
+      "Useful for people and projects ready to be visible. It tells partners and funders this is a declared direction, not yet an independently reviewed claim.",
   },
   {
     level: 2,
@@ -55,6 +58,8 @@ export const credentialLevels: CredentialLevel[] = [
     note: "They completed approved learning. This does not prove how they behave in real work.",
     badgeImage: "/assets/badges/teal-trained.png",
     claim: "Training complete",
+    targetDescription:
+      "Useful for learners, hiring teams, and training partners. It confirms education was completed while making clear that practice still needs to be observed.",
   },
   {
     level: 3,
@@ -66,6 +71,8 @@ export const credentialLevels: CredentialLevel[] = [
     note: "Documents, examples, or interviews were reviewed for a specific claim.",
     badgeImage: "/assets/badges/teal-verified.png",
     claim: "Evidence reviewed",
+    targetDescription:
+      "Useful when a project needs outside confidence in a specific claim. Reviewers looked at evidence, but only for the scope named in the public record.",
   },
   {
     level: 4,
@@ -77,6 +84,8 @@ export const credentialLevels: CredentialLevel[] = [
     note: "A deeper review found the practice is real within the stated scope.",
     badgeImage: "/assets/badges/teal-certified.png",
     claim: "Independently certified",
+    targetDescription:
+      "Useful for teams asking others to trust their way of working. It shows an independent review found the practice credible within a defined scope.",
   },
   {
     level: 5,
@@ -88,6 +97,8 @@ export const credentialLevels: CredentialLevel[] = [
     note: "The practice has held up over time, pressure, complexity, and real consequences.",
     badgeImage: "/assets/badges/teal-certified-advanced.png",
     claim: "Evidence and practice at scale",
+    targetDescription:
+      "Useful for mature organizations, funders, and communities making higher-stakes decisions. It signals the practice has held up over time and pressure.",
   },
   {
     level: 6,
@@ -99,6 +110,8 @@ export const credentialLevels: CredentialLevel[] = [
     note: "They may teach Teal methods. They cannot certify that a learner or client is Teal.",
     badgeImage: "/assets/badges/teal-accredited-training.png",
     claim: "Accredited training provider",
+    targetDescription:
+      "Useful for learners choosing a training path. It shows the provider has been reviewed to teach, while certification decisions stay independent.",
   },
   {
     level: 7,
@@ -110,6 +123,8 @@ export const credentialLevels: CredentialLevel[] = [
     note: "They may help organizations implement. They cannot verify their own clients.",
     badgeImage: "/assets/badges/teal-accredited-implementation.png",
     claim: "Accredited implementation team",
+    targetDescription:
+      "Useful for leaders choosing implementation help. It shows delivery capability has been reviewed, while client verification remains separate.",
   },
   {
     level: 8,
@@ -121,6 +136,8 @@ export const credentialLevels: CredentialLevel[] = [
     note: "They may review evidence for Teal Registry and must follow conflict-of-interest rules.",
     badgeImage: "/assets/badges/teal-assessor.png",
     claim: "Authorized reviewer",
+    targetDescription:
+      "Useful for applicants and registry governance. It identifies reviewers authorized to assess evidence and bound by conflict-of-interest rules.",
   },
   {
     level: 9,
@@ -132,6 +149,8 @@ export const credentialLevels: CredentialLevel[] = [
     note: "The framework maps to Teal principles. This does not verify any organization using it.",
     badgeImage: "/assets/badges/teal-recognized-framework.png",
     claim: "Recognized framework",
+    targetDescription:
+      "Useful for educators, consultants, and buyers comparing methods. It confirms a framework maps to Teal principles without certifying every user of it.",
   },
 ];
 
