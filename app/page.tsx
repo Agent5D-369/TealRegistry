@@ -111,10 +111,18 @@ export default function Home() {
           </div>
           {credentialLevels.map((level) => (
             <div className="table-row" role="row" key={level.title}>
-              <span>{level.level}</span>
-              <span>
-                <strong>{level.title}</strong>
-                <small>{level.publicLabel}</small>
+              <span className="step-cell">{level.level}</span>
+              <span className="badge-cell">
+                <Image
+                  src={level.badgeImage}
+                  alt={`${level.title} badge`}
+                  width={120}
+                  height={86}
+                />
+                <span>
+                  <strong>{level.title}</strong>
+                  <small>{level.publicLabel}</small>
+                </span>
               </span>
               <span>{level.evidenceRequired}</span>
               <span>{level.note}</span>

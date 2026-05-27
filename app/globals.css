@@ -591,9 +591,10 @@ dd {
 }
 
 .table-row {
+  align-items: center;
   display: grid;
   gap: 18px;
-  grid-template-columns: 60px minmax(170px, 0.8fr) minmax(120px, 0.42fr) minmax(260px, 1fr);
+  grid-template-columns: 42px minmax(260px, 0.95fr) minmax(140px, 0.42fr) minmax(260px, 1fr);
   padding: 15px 18px;
 }
 
@@ -612,6 +613,25 @@ dd {
 .table-row strong,
 .table-row small {
   display: block;
+}
+
+.badge-cell {
+  align-items: center;
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 92px 1fr;
+}
+
+.badge-cell img {
+  height: 66px;
+  object-fit: contain;
+  object-position: center;
+  width: 92px;
+}
+
+.step-cell {
+  align-self: start;
+  padding-top: 4px;
 }
 
 .table-row small {
@@ -724,12 +744,22 @@ dd {
   }
 
   .table-row {
-    grid-template-columns: 44px minmax(150px, 1fr);
+    align-items: start;
+    grid-template-columns: 34px minmax(0, 1fr);
   }
 
   .table-row span:nth-child(3),
   .table-row span:nth-child(4) {
     grid-column: 2;
+  }
+
+  .badge-cell {
+    grid-template-columns: 86px minmax(0, 1fr);
+  }
+
+  .badge-cell img {
+    height: 60px;
+    width: 86px;
   }
 
   .standards-cards {
