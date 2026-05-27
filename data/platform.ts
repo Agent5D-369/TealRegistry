@@ -13,6 +13,12 @@ export const tealBasics = [
   },
 ];
 
+export const tealAhaChecks = [
+  "Purpose without shared power becomes branding.",
+  "Shared power without wholeness becomes process theater.",
+  "Wholeness without purpose can become a retreat from responsibility.",
+];
+
 export const publicRoutes = [
   { href: "/registry", label: "Registry" },
   { href: "/credentials", label: "Credentials" },

@@ -1,6 +1,6 @@
 import { PageShell } from "@/components/page-shell";
 import { standards } from "@/data/registry";
-import { tealBasics } from "@/data/platform";
+import { tealAhaChecks, tealBasics } from "@/data/platform";
 
 export default function StandardsPage() {
   return (
@@ -15,12 +15,18 @@ export default function StandardsPage() {
       <section className="content-section teal-explainer">
         <div>
           <h2>You need all three.</h2>
-          <p>
-            For a founder, funder, land steward, team member, or community partner, this is the
-            plain test: purpose without shared power becomes branding. Shared power without
-            wholeness becomes process theater. Wholeness without purpose can become a retreat from
-            responsibility. Teal Registry looks for all three working together.
-          </p>
+          <div className="aha-panel">
+            <p>
+              For a founder, funder, land steward, team member, or community partner, this is the
+              plain test:
+            </p>
+            <ul>
+              {tealAhaChecks.map((check) => (
+                <li key={check}>{check}</li>
+              ))}
+            </ul>
+            <strong>Teal Registry looks for all three working together.</strong>
+          </div>
         </div>
         <div className="infographic-steps" aria-label="Teal plain-language infographic">
           {tealBasics.map((item) => (
