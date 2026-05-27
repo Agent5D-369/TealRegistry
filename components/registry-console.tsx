@@ -36,14 +36,14 @@ export function RegistryConsole() {
       <div className="search-panel">
         <div className="panel-title">
           <SearchIcon className="icon" />
-          <span>Registry search</span>
+          <span>Check a Teal claim</span>
         </div>
         <label className="search-field">
-          <span>Name, badge ID, or verification ID</span>
+          <span>Organization, project, person, badge link, or badge ID</span>
           <input
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="Try TR-AL-0001 or Sample Regenerative Project"
+            placeholder="Try a project name, organization name, or badge ID"
           />
         </label>
         <div className="segmented" aria-label="Entity type filter">
@@ -70,7 +70,7 @@ export function RegistryConsole() {
           ))}
           {filteredRecords.length === 0 ? (
             <div className="empty-state">
-              No public record matched this search. A missing record does not prove misconduct; it means Teal Registry has no current public verification for that claim.
+              No public record matched this search. That does not prove something is wrong. It means Teal Registry has no current public record for this claim.
             </div>
           ) : null}
         </div>
@@ -80,7 +80,7 @@ export function RegistryConsole() {
         <div className="record-head">
           <ShieldIcon className="shield" />
           <div>
-            <p>Official verification record</p>
+            <p>What the registry currently knows</p>
             <h2>{primaryRecord.name}</h2>
           </div>
         </div>
@@ -98,7 +98,7 @@ export function RegistryConsole() {
             <dd>{primaryRecord.status}</dd>
           </div>
           <div>
-            <dt>Scope</dt>
+            <dt>What this covers</dt>
             <dd>{primaryRecord.scope}</dd>
           </div>
           <div>
@@ -106,15 +106,15 @@ export function RegistryConsole() {
             <dd>{primaryRecord.badgeId}</dd>
           </div>
           <div>
-            <dt>Verification ID</dt>
+            <dt>Record ID</dt>
             <dd>{primaryRecord.verificationId}</dd>
           </div>
           <div>
-            <dt>Last review</dt>
+            <dt>Last checked</dt>
             <dd>{primaryRecord.lastReview}</dd>
           </div>
           <div>
-            <dt>Valid to</dt>
+            <dt>Review window</dt>
             <dd>{primaryRecord.validTo}</dd>
           </div>
         </dl>
