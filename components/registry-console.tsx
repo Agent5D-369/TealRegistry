@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Image from "next/image";
 import { directoryRecords } from "@/data/registry";
 import { SearchIcon, ShieldIcon } from "@/components/icons";
 
@@ -82,6 +83,14 @@ export function RegistryConsole() {
             <p>Official verification record</p>
             <h2>{primaryRecord.name}</h2>
           </div>
+        </div>
+        <div className="record-badge">
+          <Image
+            src={primaryRecord.badgeImage}
+            alt={`${primaryRecord.status} badge`}
+            width={420}
+            height={300}
+          />
         </div>
         <dl className="record-grid">
           <div>

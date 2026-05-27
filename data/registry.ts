@@ -6,6 +6,8 @@ export type CredentialLevel = {
   evidenceRequired: string;
   eligible: string;
   note: string;
+  badgeImage: string;
+  claim: string;
 };
 
 export type DirectoryRecord = {
@@ -20,6 +22,7 @@ export type DirectoryRecord = {
   validTo: string;
   verificationId: string;
   badgeId: string;
+  badgeImage: string;
   publicSummary: string;
   evidence: string[];
 };
@@ -39,6 +42,8 @@ export const credentialLevels: CredentialLevel[] = [
     evidenceRequired: "No",
     eligible: "Individuals, organizations",
     note: "Self-attestation listing. This is intent, not independent verification.",
+    badgeImage: "/assets/badges/teal-aligned.png",
+    claim: "Listed in registry",
   },
   {
     level: 2,
@@ -48,6 +53,8 @@ export const credentialLevels: CredentialLevel[] = [
     evidenceRequired: "Training completion",
     eligible: "Individuals",
     note: "Education completed through an accredited provider. This confirms learning, not behavior.",
+    badgeImage: "/assets/badges/teal-trained.png",
+    claim: "Training complete",
   },
   {
     level: 3,
@@ -57,6 +64,8 @@ export const credentialLevels: CredentialLevel[] = [
     evidenceRequired: "Yes",
     eligible: "Organizations",
     note: "Evidence reviewed against a defined scope.",
+    badgeImage: "/assets/badges/teal-verified.png",
+    claim: "Evidence reviewed",
   },
   {
     level: 4,
@@ -66,6 +75,8 @@ export const credentialLevels: CredentialLevel[] = [
     evidenceRequired: "Yes",
     eligible: "Individuals, organizations",
     note: "Evidence plus interviews and a broader scope review.",
+    badgeImage: "/assets/badges/teal-certified.png",
+    claim: "Independently certified",
   },
   {
     level: 5,
@@ -75,6 +86,8 @@ export const credentialLevels: CredentialLevel[] = [
     evidenceRequired: "Yes",
     eligible: "Individuals, organizations",
     note: "Demonstrated practice over time and under real operational load.",
+    badgeImage: "/assets/badges/teal-certified-advanced.png",
+    claim: "Evidence and practice at scale",
   },
   {
     level: 6,
@@ -84,6 +97,8 @@ export const credentialLevels: CredentialLevel[] = [
     evidenceRequired: "Yes",
     eligible: "Teams, organizations",
     note: "Authorized to deliver training. Training providers cannot certify outcomes.",
+    badgeImage: "/assets/badges/teal-accredited-training.png",
+    claim: "Accredited training provider",
   },
   {
     level: 7,
@@ -93,6 +108,8 @@ export const credentialLevels: CredentialLevel[] = [
     evidenceRequired: "Yes",
     eligible: "Teams, organizations",
     note: "Authorized to implement. Implementation teams cannot certify their own work.",
+    badgeImage: "/assets/badges/teal-accredited-implementation.png",
+    claim: "Accredited implementation team",
   },
   {
     level: 8,
@@ -102,6 +119,8 @@ export const credentialLevels: CredentialLevel[] = [
     evidenceRequired: "Yes",
     eligible: "Individuals",
     note: "Authorized reviewers bound by ethics, calibration, and recusal rules.",
+    badgeImage: "/assets/badges/teal-assessor.png",
+    claim: "Authorized reviewer",
   },
   {
     level: 9,
@@ -111,6 +130,8 @@ export const credentialLevels: CredentialLevel[] = [
     evidenceRequired: "Yes",
     eligible: "Frameworks",
     note: "Framework mapped to the standard. This is not an endorsement of organization outcomes.",
+    badgeImage: "/assets/badges/teal-recognized-framework.png",
+    claim: "Recognized framework",
   },
 ];
 
@@ -127,6 +148,7 @@ export const directoryRecords: DirectoryRecord[] = [
     validTo: "Not time-bound",
     verificationId: "TR-VR-0001",
     badgeId: "TR-AL-0001",
+    badgeImage: "/assets/badges/teal-aligned.png",
     publicSummary:
       "A seed record used to demonstrate public verification before independent assessment is complete.",
     evidence: ["Self-attestation", "Public profile", "Review application in progress"],
@@ -143,6 +165,7 @@ export const directoryRecords: DirectoryRecord[] = [
     validTo: "Decision pending",
     verificationId: "TR-APP-0002",
     badgeId: "Pending",
+    badgeImage: "/assets/badges/teal-accredited-implementation.png",
     publicSummary:
       "Accreditation application in review. No public accreditation claim is currently authorized.",
     evidence: ["Application", "Readiness score", "Assessor assignment"],
@@ -159,6 +182,7 @@ export const directoryRecords: DirectoryRecord[] = [
     validTo: "Not issued",
     verificationId: "TR-STD-CORE-1",
     badgeId: "Not applicable",
+    badgeImage: "/assets/badges/teal-recognized-framework.png",
     publicSummary:
       "The draft core standard defines observable criteria for Teal-aligned claims.",
     evidence: ["Standard draft", "Criteria map", "Public-safe evidence examples"],

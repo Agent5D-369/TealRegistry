@@ -50,13 +50,10 @@ export default function Home() {
           </div>
         </div>
         <div className="integrity-panel" id="verify">
-          <Image
-            src="/assets/tealregistry-mark.png"
-            alt=""
-            width={72}
-            height={72}
-            className="panel-mark"
-          />
+          <div className="hero-badge-stack" aria-hidden="true">
+            <Image src="/assets/badges/teal-certified.png" alt="" width={180} height={180} />
+            <Image src="/assets/badges/teal-verified.png" alt="" width={150} height={150} />
+          </div>
           <h2>Certification cannot be bought, bundled, guaranteed, or influenced.</h2>
           <p>
             Training providers can teach. Implementation teams can help. Teal Registry verifies
@@ -117,6 +114,34 @@ export default function Home() {
               <span>{level.evidenceRequired}</span>
               <span>{level.note}</span>
             </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="badge-system" id="badges">
+        <div className="section-heading">
+          <h2>The badge is the public trust object.</h2>
+          <p>
+            Every badge must resolve to a live verification record with scope, status, issue date,
+            expiration or review window, and misuse reporting. The artwork creates recognition; the
+            verification URL creates trust.
+          </p>
+        </div>
+        <div className="badge-rail">
+          {credentialLevels.map((level) => (
+            <article className="badge-card" key={level.title}>
+              <Image
+                src={level.badgeImage}
+                alt={`${level.title} badge`}
+                width={360}
+                height={260}
+              />
+              <div>
+                <span>Level {level.level}</span>
+                <h3>{level.title}</h3>
+                <p>{level.claim}</p>
+              </div>
+            </article>
           ))}
         </div>
       </section>
