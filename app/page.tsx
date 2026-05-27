@@ -33,9 +33,9 @@ export default function Home() {
         <div className="hero-copy">
           <h1>Teal means work built on purpose, trust, and shared power.</h1>
           <p>
-            Most people have never heard of Teal. In plain language, it describes organizations
-            where people do meaningful work, decisions are transparent, and the culture is healthy
-            enough to tell the truth. Teal Registry helps you see which claims are real.
+            New to Teal? Start here. A Teal organization has a clear purpose, shares power in the
+            open, and makes it safe for people to tell the truth. Teal Registry checks claims so
+            funders, founders, teams, and communities know what is real.
           </p>
           <div className="hero-actions">
             <Link className="solid-button large" href="/registry">
@@ -55,8 +55,8 @@ export default function Home() {
           </div>
           <h2>A badge answers one simple question: can I trust this claim?</h2>
           <p>
-            Training can help someone learn. Consulting can help a team improve. Verification is
-            different: it checks what is already true and says exactly what was reviewed.
+            A class can teach. A consultant can help. A registry checks the claim. Each badge tells
+            you what was reviewed, what was not reviewed, and where to find the live record.
           </p>
           <div className="plain-teal-list">
             {tealBasics.map((item) => (

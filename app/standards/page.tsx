@@ -6,7 +6,7 @@ export default function StandardsPage() {
   return (
     <PageShell
       title="The three unwavering principles of Teal"
-      intro="Teal is not a vibe, a color palette, or a beautiful claim. A regenerative organization must show all three principles in real decisions: Evolutionary Purpose, Self-Organization, and Wholeness."
+      intro="Teal is not a vibe, a color palette, or a beautiful claim. It is a practical way of working that must show up in real decisions."
       actions={[
         { href: "/credentials", label: "See credential ladder" },
         { href: "/apply", label: "Apply for review", variant: "ghost" },
@@ -17,8 +17,8 @@ export default function StandardsPage() {
           <h2>You need all three.</h2>
           <div className="aha-panel">
             <p>
-              For a founder, funder, land steward, team member, or community partner, this is the
-              plain test:
+              For a founder, funder, land steward, team member, or community partner, the plain
+              test is simple. A regenerative organization must show all three:
             </p>
             <ul>
               {tealAhaChecks.map((check) => (

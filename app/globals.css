@@ -1,15 +1,16 @@
 :root {
-  --background: #f7faf8;
+  --background: #f6fbfa;
   --surface: #ffffff;
-  --surface-strong: #eef5f2;
-  --ink: #14201d;
-  --muted: #64736e;
-  --border: #d8e3df;
-  --teal: #0d7f78;
-  --teal-dark: #07534f;
-  --gold: #b98a2f;
+  --surface-strong: #edf6f5;
+  --ink: #102321;
+  --muted: #526965;
+  --border: #cfe0dd;
+  --teal: #146b6d;
+  --teal-dark: #064f53;
+  --teal-deep: #03373a;
+  --gold: #bd8d34;
   --danger: #994536;
-  --shadow: 0 18px 50px rgba(17, 37, 34, 0.1);
+  --shadow: 0 18px 50px rgba(6, 79, 83, 0.12);
   --radius: 8px;
   --max: 1180px;
 }
@@ -27,7 +28,7 @@ body {
   background: var(--background);
   color: var(--ink);
   font-family: Arial, Helvetica, sans-serif;
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 a {
@@ -40,21 +41,23 @@ input {
   font: inherit;
 }
 
-button,
-input {
-  border: 0;
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  outline: 3px solid rgba(189, 141, 52, 0.7);
+  outline-offset: 3px;
 }
 
 .site-header {
   align-items: center;
-  background: rgba(247, 250, 248, 0.94);
+  background: rgba(246, 251, 250, 0.96);
   border-bottom: 1px solid var(--border);
   display: grid;
   gap: 20px;
   grid-template-columns: auto 1fr auto;
   left: 0;
   margin: 0 auto;
-  padding: 14px max(22px, calc((100vw - var(--max)) / 2));
+  padding: 12px max(22px, calc((100vw - var(--max)) / 2));
   position: sticky;
   right: 0;
   top: 0;
@@ -64,8 +67,8 @@ input {
 .brand {
   align-items: center;
   display: flex;
-  height: 42px;
-  width: 216px;
+  height: 54px;
+  width: 260px;
 }
 
 .brand img {
@@ -80,8 +83,8 @@ nav {
 }
 
 nav a {
-  color: #34443f;
-  font-size: 14px;
+  color: #243f3c;
+  font-size: 15px;
   font-weight: 700;
 }
 
@@ -107,7 +110,7 @@ nav a {
 }
 
 .solid-button {
-  background: var(--teal-dark);
+  background: var(--teal-deep);
   color: white;
 }
 
@@ -154,8 +157,8 @@ nav a {
   grid-template-columns: minmax(0, 1.1fr) minmax(300px, 0.7fr);
   margin: 0 auto;
   max-width: var(--max);
-  min-height: 540px;
-  padding: 72px 22px 34px;
+  min-height: 560px;
+  padding: 76px 22px 38px;
 }
 
 .hero-copy {
@@ -163,16 +166,17 @@ nav a {
 }
 
 .hero h1 {
-  font-size: clamp(42px, 7vw, 78px);
+  font-size: clamp(40px, 6.4vw, 72px);
   letter-spacing: 0;
-  line-height: 0.96;
+  line-height: 1;
   margin: 0 0 24px;
   max-width: 840px;
 }
 
 .hero-copy p {
   color: var(--muted);
-  font-size: 20px;
+  font-size: 21px;
+  line-height: 1.55;
   margin: 0 0 30px;
   max-width: 720px;
 }
@@ -183,7 +187,7 @@ nav a {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
-  padding: 28px;
+  padding: 30px;
 }
 
 .hero-badge-stack {
@@ -206,8 +210,8 @@ nav a {
 }
 
 .integrity-panel h2 {
-  font-size: 27px;
-  line-height: 1.1;
+  font-size: 28px;
+  line-height: 1.14;
   margin: 0 0 14px;
 }
 
@@ -984,7 +988,7 @@ dd {
 }
 
 .infographic-steps article {
-  background: var(--teal-dark);
+  background: var(--teal-deep);
   border-radius: var(--radius);
   color: white;
   display: grid;
@@ -1149,7 +1153,8 @@ dd {
   }
 
   .brand {
-    width: 190px;
+    height: 46px;
+    width: 220px;
   }
 
   .header-actions,

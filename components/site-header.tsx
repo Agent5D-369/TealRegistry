@@ -9,8 +9,8 @@ export function SiteHeader() {
         <Image
           src="/assets/tealregistry-lockup.png"
           alt="Teal Registry"
-          width={280}
-          height={48}
+          width={961}
+          height={381}
           priority
         />
       </Link>
