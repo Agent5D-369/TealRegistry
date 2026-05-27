@@ -1,9 +1,10 @@
 import Image from "next/image";
+import Link from "next/link";
 import { RegistryConsole } from "@/components/registry-console";
 import { ArrowIcon, FileIcon, ShieldIcon } from "@/components/icons";
+import { SiteHeader } from "@/components/site-header";
 import { credentialLevels, portalRoles, standards } from "@/data/registry";
-
-const navItems = ["Verify", "Directory", "Credentials", "How It Works", "Apply", "Report"];
+import { tealBasics } from "@/data/platform";
 
 const workflowSteps = [
   {
@@ -26,49 +27,25 @@ const workflowSteps = [
 export default function Home() {
   return (
     <main>
-      <header className="site-header">
-        <a className="brand" href="#" aria-label="Teal Registry home">
-          <Image
-            src="/assets/tealregistry-lockup.png"
-            alt="Teal Registry"
-            width={280}
-            height={48}
-            priority
-          />
-        </a>
-        <nav aria-label="Primary navigation">
-          {navItems.map((item) => {
-            const target = item === "Directory" ? "registry-console" : item.toLowerCase().replaceAll(" ", "-");
-            return (
-              <a href={`#${target}`} key={item}>
-                {item}
-              </a>
-            );
-          })}
-        </nav>
-        <div className="header-actions">
-          <a className="ghost-button" href="#registry-console">Search</a>
-          <a className="solid-button" href="#verify">Verify</a>
-        </div>
-      </header>
+      <SiteHeader />
 
       <section className="hero" id="registry">
         <div className="hero-copy">
-          <h1>Know whether a Teal claim is real.</h1>
+          <h1>Teal means work built on purpose, trust, and shared power.</h1>
           <p>
-            For funders, founders, teams, and communities who want more than beautiful language.
-            Teal Registry checks whether a person, project, provider, or organization can back up
-            what they say.
+            Most people have never heard of Teal. In plain language, it describes organizations
+            where people do meaningful work, decisions are transparent, and the culture is healthy
+            enough to tell the truth. Teal Registry helps you see which claims are real.
           </p>
           <div className="hero-actions">
-            <a className="solid-button large" href="#registry-console">
+            <Link className="solid-button large" href="/registry">
               <ShieldIcon className="button-icon" />
               Check a Claim
-            </a>
-            <a className="ghost-button large" href="#verify">
-              Verify a Badge
+            </Link>
+            <Link className="ghost-button large" href="/standards">
+              Learn What Teal Means
               <ArrowIcon className="button-icon" />
-            </a>
+            </Link>
           </div>
         </div>
         <div className="integrity-panel" id="verify">
@@ -81,6 +58,14 @@ export default function Home() {
             Training can help someone learn. Consulting can help a team improve. Verification is
             different: it checks what is already true and says exactly what was reviewed.
           </p>
+          <div className="plain-teal-list">
+            {tealBasics.map((item) => (
+              <div key={item.title}>
+                <strong>{item.title}</strong>
+                <span>{item.body}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -224,6 +209,7 @@ export default function Home() {
         <div className="hero-actions centered">
           <a className="solid-button large" href="mailto:standards@tealregistry.com">Apply or inquire</a>
           <a className="ghost-button large" href="mailto:standards@tealregistry.com?subject=Report%20Misuse">Report misuse</a>
+          <a className="ghost-button large" href="/canva">View Canva template system</a>
         </div>
       </section>
     </main>

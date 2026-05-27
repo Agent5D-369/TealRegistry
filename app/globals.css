@@ -40,6 +40,11 @@ input {
   font: inherit;
 }
 
+button,
+input {
+  border: 0;
+}
+
 .site-header {
   align-items: center;
   background: rgba(247, 250, 248, 0.94);
@@ -209,6 +214,28 @@ nav a {
 .integrity-panel p {
   color: var(--muted);
   margin: 0;
+}
+
+.plain-teal-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.plain-teal-list div {
+  border-top: 1px solid var(--border);
+  display: grid;
+  gap: 4px;
+  padding-top: 12px;
+}
+
+.plain-teal-list strong {
+  color: var(--teal-dark);
+}
+
+.plain-teal-list span {
+  color: var(--muted);
+  font-size: 14px;
 }
 
 .console {
@@ -750,6 +777,250 @@ dd {
   max-width: 760px;
 }
 
+.page-hero,
+.content-section {
+  margin: 0 auto;
+  max-width: var(--max);
+  padding: 58px 22px;
+}
+
+.page-hero {
+  border-bottom: 1px solid var(--border);
+}
+
+.page-hero h1 {
+  font-size: clamp(40px, 6vw, 72px);
+  letter-spacing: 0;
+  line-height: 0.98;
+  margin: 0 0 20px;
+  max-width: 900px;
+}
+
+.page-hero p {
+  color: var(--muted);
+  font-size: 20px;
+  margin: 0 0 28px;
+  max-width: 780px;
+}
+
+.directory-grid,
+.pathway-grid,
+.dashboard-grid,
+.workflow-grid,
+.portal-link-grid,
+.infographic-steps {
+  display: grid;
+  gap: 14px;
+}
+
+.directory-grid,
+.pathway-grid,
+.dashboard-grid,
+.workflow-grid,
+.portal-link-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.directory-card,
+.pathway-card,
+.dashboard-card,
+.profile-panel,
+.trust-panel,
+.verify-card,
+.login-card,
+.form-preview {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 22px;
+}
+
+.directory-card span,
+.dashboard-card span,
+.credential-detail span,
+.status-pill {
+  color: var(--gold);
+  display: block;
+  font-size: 12px;
+  font-weight: 900;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.directory-card h3,
+.pathway-card h2,
+.dashboard-card h2,
+.trust-panel h2,
+.verify-card h2,
+.profile-panel h2 {
+  line-height: 1.1;
+  margin: 0 0 10px;
+}
+
+.directory-card p,
+.pathway-card p,
+.dashboard-card p,
+.trust-panel p,
+.verify-card p {
+  color: var(--muted);
+  margin: 0 0 16px;
+}
+
+.directory-card dl,
+.credential-detail dl {
+  display: grid;
+  gap: 10px;
+  margin: 18px 0 0;
+}
+
+.detail-layout,
+.verify-layout,
+.teal-explainer,
+.intake-panel,
+.report-layout,
+.login-layout,
+.admin-layout {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: minmax(0, 0.95fr) minmax(320px, 0.65fr);
+}
+
+.profile-panel img,
+.large-badge img {
+  height: auto;
+  margin-bottom: 20px;
+  object-fit: contain;
+  width: 100%;
+}
+
+.trust-panel,
+.verify-card {
+  align-self: start;
+  box-shadow: var(--shadow);
+}
+
+.credential-directory {
+  display: grid;
+  gap: 16px;
+}
+
+.credential-detail {
+  align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  display: grid;
+  gap: 24px;
+  grid-template-columns: minmax(150px, 240px) minmax(0, 1fr);
+  padding: 22px;
+}
+
+.credential-detail img {
+  height: auto;
+  object-fit: contain;
+  width: 100%;
+}
+
+.credential-detail h2 {
+  margin: 0 0 10px;
+}
+
+.credential-detail p,
+.teal-explainer p {
+  color: var(--muted);
+}
+
+.infographic-steps {
+  grid-template-columns: 1fr;
+}
+
+.infographic-steps article {
+  background: var(--teal-dark);
+  border-radius: var(--radius);
+  color: white;
+  padding: 18px;
+}
+
+.infographic-steps span {
+  background: var(--gold);
+  border-radius: 999px;
+  display: inline-grid;
+  font-weight: 900;
+  height: 30px;
+  margin-bottom: 10px;
+  place-items: center;
+  width: 30px;
+}
+
+.infographic-steps p {
+  color: rgba(255, 255, 255, 0.78);
+  margin: 0;
+}
+
+.pathway-card ol,
+.workflow-grid ol {
+  margin: 16px 0 0;
+  padding-left: 20px;
+}
+
+.pathway-card li,
+.workflow-grid li {
+  margin: 8px 0;
+}
+
+.form-preview,
+.login-card {
+  display: grid;
+  gap: 12px;
+}
+
+.form-preview label,
+.login-card label {
+  background: var(--surface-strong);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--teal-dark);
+  display: grid;
+  font-size: 13px;
+  font-weight: 900;
+  gap: 8px;
+  padding: 14px;
+}
+
+.login-card input {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  min-height: 44px;
+  padding: 0 12px;
+}
+
+.ops-table {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.ops-row {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  padding: 16px 18px;
+}
+
+.ops-row + .ops-row {
+  border-top: 1px solid var(--border);
+}
+
+.ops-head {
+  background: var(--teal-dark);
+  color: white;
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
 .centered {
   justify-content: center;
 }
@@ -767,7 +1038,14 @@ dd {
   .console,
   .section-heading,
   .section-heading.compact,
-  .workflow-band {
+  .workflow-band,
+  .detail-layout,
+  .verify-layout,
+  .teal-explainer,
+  .intake-panel,
+  .report-layout,
+  .login-layout,
+  .admin-layout {
     grid-template-columns: 1fr;
   }
 
@@ -800,6 +1078,18 @@ dd {
 
   .badge-rail {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .directory-grid,
+  .pathway-grid,
+  .dashboard-grid,
+  .workflow-grid,
+  .portal-link-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .credential-detail {
+    grid-template-columns: minmax(120px, 190px) minmax(0, 1fr);
   }
 }
 
@@ -840,6 +1130,16 @@ dd {
   }
 
   .badge-rail {
+    grid-template-columns: 1fr;
+  }
+
+  .directory-grid,
+  .pathway-grid,
+  .dashboard-grid,
+  .workflow-grid,
+  .portal-link-grid,
+  .credential-detail,
+  .ops-row {
     grid-template-columns: 1fr;
   }
 
