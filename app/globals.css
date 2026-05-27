@@ -1025,10 +1025,12 @@ dd {
   width: 8px;
 }
 
-.aha-panel strong {
+.aha-takeaway {
   color: var(--teal-dark);
-  font-size: 19px;
-  line-height: 1.25;
+  font-size: clamp(28px, 5vw, 44px);
+  line-height: 1.05;
+  margin: 22px 0 0;
+  max-width: 640px;
 }
 
 .infographic-steps {

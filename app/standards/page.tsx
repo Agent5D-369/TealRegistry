@@ -25,8 +25,8 @@ export default function StandardsPage() {
                 <li key={check}>{check}</li>
               ))}
             </ul>
-            <strong>Teal Registry looks for all three working together.</strong>
           </div>
+          <h3 className="aha-takeaway">Teal Registry looks for all three working together.</h3>
         </div>
         <div className="infographic-steps" aria-label="Teal plain-language infographic">
           {tealBasics.map((item) => (
