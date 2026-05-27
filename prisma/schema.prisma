@@ -1,0 +1,527 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  PUBLIC
+  LEARNER
+  CANDIDATE
+  CREDENTIAL_HOLDER
+  ORGANIZATION_MANAGER
+  PROVIDER_MANAGER
+  ASSESSOR
+  ADMIN
+  SUPER_ADMIN
+}
+
+enum EntityType {
+  ORGANIZATION
+  INDIVIDUAL
+  PROVIDER
+  FRAMEWORK
+}
+
+enum Visibility {
+  PRIVATE
+  INTERNAL
+  PUBLIC
+}
+
+enum ApplicationStatus {
+  DRAFT
+  SUBMITTED
+  SCREENING
+  EVIDENCE_REVIEW
+  INTERVIEW
+  DECISION
+  ISSUED
+  PUBLISHED
+  RENEWAL_SCHEDULED
+  MORE_INFO_REQUESTED
+  WITHDRAWN
+  REJECTED
+}
+
+enum CaseStatus {
+  OPEN
+  ASSIGNED
+  IN_REVIEW
+  FINDINGS_READY
+  DECISION_PENDING
+  CLOSED
+  APPEAL_OPEN
+}
+
+enum EvidenceStatus {
+  SUBMITTED
+  ACCEPTED
+  NEEDS_CLARIFICATION
+  REJECTED
+  PUBLIC_SAFE_APPROVED
+}
+
+enum BadgeLicenseStatus {
+  DRAFT
+  ISSUED
+  ACTIVE
+  EXPIRING_SOON
+  EXPIRED
+  SUSPENDED
+  REVOKED
+  REISSUED
+}
+
+enum ComplaintStatus {
+  RECEIVED
+  TRIAGE
+  INVESTIGATION
+  ACTION_PROPOSED
+  DECISION
+  PUBLIC_NOTICE
+  CLOSED
+  APPEAL
+}
+
+model User {
+  id            String         @id @default(cuid())
+  email         String         @unique
+  name          String?
+  role          UserRole       @default(PUBLIC)
+  profile       Profile?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  auditEvents   AuditEvent[]
+  assignedCases Case[]         @relation("AssignedAssessor")
+  coiDeclarations CoiDeclaration[]
+}
+
+model Profile {
+  id            String        @id @default(cuid())
+  userId        String?       @unique
+  user          User?         @relation(fields: [userId], references: [id])
+  type          EntityType
+  name          String
+  publicSlug    String?       @unique
+  country       String?
+  sector        String?
+  visibility    Visibility    @default(PRIVATE)
+  website       String?
+  primaryEmail  String?
+  notes         String?
+  affiliations  Affiliation[]
+  applications  Application[]
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
+
+model Organization {
+  id                     String                   @id @default(cuid())
+  name                   String
+  slug                   String                   @unique
+  orgType                String?
+  country                String?
+  sectors                String[]
+  size                   String?
+  publicStatus           String?
+  directoryEligible      Boolean                  @default(false)
+  shortPublicDescription String?
+  primaryContact         String?
+  website                String?
+  notes                  String?
+  affiliations           Affiliation[]
+  applications           Application[]
+  cases                  Case[]
+  evidence               Evidence[]
+  verificationRecords    VerificationRecord[]
+  badgeLicenses          BadgeLicense[]
+  complaints             ComplaintAppeal[]
+  enforcementActions     EnforcementAction[]
+  publicListings         PublicDirectoryListing[]
+  createdAt              DateTime                 @default(now())
+  updatedAt              DateTime                 @updatedAt
+}
+
+model Affiliation {
+  id             String        @id @default(cuid())
+  title          String
+  profileId      String?
+  profile        Profile?      @relation(fields: [profileId], references: [id])
+  organizationId String?
+  organization   Organization? @relation(fields: [organizationId], references: [id])
+  role           String
+  primary        Boolean       @default(false)
+  startDate      DateTime?
+  endDate        DateTime?
+  notes          String?
+}
+
+model CredentialLevel {
+  id               String        @id @default(cuid())
+  title            String        @unique
+  levelOrder       Int
+  track            String
+  publicLabel      String
+  evidenceRequired String
+  whoEligible      String
+  badgeType        String?
+  notes            String?
+  applications     Application[]
+  decisions        Decision[]
+  records          VerificationRecord[]
+}
+
+model BadgeType {
+  id                   String         @id @default(cuid())
+  title                String         @unique
+  category             String
+  appliesTo            String
+  publicClaim          String
+  requiresVerification Boolean        @default(false)
+  artworkFile          String?
+  licenses             BadgeLicense[]
+}
+
+model Standard {
+  id            String       @id @default(cuid())
+  title         String
+  standardCode  String       @unique
+  status        String
+  effectiveDate DateTime?
+  summary       String
+  publicUrl     String?
+  notes         String?
+  criteria      Criterion[]
+  assessments   Assessment[]
+}
+
+model Criterion {
+  id                String       @id @default(cuid())
+  title             String
+  criterionCode     String       @unique
+  standardId        String
+  standard          Standard     @relation(fields: [standardId], references: [id])
+  domain            String
+  severity          String
+  assessmentMethod  String
+  evidenceExamples  String
+  publicSafeExample String?
+  notes             String?
+  findings          Finding[]
+  evidence          Evidence[]
+}
+
+model Application {
+  id                String            @id @default(cuid())
+  title             String
+  applicantProfileId String?
+  applicantProfile  Profile?          @relation(fields: [applicantProfileId], references: [id])
+  organizationId    String?
+  organization      Organization?     @relation(fields: [organizationId], references: [id])
+  applicationType   String
+  requestedLevelId  String?
+  requestedLevel    CredentialLevel?  @relation(fields: [requestedLevelId], references: [id])
+  submittedDate     DateTime?
+  status            ApplicationStatus @default(DRAFT)
+  source            String?
+  readinessScore    Int?
+  notes             String?
+  cases             Case[]
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+}
+
+model Case {
+  id                 String        @id @default(cuid())
+  title              String
+  caseType           String
+  organizationId     String?
+  organization       Organization? @relation(fields: [organizationId], references: [id])
+  applicationId      String?
+  application        Application?  @relation(fields: [applicationId], references: [id])
+  requestedLevel     String?
+  status             CaseStatus    @default(OPEN)
+  openedDate         DateTime?
+  targetDecisionDate DateTime?
+  assignedAssessorId String?
+  assignedAssessor   User?         @relation("AssignedAssessor", fields: [assignedAssessorId], references: [id])
+  primaryContact     String?
+  publicSummaryReady Boolean       @default(false)
+  notes              String?
+  assessments        Assessment[]
+  evidence           Evidence[]
+  interviews         Interview[]
+  decisions          Decision[]
+  tasks              Task[]
+  comms              CommsLog[]
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+}
+
+model Assessment {
+  id             String     @id @default(cuid())
+  title          String
+  assessmentType String
+  caseId         String
+  case           Case       @relation(fields: [caseId], references: [id])
+  standardId     String?
+  standard       Standard?  @relation(fields: [standardId], references: [id])
+  assessorName   String?
+  status         String
+  scopeSummary   String?
+  startedDate    DateTime?
+  completedDate  DateTime?
+  overallFinding String?
+  notes          String?
+  findings       Finding[]
+  evidence       Evidence[]
+}
+
+model Finding {
+  id               String      @id @default(cuid())
+  title            String
+  assessmentId     String
+  assessment       Assessment  @relation(fields: [assessmentId], references: [id])
+  criterionId      String?
+  criterion        Criterion?  @relation(fields: [criterionId], references: [id])
+  finding          String
+  evidenceStatus   String
+  publicSafeSummary String?
+  assessorNotes    String?
+  correctiveAction String?
+  dueDate          DateTime?
+  closed           Boolean     @default(false)
+}
+
+model Evidence {
+  id             String        @id @default(cuid())
+  title          String
+  evidenceType   String
+  organizationId String?
+  organization   Organization? @relation(fields: [organizationId], references: [id])
+  caseId         String?
+  case           Case?         @relation(fields: [caseId], references: [id])
+  assessmentId   String?
+  assessment     Assessment?   @relation(fields: [assessmentId], references: [id])
+  criterionId    String?
+  criterion      Criterion?    @relation(fields: [criterionId], references: [id])
+  submittedBy    String?
+  receivedDate   DateTime?
+  reviewStatus   EvidenceStatus @default(SUBMITTED)
+  publicSafe     Boolean       @default(false)
+  url            String?
+  notes          String?
+}
+
+model Interview {
+  id            String    @id @default(cuid())
+  title         String
+  interviewType String
+  caseId        String
+  case          Case      @relation(fields: [caseId], references: [id])
+  host          String?
+  participants  String[]
+  scheduledAt   DateTime?
+  status        String
+  notes         String?
+}
+
+model Decision {
+  id               String           @id @default(cuid())
+  title            String
+  caseId           String
+  case             Case             @relation(fields: [caseId], references: [id])
+  decisionType     String
+  decisionDate     DateTime?
+  decidedLevelId   String?
+  decidedLevel     CredentialLevel? @relation(fields: [decidedLevelId], references: [id])
+  decisionBody     String?
+  rationalePublic  String?
+  rationalePrivate String?
+  status           String
+  records          VerificationRecord[]
+  notes            String?
+}
+
+model VerificationRecord {
+  id               String           @id @default(cuid())
+  title            String
+  organizationId   String?
+  organization     Organization?    @relation(fields: [organizationId], references: [id])
+  grantedLevelId   String?
+  grantedLevel     CredentialLevel? @relation(fields: [grantedLevelId], references: [id])
+  isCurrent        Boolean          @default(false)
+  lastAuditDate    DateTime?
+  validTo          DateTime?
+  nextReviewWindow String?
+  scope            String
+  decisionId       String?
+  decision         Decision?        @relation(fields: [decisionId], references: [id])
+  publicNote       String?
+  notes            String?
+  badgeLicenses    BadgeLicense[]
+  publicListings   PublicDirectoryListing[]
+}
+
+model BadgeLicense {
+  id                   String               @id @default(cuid())
+  title                String
+  badgeId              String               @unique
+  organizationId       String?
+  organization         Organization?        @relation(fields: [organizationId], references: [id])
+  personName           String?
+  badgeTypeId          String?
+  badgeType            BadgeType?           @relation(fields: [badgeTypeId], references: [id])
+  issuedDate           DateTime?
+  expiryDate           DateTime?
+  status               BadgeLicenseStatus   @default(DRAFT)
+  verificationRecordId String?
+  verificationRecord   VerificationRecord?  @relation(fields: [verificationRecordId], references: [id])
+  verifyUrl            String?
+  qrCodeTarget         String?
+  misuseFlags          String?
+  notes                String?
+}
+
+model PublicDirectoryListing {
+  id                   String              @id @default(cuid())
+  title                String
+  organizationId       String?
+  organization         Organization?       @relation(fields: [organizationId], references: [id])
+  verificationRecordId String?
+  verificationRecord   VerificationRecord? @relation(fields: [verificationRecordId], references: [id])
+  publicSlug           String              @unique
+  status               String
+  featured             Boolean             @default(false)
+  shortBlurb           String?
+  primaryCta           String?
+  notes                String?
+  publishedAt          DateTime?
+}
+
+model ComplaintAppeal {
+  id              String           @id @default(cuid())
+  title           String
+  intakeType      String
+  organizationId  String?
+  organization    Organization?    @relation(fields: [organizationId], references: [id])
+  filedBy         String?
+  filedDate       DateTime?
+  status          ComplaintStatus  @default(RECEIVED)
+  severity        String?
+  summaryPublic   String?
+  summaryPrivate  String?
+  relatedBadgeId  String?
+  notes           String?
+  enforcementActions EnforcementAction[]
+}
+
+model EnforcementAction {
+  id                 String           @id @default(cuid())
+  title              String
+  organizationId      String?
+  organization        Organization?    @relation(fields: [organizationId], references: [id])
+  actionType          String
+  issuedDate          DateTime?
+  status              String
+  outcome             String?
+  relatedComplaintId  String?
+  relatedComplaint    ComplaintAppeal? @relation(fields: [relatedComplaintId], references: [id])
+  relatedBadgeId      String?
+  publicNote          String?
+  privateNote         String?
+}
+
+model CoiDeclaration {
+  id              String   @id @default(cuid())
+  title           String
+  assessorId      String
+  assessor        User     @relation(fields: [assessorId], references: [id])
+  organizationName String
+  coiType         String
+  declaredDate    DateTime?
+  recusalRequired Boolean  @default(false)
+  mitigation      String?
+  notes           String?
+}
+
+model AssessorCalibration {
+  id              String    @id @default(cuid())
+  title           String
+  calibrationDate DateTime?
+  participants    String[]
+  focus           String
+  outcomeNotes    String?
+  status          String
+}
+
+model Lead {
+  id             String    @id @default(cuid())
+  title          String
+  leadType       String
+  source         String?
+  stage          String
+  interestLevel  String?
+  requestedLevel String?
+  primaryContact String?
+  organization   String?
+  email          String?
+  phone          String?
+  lastContacted  DateTime?
+  nextAction     String?
+  owner          String?
+  notes          String?
+}
+
+model Task {
+  id            String    @id @default(cuid())
+  title         String
+  status        String
+  priority      String?
+  owner         String?
+  caseId        String?
+  case          Case?     @relation(fields: [caseId], references: [id])
+  relatedOrg    String?
+  dueDate       DateTime?
+  notes         String?
+}
+
+model CommsLog {
+  id       String    @id @default(cuid())
+  title    String
+  channel  String
+  from     String?
+  to       String?
+  caseId   String?
+  case     Case?     @relation(fields: [caseId], references: [id])
+  date     DateTime?
+  outcome  String?
+  summary  String?
+  notes    String?
+}
+
+model AuditEvent {
+  id          String   @id @default(cuid())
+  actorId     String?
+  actor       User?    @relation(fields: [actorId], references: [id])
+  action      String
+  entityType  String
+  entityId    String
+  before      Json?
+  after       Json?
+  createdAt   DateTime @default(now())
+}
+
+model SystemSetting {
+  id                         String   @id @default(cuid())
+  title                      String   @unique
+  primaryAction              String
+  secondaryAction            String?
+  slugPolicy                 String
+  directoryDefaultVisibility String
+  notes                      String?
+  updatedAt                  DateTime @updatedAt
+}
