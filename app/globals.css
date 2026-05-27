@@ -565,9 +565,22 @@ dd {
 }
 
 .role-card li {
+  align-items: center;
   color: #31423d;
+  display: flex;
   font-size: 14px;
-  font-weight: 800;
+  font-weight: 700;
+  gap: 8px;
+  line-height: 1.35;
+}
+
+.role-card li::before {
+  background: var(--gold);
+  border-radius: 999px;
+  content: "";
+  flex: 0 0 7px;
+  height: 7px;
+  width: 7px;
 }
 
 .status-table {
