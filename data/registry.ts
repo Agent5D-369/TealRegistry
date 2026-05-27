@@ -156,8 +156,8 @@ export const credentialLevels: CredentialLevel[] = [
 
 export const directoryRecords: DirectoryRecord[] = [
   {
-    name: "Sample Regenerative Project",
-    slug: "sample-regenerative-project",
+    name: "Riverbend Commons",
+    slug: "riverbend-commons",
     entityType: "Organization",
     country: "Costa Rica",
     sector: "Regenerative Land Stewardship",
@@ -173,8 +173,8 @@ export const directoryRecords: DirectoryRecord[] = [
     evidence: ["Public commitment", "Profile listed", "Review not complete"],
   },
   {
-    name: "Sample Implementation Team",
-    slug: "sample-implementation-team",
+    name: "Northstar Implementation Team",
+    slug: "northstar-implementation-team",
     entityType: "Provider",
     country: "United States",
     sector: "Organizational Development",

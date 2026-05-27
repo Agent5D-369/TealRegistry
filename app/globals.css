@@ -689,6 +689,23 @@ dd {
   font-weight: 850;
 }
 
+.workflow-item strong,
+.workflow-item small {
+  display: block;
+}
+
+.workflow-item strong {
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+
+.workflow-item small {
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 650;
+  line-height: 1.4;
+}
+
 .standards-cards {
   display: grid;
   gap: 14px;

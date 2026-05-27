@@ -5,6 +5,24 @@ import { credentialLevels, portalRoles, standards } from "@/data/registry";
 
 const navItems = ["Verify", "Directory", "Credentials", "How It Works", "Apply", "Report"];
 
+const workflowSteps = [
+  {
+    title: "Apply with confidence",
+    description:
+      "Choose the path that fits your work, see the evidence reviewers need, and know what happens after submission.",
+  },
+  {
+    title: "Receive a live public record",
+    description:
+      "Approved badges link to a record that explains the claim, review scope, dates, status, and renewal window.",
+  },
+  {
+    title: "Protect trust over time",
+    description:
+      "Concerns, renewals, suspensions, and revocations are handled through a visible process that keeps the registry credible.",
+  },
+];
+
 export default function Home() {
   return (
     <main>
@@ -58,7 +76,7 @@ export default function Home() {
             <Image src="/assets/badges/teal-certified.png" alt="" width={180} height={180} />
             <Image src="/assets/badges/teal-verified.png" alt="" width={150} height={150} />
           </div>
-          <h2>A badge should answer one simple question: can I trust this claim?</h2>
+          <h2>A badge answers one simple question: can I trust this claim?</h2>
           <p>
             Training can help someone learn. Consulting can help a team improve. Verification is
             different: it checks what is already true and says exactly what was reviewed.
@@ -74,8 +92,9 @@ export default function Home() {
         <div className="section-heading">
           <h2>Built for the people trying to make good work trustworthy.</h2>
           <p>
-            The site should feel useful to a land steward, founder, funder, practitioner, assessor,
-            or team member who wants clarity without having to decode standards-body language.
+            Land stewards, founders, funders, practitioners, assessors, and team members all need
+            the same thing: a clear way to understand what has been claimed, what has been checked,
+            and what is still only a promise.
           </p>
         </div>
         <div className="role-grid">
@@ -98,8 +117,8 @@ export default function Home() {
           <h2>Each badge says what was checked, and what was not.</h2>
           <p>
             This protects sincere projects from vague suspicion, and protects communities from
-            inflated promises. The ladder is meant to be readable at 2am by someone making a serious
-            decision.
+            inflated promises. Each level is written so a serious decision-maker can understand the
+            claim without needing to decode certification language.
           </p>
         </div>
         <div className="status-table" role="table" aria-label="Credential ladder">
@@ -133,7 +152,7 @@ export default function Home() {
 
       <section className="badge-system" id="badges">
         <div className="section-heading">
-          <h2>Badges should make trust visible, not vague.</h2>
+          <h2>Badges make trust visible, not vague.</h2>
           <p>
             A Teal Registry badge is not a trophy. It is a public link to a live record: what was
             claimed, what was checked, when it was checked, and how to report a concern.
@@ -161,22 +180,21 @@ export default function Home() {
 
       <section className="workflow-band" id="apply">
         <div>
-          <h2>From first interest to public recognition.</h2>
+          <h2>A clear path from interest to recognition.</h2>
           <p>
-            The backend still needs to be rigorous, but the public experience should feel human:
-            choose a path, see what evidence is needed, know where the review stands, and understand
-            what can be claimed when a decision is made.
+            Applicants always know what to submit, where their review stands, and what they can
+            safely claim when a decision is made. The process lowers confusion without lowering the
+            bar.
           </p>
         </div>
         <div className="workflow-list">
-          {[
-            "Apply: Choose a path -> Submit evidence -> Get reviewed -> Receive a decision",
-            "Badge: Issued -> Linked to a live record -> Renewed, expired, suspended, or revoked",
-            "Concern: Report misuse -> Review concern -> Publish updates when public trust is affected",
-          ].map((item) => (
-            <div className="workflow-item" key={item}>
+          {workflowSteps.map((item) => (
+            <div className="workflow-item" key={item.title}>
               <FileIcon className="icon" />
-              <span>{item}</span>
+              <span>
+                <strong>{item.title}</strong>
+                <small>{item.description}</small>
+              </span>
             </div>
           ))}
         </div>
@@ -200,8 +218,8 @@ export default function Home() {
       <section className="cta-section" id="report">
         <h2>Start with clarity. Earn the badge. Keep the trust.</h2>
         <p>
-          The next build should turn this into real flows: search the registry, verify a badge,
-          apply for review, submit evidence, and report misuse from one calm, credible public system.
+          Use the registry to check a claim, understand a badge, start a review, or report misuse.
+          The goal is simple: make trustworthy Teal work easier to recognize and harder to fake.
         </p>
         <div className="hero-actions centered">
           <a className="solid-button large" href="mailto:standards@tealregistry.com">Apply or inquire</a>
