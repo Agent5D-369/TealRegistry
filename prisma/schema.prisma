@@ -395,11 +395,58 @@ model PublicDirectoryListing {
   verificationRecord   VerificationRecord? @relation(fields: [verificationRecordId], references: [id])
   publicSlug           String              @unique
   status               String
+  listingType          String?
+  tagline              String?
+  seoTitle             String?
+  seoDescription       String?
+  seoKeywords          String[]
+  targetAudiences      String[]
+  highlights           String[]
+  tealSignalMap        Json?
+  sourceNotes          String[]
+  mediaPolicy          String?
+  claimStatus          String?
   featured             Boolean             @default(false)
   shortBlurb           String?
   primaryCta           String?
   notes                String?
   publishedAt          DateTime?
+  reviews              VerifiedReview[]
+}
+
+model VerifiedReview {
+  id                       String                 @id @default(cuid())
+  title                    String
+  publicDirectoryListingId String
+  publicDirectoryListing   PublicDirectoryListing @relation(fields: [publicDirectoryListingId], references: [id])
+  reviewerName             String?
+  reviewerRole             String?
+  relationship             String
+  rating                   Int
+  summary                  String
+  verificationStatus       String
+  source                   String?
+  published                Boolean                @default(false)
+  createdAt                DateTime               @default(now())
+  updatedAt                DateTime               @updatedAt
+}
+
+model ListingBuildJob {
+  id                 String   @id @default(cuid())
+  title              String
+  targetName         String
+  targetWebsite      String?
+  targetCategory     String
+  stage              String
+  sourceUrls         String[]
+  extractedFacts     Json?
+  generatedDraft     Json?
+  mediaLicenseStatus String?
+  humanReviewStatus  String
+  publishCandidate   Boolean  @default(false)
+  notes              String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
 }
 
 model ComplaintAppeal {

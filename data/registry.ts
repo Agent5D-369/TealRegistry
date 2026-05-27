@@ -16,7 +16,9 @@ export type DirectoryRecord = {
   slug: string;
   entityType: "Organization" | "Individual" | "Provider" | "Framework";
   country: string;
+  region: string;
   sector: string;
+  website?: string;
   status: string;
   scope: string;
   lastReview: string;
@@ -26,6 +28,23 @@ export type DirectoryRecord = {
   badgeImage: string;
   publicSummary: string;
   evidence: string[];
+  tagline: string;
+  listingType: "Verified" | "Public research profile" | "In review" | "Framework";
+  audience: string[];
+  highlights: string[];
+  tealSignals: Array<{ title: string; summary: string }>;
+  sourceNotes: string[];
+  mediaPolicy: string;
+  reviewSummary: {
+    average: number | null;
+    count: number;
+    note: string;
+  };
+  seo: {
+    title: string;
+    description: string;
+    keywords: string[];
+  };
 };
 
 export type PortalRole = {
@@ -160,7 +179,9 @@ export const directoryRecords: DirectoryRecord[] = [
     slug: "riverbend-commons",
     entityType: "Organization",
     country: "Costa Rica",
+    region: "Central America",
     sector: "Regenerative Land Stewardship",
+    website: "https://example.com/riverbend-commons",
     status: "Teal Aligned",
     scope: "Public commitment only",
     lastReview: "Not yet independently reviewed",
@@ -171,13 +192,54 @@ export const directoryRecords: DirectoryRecord[] = [
     publicSummary:
       "This project has made a public Teal-aligned commitment. Independent evidence review has not happened yet.",
     evidence: ["Public commitment", "Profile listed", "Review not complete"],
+    tagline: "A regenerative land stewardship profile prepared for public discovery and future verification.",
+    listingType: "Public research profile",
+    audience: ["Funders", "Land stewards", "Community partners", "Prospective residents"],
+    highlights: [
+      "Regenerative land stewardship focus",
+      "Public Teal-aligned commitment recorded",
+      "Clear boundary between listed and independently verified status",
+    ],
+    tealSignals: [
+      {
+        title: "Evolutionary Purpose",
+        summary: "The profile is organized around land stewardship and community benefit rather than a generic business description.",
+      },
+      {
+        title: "Self-Organization",
+        summary: "Decision-making evidence has not been independently reviewed yet, so this remains a discovery profile.",
+      },
+      {
+        title: "Wholeness",
+        summary: "Culture and conflict practices still need direct evidence before stronger claims are made.",
+      },
+    ],
+    sourceNotes: [
+      "Prepared as a public research profile until the organization claims or verifies the listing.",
+      "Public facts should be sourced from official channels, public interviews, directory entries, and owner-provided corrections.",
+    ],
+    mediaPolicy:
+      "Images are not copied from the organization's website unless the owner provides permission or a clear reusable license exists.",
+    reviewSummary: {
+      average: null,
+      count: 0,
+      note: "Verified user reviews are planned but not yet open for this listing.",
+    },
+    seo: {
+      title: "Riverbend Commons Teal Registry profile",
+      description:
+        "Explore the Riverbend Commons Teal Registry profile, public Teal-aligned status, regenerative land stewardship focus, and verification boundaries.",
+      keywords: ["Riverbend Commons", "regenerative land stewardship", "intentional community", "Teal organization", "Costa Rica"],
+    },
   },
   {
     name: "Northstar Implementation Team",
     slug: "northstar-implementation-team",
     entityType: "Provider",
     country: "United States",
+    region: "North America",
     sector: "Organizational Development",
+    website: "https://example.com/northstar-implementation-team",
     status: "In Review",
     scope: "Applying to become an accredited implementation team",
     lastReview: "Application opened",
@@ -188,12 +250,52 @@ export const directoryRecords: DirectoryRecord[] = [
     publicSummary:
       "This team is in review. They may not claim Teal Registry accreditation until a decision is issued.",
     evidence: ["Application received", "Readiness check", "Reviewer assigned"],
+    tagline: "An implementation-provider profile tracking accreditation readiness and review status.",
+    listingType: "In review",
+    audience: ["Founders", "Operators", "People teams", "Implementation buyers"],
+    highlights: [
+      "Applying for accredited implementation team status",
+      "Review boundary makes clear that accreditation is not yet issued",
+      "Useful for buyers comparing support options before engaging a provider",
+    ],
+    tealSignals: [
+      {
+        title: "Evolutionary Purpose",
+        summary: "The review examines whether implementation work serves the client's living purpose rather than selling a fixed playbook.",
+      },
+      {
+        title: "Self-Organization",
+        summary: "Provider methods are checked for how they help teams distribute authority with clear agreements.",
+      },
+      {
+        title: "Wholeness",
+        summary: "Reviewers look for evidence that delivery practices support honesty, conflict repair, and psychological safety.",
+      },
+    ],
+    sourceNotes: [
+      "Application status is tracked separately from public accreditation status.",
+      "Provider claims require reviewer evidence before Teal Registry accreditation language can be used.",
+    ],
+    mediaPolicy:
+      "Profile media should be owner-provided or generated as original Teal Registry graphics until the provider grants asset rights.",
+    reviewSummary: {
+      average: null,
+      count: 0,
+      note: "Verified client reviews will be accepted after accreditation review controls are active.",
+    },
+    seo: {
+      title: "Northstar Implementation Team Teal accreditation profile",
+      description:
+        "Review the Northstar Implementation Team Teal Registry profile, accreditation status, implementation focus, and verification boundary.",
+      keywords: ["Teal implementation", "organizational development", "self-management consulting", "Teal accreditation"],
+    },
   },
   {
     name: "Teal Practice Standard",
     slug: "teal-core-standard-v1",
     entityType: "Framework",
     country: "Global",
+    region: "Global",
     sector: "Frameworks and methods",
     status: "Draft",
     scope: "How purpose, decision-making, and human practices show up in real life",
@@ -205,6 +307,44 @@ export const directoryRecords: DirectoryRecord[] = [
     publicSummary:
       "This is the practical review guide behind Teal Registry decisions. It translates Teal ideals into observable signals.",
     evidence: ["Practice signals", "Evidence examples", "Public explanation"],
+    tagline: "The practical standard used to translate Teal claims into observable review signals.",
+    listingType: "Framework",
+    audience: ["Assessors", "Founders", "Framework authors", "Training providers"],
+    highlights: [
+      "Defines how Teal claims are interpreted for review",
+      "Keeps public language understandable for non-specialists",
+      "Separates framework recognition from organization verification",
+    ],
+    tealSignals: [
+      {
+        title: "Evolutionary Purpose",
+        summary: "The standard asks whether purpose guides decisions in daily work.",
+      },
+      {
+        title: "Self-Organization",
+        summary: "The standard asks whether power, roles, and decisions are clear enough to review.",
+      },
+      {
+        title: "Wholeness",
+        summary: "The standard asks whether people practices support truth, accountability, and repair.",
+      },
+    ],
+    sourceNotes: [
+      "Framework content is maintained by Teal Registry as the review guide evolves.",
+      "Recognition of a framework does not verify every organization using it.",
+    ],
+    mediaPolicy: "Teal Registry owns the registry standard graphics and may create explanatory visuals from this page.",
+    reviewSummary: {
+      average: null,
+      count: 0,
+      note: "Public feedback will be collected through standards review cycles.",
+    },
+    seo: {
+      title: "Teal Practice Standard public profile",
+      description:
+        "Read the Teal Practice Standard profile and learn how Teal Registry evaluates purpose, self-organization, and wholeness.",
+      keywords: ["Teal standard", "Teal organization", "self-organization", "evolutionary purpose", "wholeness"],
+    },
   },
 ];
 

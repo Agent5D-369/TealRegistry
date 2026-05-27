@@ -11,6 +11,7 @@ const adminLinks = [
   { href: "/admin/revocation", label: "Revocation" },
   { href: "/admin/renewal", label: "Renewal" },
   { href: "/admin/misuse-reports", label: "Misuse reports" },
+  { href: "/admin/listing-builder", label: "AI listing builder" },
 ];
 
 export default function AdminPage() {
