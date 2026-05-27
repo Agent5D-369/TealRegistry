@@ -22,9 +22,9 @@ export default function StandardsPage() {
           </p>
         </div>
         <div className="infographic-steps" aria-label="Teal plain-language infographic">
-          {tealBasics.map((item, index) => (
+          {tealBasics.map((item) => (
             <article key={item.title}>
-              <span>{index + 1}</span>
+              <span>{item.principle}</span>
               <h3>{item.title}</h3>
               <p>{item.body}</p>
             </article>

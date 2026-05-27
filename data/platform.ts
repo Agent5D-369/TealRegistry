@@ -1,13 +1,16 @@
 export const tealBasics = [
   {
+    principle: "Evolutionary Purpose",
     title: "Purpose leads the work",
     body: "A Teal organization is guided by a living purpose, not only by quarterly targets or a founder's preferences.",
   },
   {
+    principle: "Self-Management",
     title: "Power is shared clearly",
     body: "People know how decisions are made, who can decide what, and how to challenge choices safely.",
   },
   {
+    principle: "Wholeness",
     title: "People can bring their whole selves",
     body: "Healthy teams make room for honesty, conflict repair, learning, care, and accountability.",
   },

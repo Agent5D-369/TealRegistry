@@ -943,13 +943,14 @@ dd {
 
 .infographic-steps span {
   background: var(--gold);
-  border-radius: 999px;
-  display: inline-grid;
+  border-radius: var(--radius);
+  display: inline-flex;
   font-weight: 900;
-  height: 30px;
+  line-height: 1.1;
   margin-bottom: 10px;
-  place-items: center;
-  width: 30px;
+  max-width: 100%;
+  padding: 8px 10px;
+  text-transform: uppercase;
 }
 
 .infographic-steps p {
