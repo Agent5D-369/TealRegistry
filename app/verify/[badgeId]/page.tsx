@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PageShell } from "@/components/page-shell";
 import { directoryRecords } from "@/data/registry";
+import { getDirectoryRecordByBadgeId } from "@/lib/registry-records";
 
 type VerifyPageProps = {
   params: Promise<{ badgeId: string }>;
@@ -14,7 +15,7 @@ export function generateStaticParams() {
 
 export default async function VerifyBadgePage({ params }: VerifyPageProps) {
   const { badgeId } = await params;
-  const record = directoryRecords.find((item) => item.badgeId === decodeURIComponent(badgeId));
+  const record = await getDirectoryRecordByBadgeId(badgeId);
 
   if (!record) {
     notFound();

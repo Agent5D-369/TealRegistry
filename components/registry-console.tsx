@@ -2,17 +2,21 @@
 
 import { useMemo, useState } from "react";
 import Image from "next/image";
-import { directoryRecords } from "@/data/registry";
+import { directoryRecords, type DirectoryRecord } from "@/data/registry";
 import { SearchIcon, ShieldIcon } from "@/components/icons";
 
-export function RegistryConsole() {
+type RegistryConsoleProps = {
+  records?: DirectoryRecord[];
+};
+
+export function RegistryConsole({ records = directoryRecords }: RegistryConsoleProps) {
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState("All");
 
   const filteredRecords = useMemo(() => {
     const normalized = query.trim().toLowerCase();
 
-    return directoryRecords.filter((record) => {
+    return records.filter((record) => {
       const matchesFilter = filter === "All" || record.entityType === filter;
       const searchText = [
         record.name,
@@ -27,9 +31,9 @@ export function RegistryConsole() {
 
       return matchesFilter && (!normalized || searchText.includes(normalized));
     });
-  }, [filter, query]);
+  }, [filter, query, records]);
 
-  const primaryRecord = filteredRecords[0] ?? directoryRecords[0];
+  const primaryRecord = filteredRecords[0] ?? records[0] ?? directoryRecords[0];
 
   return (
     <section className="console" aria-label="Registry verification console">

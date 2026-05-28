@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PageShell } from "@/components/page-shell";
 import { directoryRecords } from "@/data/registry";
+import { getDirectoryRecordBySlug } from "@/lib/registry-records";
 
 type RegistryDetailProps = {
   params: Promise<{ slug: string }>;
@@ -15,7 +16,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: RegistryDetailProps): Promise<Metadata> {
   const { slug } = await params;
-  const record = directoryRecords.find((item) => item.slug === slug);
+  const record = await getDirectoryRecordBySlug(slug);
 
   if (!record) {
     return {};
@@ -39,7 +40,7 @@ export async function generateMetadata({ params }: RegistryDetailProps): Promise
 
 export default async function RegistryDetailPage({ params }: RegistryDetailProps) {
   const { slug } = await params;
-  const record = directoryRecords.find((item) => item.slug === slug);
+  const record = await getDirectoryRecordBySlug(slug);
 
   if (!record) {
     notFound();

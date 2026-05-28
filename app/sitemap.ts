@@ -1,11 +1,12 @@
 import type { MetadataRoute } from "next";
 import { audiencePages, glossaryEntries } from "@/data/education";
-import { directoryRecords } from "@/data/registry";
+import { getDirectoryRecords } from "@/lib/registry-records";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const siteUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://tealregistry.com";
   const now = new Date();
   const staticRoutes = ["", "/registry", "/credentials", "/standards", "/apply", "/report-misuse"];
+  const directoryRecords = await getDirectoryRecords();
   const registryRoutes = directoryRecords.map((record) => `/registry/${record.slug}`);
   const audienceRoutes = audiencePages.map((audience) => `/audiences/${audience.slug}`);
   const glossaryRoutes = glossaryEntries.map((entry) => `/glossary/${entry.slug}`);

@@ -23,6 +23,12 @@ Unauthorized. Please run `railway login` again.
 
 The same authorization failure appears through both Railway CLI and Railway MCP for the provided project/environment/service IDs.
 
+Rechecked on 2026-05-28:
+
+- `railway whoami --json` succeeds for `rick@amora.cr`.
+- Project-scoped service calls against project `8c21fadf-ef58-4d3a-9df6-1f6f6d3911ef` and environment `6aa94083-f4b7-4571-a453-55cb3ebb0546` still return `Unauthorized. Please run railway login again.`
+- The app now has a Prisma-backed registry data layer with static fallback, so it is ready to use Railway Postgres once access and `DATABASE_URL` are available.
+
 ## Next Railway Steps
 
 1. Refresh Railway login for the account that owns or has access to the project.

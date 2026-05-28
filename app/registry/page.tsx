@@ -1,9 +1,11 @@
 import Link from "next/link";
 import { PageShell } from "@/components/page-shell";
 import { RegistryConsole } from "@/components/registry-console";
-import { directoryRecords } from "@/data/registry";
+import { getDirectoryRecords } from "@/lib/registry-records";
 
-export default function RegistryPage() {
+export default async function RegistryPage() {
+  const records = await getDirectoryRecords();
+
   return (
     <PageShell
       title="Public Teal Registry"
@@ -13,7 +15,7 @@ export default function RegistryPage() {
         { href: "/report-misuse", label: "Report misuse", variant: "ghost" },
       ]}
     >
-      <RegistryConsole />
+      <RegistryConsole records={records} />
       <section className="content-section">
         <div className="section-heading compact">
           <h2>Current public records</h2>
@@ -23,7 +25,7 @@ export default function RegistryPage() {
           </p>
         </div>
         <div className="directory-grid">
-          {directoryRecords.map((record) => (
+          {records.map((record) => (
             <Link className="directory-card" href={`/registry/${record.slug}`} key={record.slug}>
               <span>{record.entityType}</span>
               <h3>{record.name}</h3>
