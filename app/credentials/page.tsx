@@ -1,6 +1,8 @@
 import Image from "next/image";
+import Link from "next/link";
 import { PageShell } from "@/components/page-shell";
 import { credentialLevels } from "@/data/registry";
+import { glossaryEntries, slugify } from "@/data/education";
 
 export default function CredentialsPage() {
   return (
@@ -24,11 +26,27 @@ export default function CredentialsPage() {
                 <dl>
                   <div>
                     <dt>Best for</dt>
-                    <dd>{level.eligible}</dd>
+                    <dd className="link-list">
+                      {level.eligible.split(",").map((audience) => {
+                        const label = audience.trim();
+                        return (
+                          <Link href={`/audiences/${slugify(label)}`} key={label}>
+                            {label}
+                          </Link>
+                        );
+                      })}
+                    </dd>
                   </div>
                   <div>
                     <dt>Evidence signal</dt>
-                    <dd>{level.evidenceRequired}</dd>
+                    <dd>
+                      <Link
+                        className="inline-value-link"
+                        href={`/glossary/${glossaryEntries.find((entry) => entry.term === level.evidenceRequired)?.slug ?? slugify(level.evidenceRequired)}`}
+                      >
+                        {level.evidenceRequired}
+                      </Link>
+                    </dd>
                   </div>
                   <div>
                     <dt>Public meaning</dt>

@@ -2,21 +2,18 @@ export const tealBasics = [
   {
     title: "Evolutionary Purpose",
     body: "The organization is guided by a living purpose people can use when making real decisions. If the work is mainly driven by ego, extraction, optics, or short-term targets, the claim is not regenerative yet.",
+    missingRisk: "Without shared power, purpose becomes branding.",
   },
   {
     title: "Self-Organization",
     body: "Power is distributed through clear agreements, not hidden hierarchy. People know how decisions get made, who holds which responsibilities, and how to challenge choices without punishment.",
+    missingRisk: "Without wholeness, shared power becomes process theater.",
   },
   {
     title: "Wholeness",
     body: "People can bring truth, care, conflict, learning, and accountability into the work. A culture that requires masks, silence, fear, or burnout cannot credibly call itself Teal.",
+    missingRisk: "Without purpose, wholeness can become a retreat from responsibility.",
   },
-];
-
-export const tealAhaChecks = [
-  "Purpose without shared power becomes branding.",
-  "Shared power without wholeness becomes process theater.",
-  "Wholeness without purpose can become a retreat from responsibility.",
 ];
 
 export const publicRoutes = [

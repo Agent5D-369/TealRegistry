@@ -813,7 +813,8 @@ dd {
 .workflow-grid,
 .portal-link-grid,
 .infographic-steps,
-.listing-grid {
+.listing-grid,
+.dream-target-layout {
   display: grid;
   gap: 14px;
 }
@@ -823,7 +824,8 @@ dd {
 .dashboard-grid,
 .workflow-grid,
 .portal-link-grid,
-.listing-grid {
+.listing-grid,
+.dream-target-layout {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
@@ -888,6 +890,23 @@ dd {
   display: grid;
   gap: 10px;
   margin: 18px 0 0;
+}
+
+.link-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.link-list a,
+.inline-value-link {
+  background: var(--surface-strong);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--teal-dark);
+  display: inline-flex;
+  font-weight: 900;
+  padding: 6px 9px;
 }
 
 .detail-layout,
@@ -1047,15 +1066,45 @@ dd {
 }
 
 .infographic-steps h3 {
+  align-items: start;
   color: white;
+  display: flex;
   font-size: clamp(24px, 4vw, 34px);
+  gap: 10px;
   line-height: 1;
   margin: 0;
+}
+
+.infographic-steps h3 span {
+  background: var(--gold);
+  border-radius: 999px;
+  color: var(--teal-deep);
+  display: inline-grid;
+  flex: 0 0 34px;
+  font-size: 17px;
+  height: 34px;
+  place-items: center;
+  width: 34px;
 }
 
 .infographic-steps p {
   color: rgba(255, 255, 255, 0.78);
   margin: 0;
+}
+
+.infographic-steps strong {
+  background: rgba(255, 255, 255, 0.1);
+  border-left: 4px solid var(--gold);
+  border-radius: var(--radius);
+  color: white;
+  display: block;
+  line-height: 1.35;
+  padding: 12px;
+}
+
+.standards-aha {
+  grid-column: 1 / -1;
+  margin-top: 8px;
 }
 
 .pathway-card ol,
@@ -1186,7 +1235,8 @@ dd {
   .dashboard-grid,
   .workflow-grid,
   .portal-link-grid,
-  .listing-grid {
+  .listing-grid,
+  .dream-target-layout {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -1242,6 +1292,7 @@ dd {
   .workflow-grid,
   .portal-link-grid,
   .listing-grid,
+  .dream-target-layout,
   .credential-detail,
   .ops-row,
   .listing-builder-totals {

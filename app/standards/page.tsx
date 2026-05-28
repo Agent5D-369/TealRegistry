@@ -1,6 +1,6 @@
 import { PageShell } from "@/components/page-shell";
 import { standards } from "@/data/registry";
-import { tealAhaChecks, tealBasics } from "@/data/platform";
+import { tealBasics } from "@/data/platform";
 
 export default function StandardsPage() {
   return (
@@ -15,26 +15,27 @@ export default function StandardsPage() {
       <section className="content-section teal-explainer">
         <div>
           <h2>You need all three.</h2>
-          <div className="aha-panel">
-            <p>
-              For a founder, funder, land steward, team member, or community partner, the plain
-              test is simple. A regenerative organization must show all three:
-            </p>
-            <ul>
-              {tealAhaChecks.map((check) => (
-                <li key={check}>{check}</li>
-              ))}
-            </ul>
-          </div>
-          <h3 className="aha-takeaway">Teal Registry looks for all three working together.</h3>
+          <p>
+            For a founder, funder, land steward, team member, or community partner, the plain test
+            is simple. A regenerative organization must show all three:
+          </p>
         </div>
         <div className="infographic-steps" aria-label="Teal plain-language infographic">
-          {tealBasics.map((item) => (
+          {tealBasics.map((item, index) => (
             <article key={item.title}>
-              <h3>{item.title}</h3>
+              <h3><span>{index + 1}</span>{item.title}</h3>
               <p>{item.body}</p>
+              <strong>Watch for this: {item.missingRisk}</strong>
             </article>
           ))}
+        </div>
+        <div className="aha-panel standards-aha">
+          <h3 className="aha-takeaway">Teal Registry looks for all three working together.</h3>
+          <p>
+            This is the aha moment: one strong principle cannot cover for a missing one. Teal is the
+            pattern created when purpose, self-organization, and wholeness reinforce each other in
+            real work.
+          </p>
         </div>
       </section>
       <section className="content-section">
