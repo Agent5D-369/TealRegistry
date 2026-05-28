@@ -3,14 +3,16 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PageShell } from "@/components/page-shell";
 import { directoryRecords } from "@/data/registry";
-import { getDirectoryRecordByBadgeId } from "@/lib/registry-records";
+import { getDirectoryRecordByBadgeId, isOfficialBadgeId } from "@/lib/registry-records";
 
 type VerifyPageProps = {
   params: Promise<{ badgeId: string }>;
 };
 
 export function generateStaticParams() {
-  return directoryRecords.map((record) => ({ badgeId: record.badgeId }));
+  return directoryRecords
+    .filter((record) => isOfficialBadgeId(record.badgeId))
+    .map((record) => ({ badgeId: record.badgeId }));
 }
 
 export default async function VerifyBadgePage({ params }: VerifyPageProps) {

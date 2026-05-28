@@ -102,6 +102,10 @@ function badgeImageFromArtwork(artworkFile: string | null | undefined) {
   return `/assets/badges/${artworkFile}`;
 }
 
+export function isOfficialBadgeId(value: string) {
+  return /^TR-[A-Z0-9]+-\d{4,}$/i.test(value);
+}
+
 function mapListingToRecord(listing: PublicListingWithRelations): DirectoryRecord {
   const organization = listing.organization;
   const verification = listing.verificationRecord;
@@ -237,6 +241,10 @@ export async function getDirectoryRecordBySlug(slug: string) {
 
 export async function getDirectoryRecordByBadgeId(badgeId: string) {
   const decoded = decodeURIComponent(badgeId);
+  if (!isOfficialBadgeId(decoded)) {
+    return undefined;
+  }
+
   const records = await getDirectoryRecords();
   return records.find((record) => record.badgeId === decoded);
 }
