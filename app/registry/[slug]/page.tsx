@@ -6,6 +6,8 @@ import { PageShell } from "@/components/page-shell";
 import { directoryRecords } from "@/data/registry";
 import { getDirectoryRecordBySlug } from "@/lib/registry-records";
 
+export const dynamic = "force-dynamic";
+
 type RegistryDetailProps = {
   params: Promise<{ slug: string }>;
 };
