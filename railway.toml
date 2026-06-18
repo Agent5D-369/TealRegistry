@@ -1,6 +1,6 @@
 [build]
 builder = "NIXPACKS"
-buildCommand = "npx --no-install prisma generate && npm run build"
+buildCommand = "npx --no-install prisma generate && npm run build && cp -r .next/static .next/standalone/.next/static && cp -r public .next/standalone/public"
 
 [deploy]
 startCommand = "npx --no-install prisma migrate deploy && HOSTNAME=0.0.0.0 node .next/standalone/server.js"
