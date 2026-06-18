@@ -1,5 +1,10 @@
 [variables]
 NIXPACKS_NODE_VERSION = "22"
+# Build-time placeholder — prisma generate needs DATABASE_URL set but never connects during generate
+DATABASE_URL = "postgresql://postgres:postgres@localhost:5432/tealregistry"
 
 [phases.install]
 cmds = ["npm install --legacy-peer-deps"]
+
+[phases.build]
+cmds = ["npx --no-install prisma generate", "npm run build"]
