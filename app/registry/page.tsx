@@ -3,6 +3,8 @@ import { PageShell } from "@/components/page-shell";
 import { RegistryConsole } from "@/components/registry-console";
 import { getDirectoryRecords } from "@/lib/registry-records";
 
+export const dynamic = "force-dynamic";
+
 export default async function RegistryPage() {
   const records = await getDirectoryRecords();
 
