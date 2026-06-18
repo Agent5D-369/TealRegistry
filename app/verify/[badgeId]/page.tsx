@@ -5,6 +5,8 @@ import { PageShell } from "@/components/page-shell";
 import { directoryRecords } from "@/data/registry";
 import { getDirectoryRecordByBadgeId, isOfficialBadgeId } from "@/lib/registry-records";
 
+export const dynamic = "force-dynamic";
+
 type VerifyPageProps = {
   params: Promise<{ badgeId: string }>;
 };
