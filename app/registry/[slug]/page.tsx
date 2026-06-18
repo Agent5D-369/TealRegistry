@@ -121,7 +121,7 @@ export default async function RegistryDetailPage({ params }: RegistryDetailProps
             the evidence boundary, and the next step.
           </p>
           <div className="evidence-list">
-            {record.evidence.map((item) => (
+            {record.evidence.map((item: string) => (
               <span key={item}>{item}</span>
             ))}
           </div>
