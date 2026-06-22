@@ -245,4 +245,18 @@ export async function getDirectoryRecordBySlug(slug: string) {
 }
 
 export async function getFeaturedListings(limit = 6) {
-  const records = await getDirectoryRecords(
+  const records = await getDirectoryRecords();
+  const featured = records.filter((r) => r.featured);
+  const rest = records.filter((r) => !r.featured);
+  return [...featured, ...rest].slice(0, limit);
+}
+
+export async function getDirectoryRecordByBadgeId(badgeId: string) {
+  const decoded = decodeURIComponent(badgeId);
+  if (!isOfficialBadgeId(decoded)) {
+    return undefined;
+  }
+
+  const records = await getDirectoryRecords();
+  return records.find((record) => record.badgeId === decoded);
+}

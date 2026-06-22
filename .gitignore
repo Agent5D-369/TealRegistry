@@ -8,4 +8,5 @@ dist/
 !.env.example
 desktop.ini
 *.log
+*.tsbuildinfo
 Thumbs.db
