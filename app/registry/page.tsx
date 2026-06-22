@@ -1,49 +1,51 @@
-import type { Metadata } from "next";
-import { Search } from "lucide-react";
+import Link from "next/link";
+import { PageShell } from "@/components/page-shell";
+import { RegistryConsole } from "@/components/registry-console";
 import { getDirectoryRecords } from "@/lib/registry-records";
-import { DirectorySearch } from "@/components/directory-search";
 
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
-  title: "Directory | Teal Registry",
-  description: "Browse independently verified regenerative businesses, intentional communities, training providers, frameworks, and co-creators.",
-};
-
-export default async function RegistryPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ q?: string; type?: string; credential?: string; sector?: string; country?: string }>;
-}) {
-  const params = await searchParams;
-  const { q = "", type = "", credential = "", sector = "", country = "" } = params;
-
-  const allRecords = await getDirectoryRecords();
+export default async function RegistryPage() {
+  const records = await getDirectoryRecords();
 
   return (
-    <>
-      {/* Hero */}
-      <section className="page-hero">
-        <div className="page-hero-inner">
-          <div className="hero-eyebrow" style={{ marginBottom: "1rem" }}>
-            <Search size={14} />
-            Certification Directory
-          </div>
-          <h1>The Teal Registry</h1>
+    <PageShell
+      title="Public Teal Registry"
+      intro="Search public records, check badge status, and understand exactly what has and has not been reviewed."
+      actions={[
+        { href: "/apply", label: "Apply for review" },
+        { href: "/report-misuse", label: "Report misuse", variant: "ghost" },
+      ]}
+    >
+      <RegistryConsole records={records} />
+      <section className="content-section">
+        <div className="section-heading compact">
+          <h2>Current public records</h2>
           <p>
-            Independently verified regenerative organizations, intentional communities, training providers, and frameworks — each with a live verification record.
+            Each listing explains the claim, scope, review status, public evidence summary, and
+            badge record so decision-makers can move quickly without guessing.
           </p>
         </div>
+        <div className="directory-grid">
+          {records.map((record) => (
+            <Link className="directory-card" href={`/registry/${record.slug}`} key={record.slug}>
+              <span>{record.entityType}</span>
+              <h3>{record.name}</h3>
+              <p>{record.publicSummary}</p>
+              <dl>
+                <div>
+                  <dt>Status</dt>
+                  <dd>{record.status}</dd>
+                </div>
+                <div>
+                  <dt>Scope</dt>
+                  <dd>{record.scope}</dd>
+                </div>
+              </dl>
+            </Link>
+          ))}
+        </div>
       </section>
-
-      <DirectorySearch
-        records={allRecords}
-        initialQ={q}
-        initialType={type}
-        initialCredential={credential}
-        initialSector={sector}
-        initialCountry={country}
-      />
-    </>
+    </PageShell>
   );
 }

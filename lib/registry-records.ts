@@ -236,19 +236,7 @@ export async function getDirectoryRecords() {
 
 export async function getDirectoryRecordBySlug(slug: string) {
   const records = await getDirectoryRecords();
-  const found = records.find((record) => record.slug === slug);
-  // DB may not contain all static seed records; fall back to static if not found
-  if (!found) {
-    return directoryRecords.find((record) => record.slug === slug);
-  }
-  return found;
-}
-
-export async function getFeaturedListings(limit = 6) {
-  const records = await getDirectoryRecords();
-  const featured = records.filter((r) => r.featured);
-  const rest = records.filter((r) => !r.featured);
-  return [...featured, ...rest].slice(0, limit);
+  return records.find((record) => record.slug === slug);
 }
 
 export async function getDirectoryRecordByBadgeId(badgeId: string) {
