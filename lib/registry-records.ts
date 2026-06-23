@@ -227,7 +227,15 @@ export async function getDirectoryRecords() {
 
   try {
     const records = await fetchPublishedRecords();
-    return records.length > 0 ? records : directoryRecords;
+    if (records.length === 0) {
+      return directoryRecords;
+    }
+
+    const recordBySlug = new Map<string, DirectoryRecord>();
+    directoryRecords.forEach((record) => recordBySlug.set(record.slug, record));
+    records.forEach((record) => recordBySlug.set(record.slug, record));
+
+    return Array.from(recordBySlug.values());
   } catch (error) {
     console.warn("Falling back to static directory records.", error);
     return directoryRecords;
