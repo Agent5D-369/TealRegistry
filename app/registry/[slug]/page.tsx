@@ -195,6 +195,23 @@ export default async function RegistryDetailPage({ params }: RegistryDetailProps
       <section className="content-section detail-layout">
         <article className="trust-panel">
           <h2>Source and media policy</h2>
+          {record.sourceLinks.length > 0 ? (
+            <>
+              <h3>Public sources</h3>
+              <div className="source-link-list">
+                {record.sourceLinks.map((source) => (
+                  <Link
+                    href={source.href}
+                    key={`${source.href}-${source.label}`}
+                    rel={source.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                    target={source.href.startsWith("http") ? "_blank" : undefined}
+                  >
+                    {source.label}
+                  </Link>
+                ))}
+              </div>
+            </>
+          ) : null}
           <ul>
             {record.sourceNotes.map((note) => (
               <li key={note}>{note}</li>

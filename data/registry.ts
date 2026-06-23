@@ -37,6 +37,7 @@ export type DirectoryRecord = {
   highlights: string[];
   tealSignals: Array<{ title: string; summary: string }>;
   sourceNotes: string[];
+  sourceLinks: Array<{ label: string; href: string }>;
   mediaPolicy: string;
   reviewSummary: {
     average: number | null;
@@ -135,6 +136,7 @@ function createStarterProfile(input: StarterProfileInput, index: number): Direct
       "Teal Registry does not copy protected website text or images into starter listings. Media should be owner-provided, clearly licensed, or created as original registry graphics.",
       "This listing should be corrected or expanded by the organization before stronger claims are made.",
     ],
+    sourceLinks: [{ label: `${input.name} official website`, href: input.website }],
     mediaPolicy:
       "Use owner-provided media, clearly licensed media, or original Teal Registry visuals. Do not scrape and reuse copyrighted website photography without permission.",
     reviewSummary: {
@@ -847,6 +849,7 @@ export const directoryRecords: DirectoryRecord[] = [
       "Prepared as a public research profile until the organization claims or verifies the listing.",
       "Public facts should be sourced from official channels, public interviews, directory entries, and owner-provided corrections.",
     ],
+    sourceLinks: [{ label: "Example source placeholder", href: "https://example.com/riverbend-commons" }],
     mediaPolicy:
       "Images are not copied from the organization's website unless the owner provides permission or a clear reusable license exists.",
     reviewSummary: {
@@ -905,6 +908,9 @@ export const directoryRecords: DirectoryRecord[] = [
       "Application status is tracked separately from public accreditation status.",
       "Provider claims require reviewer evidence before Teal Registry accreditation language can be used.",
     ],
+    sourceLinks: [
+      { label: "Example source placeholder", href: "https://example.com/northstar-implementation-team" },
+    ],
     mediaPolicy:
       "Profile media should be owner-provided or generated as original Teal Registry graphics until the provider grants asset rights.",
     reviewSummary: {
@@ -962,6 +968,7 @@ export const directoryRecords: DirectoryRecord[] = [
       "Framework content is maintained by Teal Registry as the review guide evolves.",
       "Recognition of a framework does not verify every organization using it.",
     ],
+    sourceLinks: [{ label: "Teal Registry standards", href: "/standards" }],
     mediaPolicy: "Teal Registry owns the registry standard graphics and may create explanatory visuals from this page.",
     reviewSummary: {
       average: null,

@@ -466,6 +466,7 @@ dd {
 }
 
 .operating-system,
+.featured-registry,
 .standards-band,
 .badge-system,
 .workflow-band,
@@ -474,6 +475,75 @@ dd {
   margin: 0 auto;
   max-width: var(--max);
   padding: 74px 22px;
+}
+
+.featured-registry {
+  border-top: 1px solid var(--border);
+  padding-top: 64px;
+}
+
+.featured-category-grid {
+  display: grid;
+  gap: 18px;
+}
+
+.featured-category {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  display: grid;
+  gap: 18px;
+  grid-template-columns: minmax(230px, 0.36fr) minmax(0, 1fr);
+  padding: 20px;
+}
+
+.featured-category-head h3 {
+  color: var(--teal-deep);
+  font-size: 25px;
+  line-height: 1.08;
+  margin: 0 0 10px;
+}
+
+.featured-category-head p {
+  color: var(--muted);
+  margin: 0;
+}
+
+.featured-listing-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.featured-listing-card {
+  background: var(--surface-strong);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  display: grid;
+  gap: 6px;
+  min-height: 128px;
+  padding: 12px;
+}
+
+.featured-listing-card span {
+  color: var(--gold);
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.featured-listing-card strong {
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.16;
+}
+
+.featured-listing-card small {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 750;
+  line-height: 1.25;
 }
 
 .badge-system {
@@ -885,6 +955,23 @@ dd {
   color: var(--muted);
 }
 
+.source-link-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 18px;
+}
+
+.source-link-list a {
+  background: var(--surface-strong);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--teal-dark);
+  font-size: 13px;
+  font-weight: 900;
+  padding: 8px 10px;
+}
+
 .directory-card dl,
 .credential-detail dl {
   display: grid;
@@ -1226,6 +1313,14 @@ dd {
     grid-template-columns: 1fr;
   }
 
+  .featured-category {
+    grid-template-columns: 1fr;
+  }
+
+  .featured-listing-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .badge-rail {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -1292,6 +1387,7 @@ dd {
   .workflow-grid,
   .portal-link-grid,
   .listing-grid,
+  .featured-listing-grid,
   .dream-target-layout,
   .credential-detail,
   .ops-row,

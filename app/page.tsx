@@ -5,7 +5,7 @@ import Link from "next/link";
 import { RegistryConsole } from "@/components/registry-console";
 import { ArrowIcon, FileIcon, ShieldIcon } from "@/components/icons";
 import { SiteHeader } from "@/components/site-header";
-import { credentialLevels, portalRoles, standards } from "@/data/registry";
+import { credentialLevels, directoryRecords, portalRoles, standards, type DirectoryRecord } from "@/data/registry";
 import { tealBasics } from "@/data/platform";
 
 const workflowSteps = [
@@ -26,7 +26,43 @@ const workflowSteps = [
   },
 ];
 
+const featuredCategories = [
+  {
+    title: "Regenerative businesses",
+    description: "Purpose-led companies and operating systems worth comparing before anyone claims certification.",
+    filter: (record: DirectoryRecord) =>
+      record.entityType === "Organization" &&
+      /business|self-managing|purpose-led|regenerative/i.test(`${record.sector} ${record.seo.keywords.join(" ")}`),
+  },
+  {
+    title: "Intentional communities",
+    description: "Communities, ecovillages, and land-based projects where governance, culture, and purpose matter.",
+    filter: (record: DirectoryRecord) =>
+      record.entityType === "Organization" &&
+      /community|ecovillage|land|permaculture/i.test(`${record.sector} ${record.seo.keywords.join(" ")}`),
+  },
+  {
+    title: "Providers and practice networks",
+    description: "Training, implementation, governance, and transformation support that buyers may want to review.",
+    filter: (record: DirectoryRecord) => record.entityType === "Provider",
+  },
+  {
+    title: "Frameworks and methods",
+    description: "Methods people use when they talk about Teal, self-organization, wholeness, or regeneration.",
+    filter: (record: DirectoryRecord) => record.entityType === "Framework",
+  },
+];
+
+function rotateRecords(records: DirectoryRecord[], count = 10) {
+  return [...records].sort(() => Math.random() - 0.5).slice(0, count);
+}
+
 export default function Home() {
+  const featuredGroups = featuredCategories.map((category) => ({
+    ...category,
+    records: rotateRecords(directoryRecords.filter(category.filter), 10),
+  }));
+
   return (
     <main>
       <SiteHeader />
@@ -74,6 +110,36 @@ export default function Home() {
       <div id="registry-console">
         <RegistryConsole />
       </div>
+
+      <section className="featured-registry" aria-label="Featured registry listings">
+        <div className="section-heading compact">
+          <h2>Featured from the registry.</h2>
+          <p>
+            These rotate from public registry profiles so visitors can quickly discover credible
+            organizations, communities, providers, and frameworks. Each card opens the Teal Registry
+            profile first, with official sources shown on the profile page.
+          </p>
+        </div>
+        <div className="featured-category-grid">
+          {featuredGroups.map((group) => (
+            <section className="featured-category" key={group.title}>
+              <div className="featured-category-head">
+                <h3>{group.title}</h3>
+                <p>{group.description}</p>
+              </div>
+              <div className="featured-listing-grid">
+                {group.records.map((record) => (
+                  <Link className="featured-listing-card" href={`/registry/${record.slug}`} key={record.slug}>
+                    <span>{record.status}</span>
+                    <strong>{record.name}</strong>
+                    <small>{record.country} / {record.sector}</small>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          ))}
+        </div>
+      </section>
 
       <section className="operating-system" id="credentials">
         <div className="section-heading">

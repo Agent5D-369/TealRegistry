@@ -167,6 +167,9 @@ function mapListingToRecord(listing: PublicListingWithRelations): DirectoryRecor
       listing.sourceNotes.length > 0
         ? listing.sourceNotes
         : ["Public facts should be source-backed or owner-confirmed before stronger claims are published."],
+    sourceLinks: organization?.website
+      ? [{ label: `${organization.name} official website`, href: organization.website }]
+      : [],
     mediaPolicy:
       listing.mediaPolicy ??
       "Images are owner-provided, clearly licensed, or original Teal Registry graphics.",
