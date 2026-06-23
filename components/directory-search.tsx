@@ -8,9 +8,10 @@ import type { DirectoryRecord } from "@/data/registry";
 
 const credentialTypes = [
   "Teal Certified", "Teal Verified", "Teal Aligned", "Teal Trained",
-  "Accredited Training", "Accredited Implementation", "Recognized Framework",
+  "Teal Accredited - Training", "Teal Accredited - Implementation", "Teal Recognized Framework",
+  "Public research profile", "In Review",
 ];
-const entityTypes = ["Business", "Intentional Community", "Training Provider", "Implementation Provider", "Framework"];
+const entityTypes = ["Organization", "Individual", "Provider", "Framework"];
 
 function getChipClass(status?: string) {
   const s = (status ?? "").toLowerCase();
@@ -305,7 +306,7 @@ export function DirectorySearch({
             certification journey.
           </p>
           <div style={{ display: "flex", gap: "0.75rem", justifyContent: "center", flexWrap: "wrap" }}>
-            <Link href="/claim" className="btn btn-primary">
+            <Link href="/apply?claim=listing" className="btn btn-primary">
               Claim Your Listing
             </Link>
             <Link href="/apply" className="btn btn-ghost">

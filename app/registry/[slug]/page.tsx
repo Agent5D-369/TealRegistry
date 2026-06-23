@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PageShell } from "@/components/page-shell";
 import { directoryRecords } from "@/data/registry";
-import { getDirectoryRecordBySlug } from "@/lib/registry-records";
+import { getDirectoryRecordBySlug, isOfficialBadgeId } from "@/lib/registry-records";
 
 export const dynamic = "force-dynamic";
 
@@ -48,6 +48,8 @@ export default async function RegistryDetailPage({ params }: RegistryDetailProps
     notFound();
   }
 
+  const hasIssuedBadge = isOfficialBadgeId(record.badgeId);
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": record.entityType === "Individual" ? "Person" : "Organization",
@@ -71,7 +73,9 @@ export default async function RegistryDetailPage({ params }: RegistryDetailProps
       title={record.name}
       intro={record.tagline}
       actions={[
-        { href: `/verify/${record.badgeId}`, label: "Verify record" },
+        hasIssuedBadge
+          ? { href: `/verify/${record.badgeId}`, label: "Verify record" }
+          : { href: `/apply?claim=${record.slug}`, label: "Claim or improve listing" },
         { href: "/report-misuse", label: "Report concern", variant: "ghost" },
       ]}
     >
@@ -127,8 +131,11 @@ export default async function RegistryDetailPage({ params }: RegistryDetailProps
               <span key={item}>{item}</span>
             ))}
           </div>
-          <Link className="solid-button" href={`/verify/${record.badgeId}`}>
-            Verify {record.badgeId}
+          <Link
+            className="solid-button"
+            href={hasIssuedBadge ? `/verify/${record.badgeId}` : `/apply?claim=${record.slug}`}
+          >
+            {hasIssuedBadge ? `Verify ${record.badgeId}` : "Claim or improve this listing"}
           </Link>
         </aside>
       </section>

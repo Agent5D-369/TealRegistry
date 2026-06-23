@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { directoryRecords, type DirectoryRecord } from "@/data/registry";
 import { SearchIcon, ShieldIcon } from "@/components/icons";
 
@@ -64,13 +65,13 @@ export function RegistryConsole({ records = directoryRecords }: RegistryConsoleP
         </div>
         <div className="results-list" aria-live="polite">
           {filteredRecords.map((record) => (
-            <button className="result-row" key={record.slug} type="button">
+            <Link className="result-row" href={`/registry/${record.slug}`} key={record.slug}>
               <span>
                 <strong>{record.name}</strong>
                 <small>{record.entityType} / {record.country}</small>
               </span>
               <em>{record.status}</em>
-            </button>
+            </Link>
           ))}
           {filteredRecords.length === 0 ? (
             <div className="empty-state">
@@ -129,8 +130,8 @@ export function RegistryConsole({ records = directoryRecords }: RegistryConsoleP
           ))}
         </div>
         <div className="record-actions">
-          <a href="#verify">Verify this claim</a>
-          <a href="#report">Report concern</a>
+          <Link href={`/registry/${primaryRecord.slug}`}>Open full listing</Link>
+          <Link href="/report-misuse">Report concern</Link>
         </div>
       </div>
     </section>
