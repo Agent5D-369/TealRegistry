@@ -1,12 +1,5 @@
 import { PageShell } from "@/components/page-shell";
-
-const reportFields = [
-  "Badge ID or profile link",
-  "What appears inaccurate or misleading",
-  "Where the claim is being used",
-  "Evidence or screenshots",
-  "Your contact information",
-];
+import { ReportMisuseForm } from "@/components/report-misuse-form";
 
 export default function ReportMisusePage() {
   return (
@@ -36,10 +29,14 @@ export default function ReportMisusePage() {
             ))}
           </div>
         </article>
-        <aside className="form-preview">
-          {reportFields.map((field) => (
-            <label key={field}>{field}</label>
-          ))}
+        <aside>
+          <h2>Send a trust concern</h2>
+          <p>
+            The clearest reports include the claim, where it appears, and what a reasonable person
+            might misunderstand. Anonymous reports are accepted, but contact information helps if a
+            reviewer needs clarification.
+          </p>
+          <ReportMisuseForm />
         </aside>
       </section>
     </PageShell>

@@ -1,4 +1,5 @@
 import { PageShell } from "@/components/page-shell";
+import { ApplyIntakeForm } from "@/components/apply-intake-form";
 import { applicationPathways } from "@/data/platform";
 
 export default function ApplyPage() {
@@ -28,20 +29,14 @@ export default function ApplyPage() {
       </section>
       <section className="content-section intake-panel">
         <div>
-          <h2>What applicants prepare</h2>
+          <h2>Start the right review path</h2>
           <p>
-            Bring clear evidence, a defined scope, permission to publish a safe summary, and a
-            contact who can respond to reviewer questions. The registry protects both ambition and
-            accountability by naming exactly what is being reviewed.
+            Tell us who you are, what you want reviewed, and whether this is a new application,
+            a listing claim, or a correction. TRIOS turns that first signal into a trackable intake
+            record so the review path stays clear.
           </p>
         </div>
-        <div className="form-preview" aria-label="Application intake preview">
-          <label>Organization or person</label>
-          <label>Requested badge</label>
-          <label>Review scope</label>
-          <label>Evidence links</label>
-          <label>Public summary</label>
-        </div>
+        <ApplyIntakeForm />
       </section>
     </PageShell>
   );
