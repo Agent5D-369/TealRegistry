@@ -24,6 +24,19 @@ type NotionPage = {
   properties: Record<string, unknown>;
 };
 
+type ListingDraft = {
+  slug?: string;
+  summary?: string;
+  tagline?: string;
+  highlights?: string[];
+  tealSignals?: Array<{ title: string; summary: string }>;
+  seoTitle?: string;
+  seoDescription?: string;
+  questions?: Array<{ question: string; answer: string }>;
+  sourceNotes?: string[];
+  mediaPolicy?: string;
+};
+
 export type ApplyIntakeInput = {
   name: string;
   email: string;
@@ -140,6 +153,65 @@ function propertyCheckbox(page: NotionPage, name: string) {
   return Boolean(property?.checkbox);
 }
 
+function slugify(value: string) {
+  return value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+function splitLines(value: string) {
+  return value
+    .split(/\r?\n/)
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
+function parseListingDraft(value: string): ListingDraft {
+  try {
+    const parsed = JSON.parse(value) as ListingDraft;
+    return parsed && typeof parsed === "object" ? parsed : {};
+  } catch {
+    return {};
+  }
+}
+
+function arrayOrFallback(value: unknown, fallback: string[]) {
+  return Array.isArray(value) && value.every((item) => typeof item === "string") ? value : fallback;
+}
+
+function signalsOrFallback(value: unknown, targetName: string) {
+  if (
+    Array.isArray(value) &&
+    value.every(
+      (item) =>
+        typeof item === "object" &&
+        item !== null &&
+        "title" in item &&
+        "summary" in item &&
+        typeof item.title === "string" &&
+        typeof item.summary === "string",
+    )
+  ) {
+    return value.slice(0, 3);
+  }
+
+  return [
+    {
+      title: "Evolutionary Purpose",
+      summary: `Look for source-backed evidence that ${targetName}'s purpose guides real decisions.`,
+    },
+    {
+      title: "Self-Organization",
+      summary: "Request evidence of decision rights, governance, role clarity, and accountability.",
+    },
+    {
+      title: "Wholeness",
+      summary: "Request evidence of culture, conflict repair, care, learning, and accountability under pressure.",
+    },
+  ];
+}
+
 export async function createApplyIntake(input: ApplyIntakeInput) {
   return notionPost<{ id: string; url: string }>("/pages", {
     parent: { database_id: getDatabaseId("apply") },
@@ -237,6 +309,52 @@ export async function fetchPublishedVerificationRecords() {
   }));
 }
 
+export async function fetchPublishableListingBuildJobs() {
+  const response = await notionPost<{ results: NotionPage[] }>(
+    `/databases/${getDatabaseId("listingBuildJobs")}/query`,
+    {
+      page_size: 100,
+      filter: {
+        and: [
+          {
+            property: "PublishCandidate",
+            checkbox: {
+              equals: true,
+            },
+          },
+          {
+            property: "HumanReviewStatus",
+            select: {
+              does_not_equal: "Rejected",
+            },
+          },
+        ],
+      },
+    },
+  );
+
+  return response.results.map((page) => {
+    const generatedDraft = propertyText(page, "GeneratedDraft");
+
+    return {
+      id: page.id,
+      title: propertyText(page, "Job"),
+      targetName: propertyText(page, "TargetName"),
+      targetWebsite: propertyText(page, "TargetWebsite"),
+      targetCategory: propertyText(page, "TargetCategory"),
+      stage: propertyText(page, "Stage"),
+      sourceUrls: splitLines(propertyText(page, "SourceURLs")),
+      extractedFacts: propertyText(page, "ExtractedFacts"),
+      generatedDraft,
+      draft: parseListingDraft(generatedDraft),
+      mediaLicenseStatus: propertyText(page, "MediaLicenseStatus"),
+      humanReviewStatus: propertyText(page, "HumanReviewStatus"),
+      publishCandidate: propertyCheckbox(page, "PublishCandidate"),
+      notes: propertyText(page, "Notes"),
+    };
+  });
+}
+
 export async function syncTriosPublicRecordsToDatabase() {
   if (!hasDatabaseUrl()) {
     throw new Error("DATABASE_URL is not configured.");
@@ -318,4 +436,158 @@ export async function syncTriosPublicRecordsToDatabase() {
   }
 
   return { synced, found: records.length };
+}
+
+export async function syncTriosListingBuildJobsToDatabase() {
+  if (!hasDatabaseUrl()) {
+    throw new Error("DATABASE_URL is not configured.");
+  }
+
+  const prisma = getPrisma();
+  const jobs = await fetchPublishableListingBuildJobs();
+  let synced = 0;
+
+  for (const job of jobs) {
+    if (!job.targetName || !job.publishCandidate) continue;
+
+    const publicSlug = job.draft.slug ? slugify(job.draft.slug) : slugify(job.targetName);
+    if (!publicSlug) continue;
+
+    const sourceUrls = job.sourceUrls.length > 0 ? job.sourceUrls : job.targetWebsite ? [job.targetWebsite] : [];
+    const summary =
+      job.draft.summary ||
+      `This is a public research profile for ${job.targetName}. It is not a certification, accreditation, endorsement, or verified Teal claim.`;
+    const sourceNotes = arrayOrFallback(job.draft.sourceNotes, [
+      "This profile was generated from a reviewed TRIOS listing build job.",
+      "Public facts should remain source-backed or owner-confirmed before stronger claims are published.",
+      "No verification, certification, or accreditation claim is implied by this starter listing.",
+    ]);
+
+    const organization = await prisma.organization.upsert({
+      where: { slug: publicSlug },
+      update: {
+        name: job.targetName,
+        orgType: job.targetCategory,
+        sectors: [job.targetCategory],
+        website: job.targetWebsite || undefined,
+        publicStatus: "Public research profile",
+        shortPublicDescription: summary,
+        directoryEligible: true,
+        notes: job.notes,
+      },
+      create: {
+        name: job.targetName,
+        slug: publicSlug,
+        orgType: job.targetCategory,
+        sectors: [job.targetCategory],
+        website: job.targetWebsite || undefined,
+        publicStatus: "Public research profile",
+        shortPublicDescription: summary,
+        directoryEligible: true,
+        notes: job.notes,
+      },
+    });
+
+    await prisma.listingBuildJob.upsert({
+      where: { id: job.id },
+      update: {
+        title: job.title || `Build listing - ${job.targetName}`,
+        targetName: job.targetName,
+        targetWebsite: job.targetWebsite || undefined,
+        targetCategory: job.targetCategory || "Uncategorized",
+        stage: job.stage || "Publish",
+        sourceUrls,
+        extractedFacts: { text: job.extractedFacts },
+        generatedDraft: job.draft,
+        mediaLicenseStatus: job.mediaLicenseStatus,
+        humanReviewStatus: job.humanReviewStatus || "Approved",
+        publishCandidate: job.publishCandidate,
+        notes: job.notes,
+      },
+      create: {
+        id: job.id,
+        title: job.title || `Build listing - ${job.targetName}`,
+        targetName: job.targetName,
+        targetWebsite: job.targetWebsite || undefined,
+        targetCategory: job.targetCategory || "Uncategorized",
+        stage: job.stage || "Publish",
+        sourceUrls,
+        extractedFacts: { text: job.extractedFacts },
+        generatedDraft: job.draft,
+        mediaLicenseStatus: job.mediaLicenseStatus,
+        humanReviewStatus: job.humanReviewStatus || "Approved",
+        publishCandidate: job.publishCandidate,
+        notes: job.notes,
+      },
+    });
+
+    await prisma.publicDirectoryListing.upsert({
+      where: { publicSlug },
+      update: {
+        title: job.targetName,
+        organizationId: organization.id,
+        status: "Public research profile",
+        listingType: "Public research profile",
+        tagline:
+          job.draft.tagline ||
+          `${job.targetName} profile for people comparing credible Teal, regenerative, and self-organizing work.`,
+        seoTitle: job.draft.seoTitle || `${job.targetName} Teal Registry public profile`,
+        seoDescription:
+          job.draft.seoDescription ||
+          `Review the ${job.targetName} Teal Registry profile, source notes, Teal signal map, and verification boundary.`,
+        seoKeywords: [job.targetName, job.targetCategory, "Teal Registry", "public research profile"].filter(Boolean),
+        targetAudiences: ["Funders", "Partners", "Prospective members", "Researchers"],
+        highlights: arrayOrFallback(job.draft.highlights, [
+          "Public research profile prepared for discovery",
+          "Human-reviewed source and media boundaries required before publication",
+          "Owner can claim, correct, enrich, or request independent review",
+        ]),
+        tealSignalMap: signalsOrFallback(job.draft.tealSignals, job.targetName),
+        sourceNotes,
+        mediaPolicy:
+          job.draft.mediaPolicy ||
+          "Use owner-provided media, clearly licensed media, or original Teal Registry visuals. Do not reuse source-site photography without permission.",
+        claimStatus: "Unclaimed research profile",
+        shortBlurb: summary,
+        primaryCta: "Claim or improve this listing",
+        notes: `Published from TRIOS listing build job ${job.id}. ${job.notes || ""}`.trim(),
+        publishedAt: new Date(),
+      },
+      create: {
+        title: job.targetName,
+        publicSlug,
+        organizationId: organization.id,
+        status: "Public research profile",
+        listingType: "Public research profile",
+        tagline:
+          job.draft.tagline ||
+          `${job.targetName} profile for people comparing credible Teal, regenerative, and self-organizing work.`,
+        seoTitle: job.draft.seoTitle || `${job.targetName} Teal Registry public profile`,
+        seoDescription:
+          job.draft.seoDescription ||
+          `Review the ${job.targetName} Teal Registry profile, source notes, Teal signal map, and verification boundary.`,
+        seoKeywords: [job.targetName, job.targetCategory, "Teal Registry", "public research profile"].filter(Boolean),
+        targetAudiences: ["Funders", "Partners", "Prospective members", "Researchers"],
+        highlights: arrayOrFallback(job.draft.highlights, [
+          "Public research profile prepared for discovery",
+          "Human-reviewed source and media boundaries required before publication",
+          "Owner can claim, correct, enrich, or request independent review",
+        ]),
+        tealSignalMap: signalsOrFallback(job.draft.tealSignals, job.targetName),
+        sourceNotes,
+        mediaPolicy:
+          job.draft.mediaPolicy ||
+          "Use owner-provided media, clearly licensed media, or original Teal Registry visuals. Do not reuse source-site photography without permission.",
+        claimStatus: "Unclaimed research profile",
+        shortBlurb: summary,
+        primaryCta: "Claim or improve this listing",
+        notes: `Published from TRIOS listing build job ${job.id}. ${job.notes || ""}`.trim(),
+        publishedAt: new Date(),
+      },
+    });
+
+    synced += 1;
+  }
+
+  return { synced, found: jobs.length };
 }

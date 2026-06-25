@@ -1,5 +1,8 @@
 import { NextResponse } from "next/server";
-import { syncTriosPublicRecordsToDatabase } from "@/lib/trios-notion";
+import {
+  syncTriosListingBuildJobsToDatabase,
+  syncTriosPublicRecordsToDatabase,
+} from "@/lib/trios-notion";
 
 function isAuthorized(request: Request) {
   const secret = process.env.TRIOS_SYNC_SECRET;
@@ -14,6 +17,8 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
   }
 
-  const result = await syncTriosPublicRecordsToDatabase();
-  return NextResponse.json({ ok: true, ...result });
+  const verificationRecords = await syncTriosPublicRecordsToDatabase();
+  const listingBuildJobs = await syncTriosListingBuildJobsToDatabase();
+
+  return NextResponse.json({ ok: true, verificationRecords, listingBuildJobs });
 }
