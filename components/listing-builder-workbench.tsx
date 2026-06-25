@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { targetSeedCategories } from "@/data/listing-builder";
 
 type Draft = {
@@ -13,6 +13,17 @@ type Draft = {
   seoDescription: string;
   questions: Array<{ question: string; answer: string }>;
   sourceNotes: string[];
+  mediaPolicy: string;
+};
+
+type ResearchResult = {
+  title: string;
+  description: string;
+  inferredCategory: string;
+  publicClaims: string;
+  extractedFacts: string;
+  sourceUrls: string[];
+  mediaLicenseStatus: string;
   mediaPolicy: string;
 };
 
@@ -108,12 +119,81 @@ function buildDraft(formData: FormData): Draft {
   };
 }
 
+function setFieldValue(form: HTMLFormElement, name: string, value: string) {
+  const field = form.elements.namedItem(name);
+  if (field instanceof HTMLInputElement || field instanceof HTMLTextAreaElement || field instanceof HTMLSelectElement) {
+    field.value = value;
+  }
+}
+
 export function ListingBuilderWorkbench() {
+  const formRef = useRef<HTMLFormElement>(null);
   const [draft, setDraft] = useState<Draft | null>(null);
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [researchStatus, setResearchStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
+  const [researchMessage, setResearchMessage] = useState("");
 
   const draftJson = useMemo(() => (draft ? JSON.stringify(draft, null, 2) : ""), [draft]);
+
+  async function handleResearch() {
+    const form = formRef.current;
+    if (!form) return;
+
+    const formData = new FormData(form);
+    const targetWebsite = sentence(formData.get("targetWebsite"), "");
+
+    if (!targetWebsite) {
+      setResearchStatus("error");
+      setResearchMessage("Enter an official website before researching.");
+      return;
+    }
+
+    setResearchStatus("loading");
+    setResearchMessage("");
+
+    const response = await fetch("/api/trios/listing-research", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        targetWebsite,
+        targetName: formData.get("targetName"),
+      }),
+    });
+
+    if (!response.ok) {
+      const body = (await response.json().catch(() => null)) as { error?: string } | null;
+      setResearchStatus("error");
+      setResearchMessage(body?.error ?? "Research failed for this website.");
+      return;
+    }
+
+    const research = (await response.json()) as ResearchResult;
+    const existingName = sentence(formData.get("targetName"), "");
+
+    if (!existingName) {
+      setFieldValue(form, "targetName", research.title);
+    }
+    setFieldValue(form, "targetCategory", research.inferredCategory);
+    setFieldValue(form, "publicClaims", research.publicClaims);
+    setFieldValue(form, "sourceUrls", research.sourceUrls.join("\n"));
+    setFieldValue(form, "extractedFacts", research.extractedFacts);
+    setFieldValue(form, "mediaLicenseStatus", research.mediaLicenseStatus);
+    setFieldValue(
+      form,
+      "notes",
+      [
+        `Research assistant summary: ${research.description || "No meta description found."}`,
+        research.mediaPolicy,
+        "Human reviewer must verify facts, source relevance, media rights, and claim boundary before publishing.",
+      ].join("\n\n"),
+    );
+
+    const refreshed = new FormData(form);
+    setDraft(buildDraft(refreshed));
+    setResearchStatus("success");
+    setResearchMessage("Research extracted source-backed starter fields. Review before sending to TRIOS.");
+  }
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -159,7 +239,7 @@ export function ListingBuilderWorkbench() {
           stays unpublished until a human checks facts, sources, rights, and claim boundaries.
         </p>
       </div>
-      <form className="builder-console" onSubmit={handleSubmit}>
+      <form className="builder-console" onSubmit={handleSubmit} ref={formRef}>
         <div className="builder-fields">
           <label>
             <span>Official name</span>
@@ -231,6 +311,14 @@ export function ListingBuilderWorkbench() {
           <div className="builder-actions">
             <button
               className="btn btn-ghost"
+              disabled={researchStatus === "loading"}
+              onClick={handleResearch}
+              type="button"
+            >
+              {researchStatus === "loading" ? "Researching..." : "Research official site"}
+            </button>
+            <button
+              className="btn btn-ghost"
               onClick={(event) => {
                 const form = event.currentTarget.form;
                 if (form) {
@@ -247,6 +335,9 @@ export function ListingBuilderWorkbench() {
               {status === "loading" ? "Sending..." : "Send build job to TRIOS"}
             </button>
           </div>
+          {researchMessage && (
+            <p className={`form-status ${researchStatus === "error" ? "error" : "success"}`}>{researchMessage}</p>
+          )}
           {message && <p className={`form-status ${status === "error" ? "error" : "success"}`}>{message}</p>}
         </div>
         <aside className="builder-draft" aria-live="polite">
