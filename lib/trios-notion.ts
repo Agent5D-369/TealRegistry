@@ -5,6 +5,7 @@ const NOTION_VERSION = "2022-06-28";
 const DEFAULT_DATABASES = {
   apply: "38a130aa-ffa3-8127-acc3-f3c8ce8d0f3b",
   entities: "38a130aa-ffa3-8184-a2d9-dee5912e4c66",
+  listingBuildJobs: "38a130aa-ffa3-8158-a089-d0166f6c84d3",
   reports: "38a130aa-ffa3-819b-84db-f97526d042a0",
   verificationRecords: "38a130aa-ffa3-816f-8ed4-e68db66d3290",
 } as const;
@@ -38,6 +39,17 @@ export type ReportMisuseInput = {
   description: string;
   evidence?: string;
   contact?: string;
+};
+
+export type ListingBuildJobInput = {
+  targetName: string;
+  targetWebsite?: string;
+  targetCategory: string;
+  sourceUrls: string[];
+  extractedFacts: string;
+  generatedDraft: string;
+  mediaLicenseStatus: string;
+  notes?: string;
 };
 
 function getDatabaseId(key: keyof typeof DEFAULT_DATABASES) {
@@ -170,6 +182,26 @@ export async function createMisuseReport(input: ReportMisuseInput) {
       NextActionDate: date(),
       PublicSafeSummary: richText(input.description),
       InternalNotes: richText(`Claim URL: ${input.claimUrl}\n\n${summary}`),
+    },
+  });
+}
+
+export async function createListingBuildJob(input: ListingBuildJobInput) {
+  return notionPost<{ id: string; url: string }>("/pages", {
+    parent: { database_id: getDatabaseId("listingBuildJobs") },
+    properties: {
+      Job: title(`Build listing - ${input.targetName}`),
+      TargetName: richText(input.targetName),
+      TargetWebsite: url(input.targetWebsite),
+      TargetCategory: select(input.targetCategory),
+      Stage: select("Draft"),
+      SourceURLs: richText(input.sourceUrls.join("\n")),
+      ExtractedFacts: richText(input.extractedFacts),
+      GeneratedDraft: richText(input.generatedDraft),
+      MediaLicenseStatus: select(input.mediaLicenseStatus),
+      HumanReviewStatus: select("Needs review"),
+      PublishCandidate: checkbox(false),
+      Notes: richText(input.notes),
     },
   });
 }

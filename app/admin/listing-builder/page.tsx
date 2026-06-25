@@ -1,4 +1,5 @@
 import { PageShell } from "@/components/page-shell";
+import { ListingBuilderWorkbench } from "@/components/listing-builder-workbench";
 import {
   aiListingBuilderRules,
   enhancedListingOffers,
@@ -45,6 +46,8 @@ export default function ListingBuilderPage() {
           </p>
         </aside>
       </section>
+
+      <ListingBuilderWorkbench />
 
       <section className="content-section">
         <div className="section-heading compact">
