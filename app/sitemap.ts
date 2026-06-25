@@ -3,7 +3,7 @@ import { audiencePages, glossaryEntries } from "@/data/education";
 import { getDirectoryRecords, isOfficialBadgeId } from "@/lib/registry-records";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const siteUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://tealregistry.com";
+  const siteUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://www.tealregistry.com";
   const now = new Date();
   const staticRoutes = ["", "/registry", "/credentials", "/standards", "/apply", "/report-misuse"];
   const directoryRecords = await getDirectoryRecords();
