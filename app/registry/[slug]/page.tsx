@@ -19,6 +19,7 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: RegistryDetailProps): Promise<Metadata> {
   const { slug } = await params;
   const record = await getDirectoryRecordBySlug(slug);
+  const siteUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://www.tealregistry.com";
 
   if (!record) {
     return {};
@@ -29,12 +30,19 @@ export async function generateMetadata({ params }: RegistryDetailProps): Promise
     description: record.seo.description,
     keywords: record.seo.keywords,
     alternates: {
-      canonical: `/registry/${record.slug}`,
+      canonical: `${siteUrl}/registry/${record.slug}`,
     },
     openGraph: {
       title: record.seo.title,
       description: record.seo.description,
       type: "profile",
+      url: `${siteUrl}/registry/${record.slug}`,
+      images: [{ url: record.badgeImage, alt: `${record.name} Teal Registry profile` }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: record.seo.title,
+      description: record.seo.description,
       images: [record.badgeImage],
     },
   };
@@ -49,23 +57,78 @@ export default async function RegistryDetailPage({ params }: RegistryDetailProps
   }
 
   const hasIssuedBadge = isOfficialBadgeId(record.badgeId);
+  const siteUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://www.tealregistry.com";
+  const pageUrl = `${siteUrl}/registry/${record.slug}`;
+  const officialSource = record.sourceLinks.find((source) => source.href.startsWith("http"));
+  const claimBoundary =
+    record.listingType === "Public research profile"
+      ? "This is a public research profile. It is not a certification, accreditation, endorsement, or verified Teal claim."
+      : hasIssuedBadge
+        ? "This profile includes an issued registry record. Trust the exact scope shown here, not broader claims made elsewhere."
+        : "This profile is useful for discovery, but a stronger claim requires review, decision, and a current public record.";
 
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": record.entityType === "Individual" ? "Person" : "Organization",
-    name: record.name,
-    description: record.seo.description,
-    url: record.website,
-    areaServed: record.region,
-    keywords: record.seo.keywords.join(", "),
-    sameAs: record.website ? [record.website] : undefined,
-    aggregateRating: record.reviewSummary.average
-      ? {
-          "@type": "AggregateRating",
-          ratingValue: record.reviewSummary.average,
-          reviewCount: record.reviewSummary.count,
-        }
-      : undefined,
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": pageUrl,
+        url: pageUrl,
+        name: record.seo.title,
+        description: record.seo.description,
+        isPartOf: {
+          "@type": "WebSite",
+          name: "Teal Registry",
+          url: siteUrl,
+        },
+        about: { "@id": `${pageUrl}#entity` },
+      },
+      {
+        "@type": record.entityType === "Individual" ? "Person" : "Organization",
+        "@id": `${pageUrl}#entity`,
+        name: record.name,
+        description: record.publicSummary,
+        url: record.website,
+        areaServed: record.region,
+        keywords: record.seo.keywords.join(", "),
+        sameAs: record.website ? [record.website] : undefined,
+        aggregateRating: record.reviewSummary.average
+          ? {
+              "@type": "AggregateRating",
+              ratingValue: record.reviewSummary.average,
+              reviewCount: record.reviewSummary.count,
+            }
+          : undefined,
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Registry", item: `${siteUrl}/registry` },
+          { "@type": "ListItem", position: 2, name: record.name, item: pageUrl },
+        ],
+      },
+      {
+        "@type": "FAQPage",
+        mainEntity: [
+          {
+            "@type": "Question",
+            name: `Is ${record.name} verified by Teal Registry?`,
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: `${record.status}. ${claimBoundary}`,
+            },
+          },
+          {
+            "@type": "Question",
+            name: `What does this ${record.name} listing prove?`,
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: `It proves only what the public record says: ${record.scope}. The listing also shows source notes, review limits, and how the organization can claim or correct the profile.`,
+            },
+          },
+        ],
+      },
+    ],
   };
 
   return (
@@ -83,6 +146,27 @@ export default async function RegistryDetailPage({ params }: RegistryDetailProps
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         type="application/ld+json"
       />
+      <section className="listing-hero-panel">
+        <div>
+          <span className="status-pill">{record.listingType}</span>
+          <h2>The short answer</h2>
+          <p>{record.publicSummary}</p>
+          <div className="listing-action-row">
+            {officialSource ? (
+              <Link className="outline-button" href={officialSource.href} rel="noopener noreferrer" target="_blank">
+                Visit official website
+              </Link>
+            ) : null}
+            <Link className="outline-button" href={`/apply?claim=${record.slug}`}>
+              Correct or claim this page
+            </Link>
+          </div>
+        </div>
+        <aside className="trust-boundary">
+          <strong>Trust boundary</strong>
+          <p>{claimBoundary}</p>
+        </aside>
+      </section>
       <section className="detail-layout">
         <article className="profile-panel">
           <Image src={record.badgeImage} alt={`${record.status} badge`} width={520} height={360} />
@@ -120,11 +204,11 @@ export default async function RegistryDetailPage({ params }: RegistryDetailProps
           </dl>
         </article>
         <aside className="trust-panel">
-          <h2>Why this page exists</h2>
+          <h2>Why this profile is useful</h2>
           <p>
-            Teal Registry pages are built to be useful before a listing is claimed and even better
-            after it is claimed. The goal is a trustworthy public profile that names the promise,
-            the evidence boundary, and the next step.
+            This page turns scattered public signals into a readable profile for funders,
+            partners, candidates, members, and search engines. It names the promise without
+            pretending more has been reviewed than the record supports.
           </p>
           <div className="evidence-list">
             {record.evidence.map((item: string) => (
@@ -141,10 +225,10 @@ export default async function RegistryDetailPage({ params }: RegistryDetailProps
       </section>
       <section className="content-section listing-section">
         <div className="section-heading compact">
-          <h2>What people usually want to know</h2>
+          <h2>Who this page helps</h2>
           <p>
-            This page is structured for human readers, search engines, and answer engines: clear
-            facts, visible limits, source notes, and a claim path for the organization.
+            The listing is written for the people who need to understand the organization quickly,
+            decide whether it fits their needs, and know what still needs confirmation.
           </p>
         </div>
         <div className="listing-grid">
@@ -165,7 +249,7 @@ export default async function RegistryDetailPage({ params }: RegistryDetailProps
             </ul>
           </article>
           <article className="trust-panel">
-            <h3>Verified reviews</h3>
+            <h3>Review signal</h3>
             <p>{record.reviewSummary.note}</p>
             <strong>
               {record.reviewSummary.average
@@ -190,6 +274,34 @@ export default async function RegistryDetailPage({ params }: RegistryDetailProps
               <p>{signal.summary}</p>
             </article>
           ))}
+        </div>
+      </section>
+      <section className="content-section answer-engine-section">
+        <div className="section-heading compact">
+          <h2>Questions this page answers</h2>
+          <p>
+            These answers are intentionally direct so humans, search engines, and AI answer tools
+            can understand the public record without guessing.
+          </p>
+        </div>
+        <div className="answer-grid">
+          <article>
+            <h3>Is this a verified Teal organization?</h3>
+            <p>{claimBoundary}</p>
+          </article>
+          <article>
+            <h3>What is the current public status?</h3>
+            <p>
+              {record.name} is listed as <strong>{record.status}</strong> for this scope: {record.scope}
+            </p>
+          </article>
+          <article>
+            <h3>What should the owner do next?</h3>
+            <p>
+              Claim the page, correct facts, add approved source material, and decide whether to
+              request independent review or an enhanced public listing.
+            </p>
+          </article>
         </div>
       </section>
       <section className="content-section detail-layout">
@@ -220,11 +332,11 @@ export default async function RegistryDetailPage({ params }: RegistryDetailProps
           <p>{record.mediaPolicy}</p>
         </article>
         <aside className="trust-panel claim-panel">
-          <h2>Own this listing?</h2>
+          <h2>Own or represent this organization?</h2>
           <p>
-            Claiming lets an organization correct facts, add approved media, publish richer proof,
-            invite verified reviews, and upgrade to an enhanced listing without blurring the
-            verification boundary.
+            Claiming turns this from a starter research profile into a managed public trust page:
+            corrected facts, approved media, source-backed answers, review readiness, verified
+            user reviews, and a clearer path to recognition.
           </p>
           <Link className="solid-button" href={`/apply?claim=${record.slug}`}>
             Claim or improve this listing
