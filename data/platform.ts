@@ -18,6 +18,7 @@ export const tealBasics = [
 
 export const publicRoutes = [
   { href: "/registry", label: "Registry" },
+  { href: "/case-studies", label: "Case Studies" },
   { href: "/credentials", label: "Credentials" },
   { href: "/standards", label: "Standards" },
   { href: "/apply", label: "Apply" },

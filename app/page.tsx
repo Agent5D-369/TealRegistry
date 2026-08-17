@@ -3,6 +3,7 @@ export const dynamic = "force-dynamic";
 import Image from "next/image";
 import Link from "next/link";
 import { RegistryConsole } from "@/components/registry-console";
+import { caseStudies } from "@/data/case-studies";
 import { ArrowIcon, FileIcon, ShieldIcon } from "@/components/icons";
 import { SiteHeader } from "@/components/site-header";
 import { credentialLevels, directoryRecords, portalRoles, standards, type DirectoryRecord } from "@/data/registry";
@@ -141,6 +142,30 @@ export default function Home() {
         </div>
       </section>
 
+
+      <section className="featured-registry proof-library-home" aria-label="Self-organization proof library">
+        <div className="section-heading compact">
+          <h2>Proof that self-organization works in real organizations.</h2>
+          <p>
+            These case studies are built for people searching for sociocracy examples, self-managing
+            companies, ecovillage governance, regenerative land projects, and Teal organization proof.
+            Each page links the organization, sources, directory profile, and the three Teal principles.
+          </p>
+        </div>
+        <div className="featured-listing-grid">
+          {caseStudies.slice(0, 10).map((study) => (
+            <Link className="featured-listing-card" href={`/case-studies/${study.slug}`} key={study.slug}>
+              <span>{study.proofLevel}</span>
+              <strong>{study.name}</strong>
+              <small>{study.category} / {study.location}</small>
+            </Link>
+          ))}
+        </div>
+        <div className="hero-actions centered">
+          <Link className="solid-button large" href="/case-studies">Open the proof library</Link>
+          <Link className="ghost-button large" href="/registry">Search all directory profiles</Link>
+        </div>
+      </section>
       <section className="operating-system" id="credentials">
         <div className="section-heading">
           <h2>Built for the people trying to make good work trustworthy.</h2>

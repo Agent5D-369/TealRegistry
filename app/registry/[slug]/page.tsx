@@ -3,6 +3,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PageShell } from "@/components/page-shell";
+import { caseStudies } from "@/data/case-studies";
 import { directoryRecords } from "@/data/registry";
 import { getDirectoryRecordBySlug, isOfficialBadgeId } from "@/lib/registry-records";
 
@@ -60,6 +61,7 @@ export default async function RegistryDetailPage({ params }: RegistryDetailProps
   const siteUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://www.tealregistry.com";
   const pageUrl = `${siteUrl}/registry/${record.slug}`;
   const officialSource = record.sourceLinks.find((source) => source.href.startsWith("http"));
+  const relatedCaseStudy = caseStudies.find((study) => study.directorySlug === record.slug);
   const claimBoundary =
     record.listingType === "Public research profile"
       ? "This is a public research profile. It is not a certification, accreditation, endorsement, or verified Teal claim."
@@ -116,6 +118,14 @@ export default async function RegistryDetailPage({ params }: RegistryDetailProps
             acceptedAnswer: {
               "@type": "Answer",
               text: `${record.status}. ${claimBoundary}`,
+            },
+          },
+          {
+            "@type": "Question",
+            name: `What should people searching for ${record.name} know first?`,
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: `${record.name} is listed here as ${record.listingType}. The page summarizes public context, Teal signal questions, source notes, claim boundaries, and next steps for funders, members, partners, and researchers.`,
             },
           },
           {
@@ -223,6 +233,31 @@ export default async function RegistryDetailPage({ params }: RegistryDetailProps
           </Link>
         </aside>
       </section>
+      {relatedCaseStudy ? (
+        <section className="content-section listing-section">
+          <div className="listing-hero-panel seo-proof-panel">
+            <div>
+              <span className="status-pill">Related case study</span>
+              <h2>{record.name} as a self-organization proof page</h2>
+              <p>
+                People searching for {record.name}, self-organization examples, sociocracy case studies,
+                regenerative governance, Teal organizations, and intentional community proof can use the
+                Teal Registry case study as a sourced evidence map with clear claim boundaries.
+              </p>
+              <Link className="solid-button" href={`/case-studies/${relatedCaseStudy.slug}`}>
+                Read the {record.name} case study
+              </Link>
+            </div>
+            <aside className="trust-boundary">
+              <strong>Search intent covered</strong>
+              <p>
+                {relatedCaseStudy.shortProof} This page links the organization entity, the case study,
+                public sources, and Teal Registry's standards cluster.
+              </p>
+            </aside>
+          </div>
+        </section>
+      ) : null}
       <section className="content-section listing-section">
         <div className="section-heading compact">
           <h2>Who this page helps</h2>
