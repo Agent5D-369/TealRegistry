@@ -2505,3 +2505,8 @@ select {
   color: var(--color-ink-2);
   opacity: 1;
 }
+
+/* Keep sticky navigation readable over large hero content while scrolling. */
+.site-header {
+  background: var(--color-paper);
+}
