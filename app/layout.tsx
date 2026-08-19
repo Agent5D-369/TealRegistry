@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import { SiteFooter } from "@/components/site-footer";
 import "./globals.css";
 
 const siteUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://www.tealregistry.com";
@@ -89,6 +90,7 @@ export default function RootLayout({
           type="application/ld+json"
         />
         {children}
+        <SiteFooter />
       </body>
     </html>
   );
