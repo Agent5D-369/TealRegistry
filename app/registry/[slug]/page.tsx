@@ -296,7 +296,7 @@ export default async function RegistryDetailPage({ params }: RegistryDetailProps
       </section>
       <section className="content-section">
         <div className="section-heading compact">
-          <h2>Teal signal map</h2>
+          <h2>Teal claim questions</h2>
           <p>
             Strong listings do not just say regenerative. They explain where purpose,
             self-organization, and wholeness appear, and where more evidence is needed.
@@ -381,3 +381,4 @@ export default async function RegistryDetailPage({ params }: RegistryDetailProps
     </PageShell>
   );
 }
+

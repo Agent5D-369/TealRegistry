@@ -71,20 +71,19 @@ type StarterProfileInput = {
   keywords: string[];
 };
 
-function starterBadgeImage(entityType: DirectoryRecord["entityType"]) {
-  if (entityType === "Framework") {
-    return "/assets/badges/teal-recognized-framework.png";
-  }
-
-  if (entityType === "Provider") {
-    return "/assets/badges/teal-accredited-training.png";
-  }
-
-  return "/assets/badges/teal-aligned.png";
+function starterBadgeImage() {
+  return "/assets/tealregistry-mark.png";
 }
 
 function createStarterProfile(input: StarterProfileInput, index: number): DirectoryRecord {
   const label = `${input.name} profile: ${input.theme} | Teal Registry case and directory page`;
+  const isFramework = input.entityType === "Framework";
+  const isProvider = input.entityType === "Provider";
+  const relationshipLanguage = isFramework
+    ? "This page does not claim the framework is Teal. It asks where the method appears to support, miss, or complicate the three Teal principles."
+    : isProvider
+      ? "This page does not claim the provider is accredited. It asks whether public services, governance, and client work support any future review."
+      : "This page does not claim the organization is Teal. It asks what public evidence exists, what is still unclear, and what would need review.";
 
   return {
     name: input.name,
@@ -100,14 +99,14 @@ function createStarterProfile(input: StarterProfileInput, index: number): Direct
     validTo: "Claim, correction, or verification needed before any badge claim",
     verificationId: `TR-PUBLIC-${String(index + 1).padStart(4, "0")}`,
     badgeId: "No badge issued",
-    badgeImage: starterBadgeImage(input.entityType),
-    publicSummary: `${input.name} is a public research profile for people searching ${input.name}, ${input.category.toLowerCase()}, and ${input.theme}. Teal Registry organizes source-backed context, Teal signal questions, claim boundaries, and next steps so founders, funders, members, partners, and researchers can understand the organization faster without implying certification.`,
+    badgeImage: starterBadgeImage(),
+    publicSummary: `${input.name} is a public research profile for people searching ${input.name}, ${input.category.toLowerCase()}, and ${input.theme}. ${relationshipLanguage} Teal Registry organizes source-backed context, claim boundaries, and next steps without implying certification, accreditation, endorsement, or Teal recognition.`,
     evidence: [
       "Public research profile",
       "Claim not verified by Teal Registry",
       "Owner can claim, correct, or submit evidence",
     ],
-    tagline: `${input.name}: ${input.theme} explained for Teal, regenerative, self-organizing, and intentional-community research.`,
+    tagline: `${input.name}: ${input.theme} reviewed as public research, not as a Teal Registry credential.`,
     listingType: "Public research profile",
     audience: ["Founders", "Funders", "Partners", "Prospective members", "Researchers"],
     highlights: [
@@ -118,12 +117,12 @@ function createStarterProfile(input: StarterProfileInput, index: number): Direct
     tealSignals: [
       {
         title: "Evolutionary Purpose",
-        summary: `The public profile is organized around the stated purpose and ${input.theme.toLowerCase()}, then asks whether that purpose guides real decisions.`,
+        summary: `The public profile is organized around the stated purpose and ${input.theme.toLowerCase()}, then asks whether that purpose guides real decisions instead of brand language alone.`,
       },
       {
         title: "Self-Organization",
         summary:
-          "The listing does not assume distributed power. It invites source-backed examples of decision rights, roles, governance, and accountability.",
+          "The listing does not assume distributed power. It invites source-backed examples of decision rights, role authority, representation, consent, governance, accountability, and shared stewardship.",
       },
       {
         title: "Wholeness",
@@ -133,6 +132,9 @@ function createStarterProfile(input: StarterProfileInput, index: number): Direct
     ],
     sourceNotes: [
       input.sourceNote,
+      isFramework
+        ? "A framework may support one Teal principle without proving all three. Recognition requires a separate mapping decision; public research pages are not recognized-framework badges."
+        : "A public research profile may show interesting signals without proving Teal alignment, verification, certification, accreditation, or endorsement.",
       "Teal Registry does not copy protected website text or images into starter listings. Media should be owner-provided, clearly licensed, or created as original registry graphics.",
       "This listing should be corrected or expanded by the organization before stronger claims are made.",
     ],
@@ -147,8 +149,8 @@ function createStarterProfile(input: StarterProfileInput, index: number): Direct
     },
     seo: {
       title: label,
-      description: `${input.name} public research profile: ${input.theme}. Review Teal signals, source notes, claim boundaries, directory context, and related self-organization case studies.`,
-      keywords: [input.name, `${input.name} profile`, `${input.name} case study`, `${input.name} organization`, input.category, input.theme, "Teal Registry", "regenerative organization", "self organization", "sociocracy", "intentional community", "Teal organization", ...input.keywords],
+      description: `${input.name} public research profile: ${input.theme}. Review public signals, Teal claim boundaries, source notes, directory context, and related self-organization questions without implying certification.`,
+      keywords: [input.name, `${input.name} profile`, `${input.name} public research`, `${input.name} organization`, input.category, input.theme, "Teal Registry", "public research profile", "Teal claim boundary", "self organization", "sociocracy", "intentional community", ...input.keywords],
     },
   };
 }
@@ -520,7 +522,7 @@ const starterProfileRecords: DirectoryRecord[] = [
       website: "https://www.holacracy.org/",
       category: "Implementation provider",
       theme: "Holacracy training, implementation, and role-based self-management",
-      sourceNote: "Starter profile based on public information from Holacracy's official site.",
+      sourceNote: "Starter profile based on public information from Holacracy's official site. Holacracy is not treated here as automatically Teal; current public materials support role-based self-management signals, while wholeness, evolutionary purpose, and shared stewardship require separate evidence.",
       keywords: ["Holacracy", "self management", "roles"],
     },
     {
@@ -652,7 +654,7 @@ const starterProfileRecords: DirectoryRecord[] = [
       website: "https://www.holacracy.org/",
       category: "Framework",
       theme: "role-based self-management and governance practice",
-      sourceNote: "Starter profile based on public information from Holacracy's official site.",
+      sourceNote: "Starter profile based on public information from Holacracy's official site. Holacracy is not treated here as automatically Teal; current public materials support role-based self-management signals, while wholeness, evolutionary purpose, and shared stewardship require separate evidence.",
       keywords: ["Holacracy", "roles", "self management"],
     },
     {
@@ -1114,3 +1116,4 @@ export const portalRoles: PortalRole[] = [
     actions: ["Decision board", "Badge status", "Public record history"],
   },
 ];
+
