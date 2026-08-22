@@ -63,15 +63,15 @@ function safeSignals(value: unknown): DirectoryRecord["tealSignals"] {
     return [
       {
         title: "Evolutionary Purpose",
-        summary: "The public profile needs source-backed evidence before this signal can be confirmed.",
+        summary: "The public profile needs source-backed evidence before this question can be answered.",
       },
       {
         title: "Self-Organization",
-        summary: "Decision-making evidence needs review before this signal can be confirmed.",
+        summary: "Decision-making evidence needs review before this question can be answered.",
       },
       {
         title: "Wholeness",
-        summary: "Culture and accountability evidence needs review before this signal can be confirmed.",
+        summary: "Culture and accountability evidence needs review before this question can be answered.",
       },
     ];
   }
@@ -90,9 +90,9 @@ function safeSignals(value: unknown): DirectoryRecord["tealSignals"] {
     .slice(0, 3);
 }
 
-function badgeImageFromArtwork(artworkFile: string | null | undefined) {
+function badgeImageFromArtwork(artworkFile: string | null | undefined, isPublicResearch: boolean) {
   if (!artworkFile) {
-    return "/assets/badges/teal-aligned.png";
+    return isPublicResearch ? "/assets/tealregistry-mark.png" : "/assets/badges/teal-aligned.png";
   }
 
   if (artworkFile.startsWith("/")) {
@@ -110,6 +110,14 @@ function mapListingToRecord(listing: PublicListingWithRelations): DirectoryRecor
   const organization = listing.organization;
   const verification = listing.verificationRecord;
   const badge = verification?.badgeLicenses[0];
+  const listingType = (listing.listingType as DirectoryRecord["listingType"]) ?? "Public research profile";
+  const isPublicResearch = !verification && listingType === "Public research profile";
+  const displayName = organization?.name ?? listing.title;
+  const databaseSummary =
+    listing.shortBlurb ??
+    organization?.shortPublicDescription ??
+    "This profile is prepared as a public research listing until the organization claims or verifies it.";
+  const publicResearchSummary = `${displayName} is a public research profile. This page does not claim the organization, provider, or framework is Teal. It records public context and asks what would need evidence before any Teal, regenerative, certification, accreditation, endorsement, or recognition claim could be trusted. ${databaseSummary}`;
   const publishedReviews = listing.reviews.filter((review) => review.published);
   const average =
     publishedReviews.length > 0
@@ -127,7 +135,7 @@ function mapListingToRecord(listing: PublicListingWithRelations): DirectoryRecor
     "Public research profile";
 
   return {
-    name: organization?.name ?? listing.title,
+    name: displayName,
     slug: listing.publicSlug,
     entityType: "Organization",
     country: organization?.country ?? "Global",
@@ -141,30 +149,34 @@ function mapListingToRecord(listing: PublicListingWithRelations): DirectoryRecor
       verification?.nextReviewWindow ??
       formatDate(verification?.validTo, "No renewal window published yet"),
     verificationId: verification?.title ?? listing.publicSlug,
-    badgeId: badge?.badgeId ?? "Pending",
-    badgeImage: badgeImageFromArtwork(badge?.badgeType?.artworkFile),
+    badgeId: badge?.badgeId ?? (isPublicResearch ? "No badge issued" : "Pending"),
+    badgeImage: badgeImageFromArtwork(badge?.badgeType?.artworkFile, isPublicResearch),
     publicSummary:
       verification?.publicNote ??
-      listing.shortBlurb ??
-      organization?.shortPublicDescription ??
-      "This profile is prepared as a public research listing until the organization claims or verifies it.",
+      (isPublicResearch ? publicResearchSummary : databaseSummary),
     evidence: [
       listing.status,
       verification ? "Verification record linked" : "Public research profile",
       badge ? `Badge ${badge.status.toLowerCase()}` : "Badge not issued",
     ],
     tagline:
-      listing.tagline ??
-      `A Teal Registry public profile for ${organization?.name ?? listing.title}.`,
-    listingType: (listing.listingType as DirectoryRecord["listingType"]) ?? "Public research profile",
+      isPublicResearch
+        ? `${displayName}: public research profile, not a Teal Registry credential.`
+        : listing.tagline ?? `A Teal Registry public profile for ${displayName}.`,
+    listingType,
     audience: listing.targetAudiences.length > 0 ? listing.targetAudiences : ["Funders", "Partners", "Community members"],
     highlights:
       listing.highlights.length > 0
         ? listing.highlights
         : ["Public profile prepared for discovery", "Verification boundary shown clearly"],
     tealSignals: safeSignals(listing.tealSignalMap),
-    sourceNotes:
-      listing.sourceNotes.length > 0
+    sourceNotes: isPublicResearch
+      ? [
+          "This is a public research profile, not a Teal Registry credential, accreditation, endorsement, or recognized-framework decision.",
+          ...listing.sourceNotes,
+          "Public facts should be source-backed or owner-confirmed before stronger claims are published.",
+        ]
+      : listing.sourceNotes.length > 0
         ? listing.sourceNotes
         : ["Public facts should be source-backed or owner-confirmed before stronger claims are published."],
     sourceLinks: organization?.website
@@ -182,15 +194,15 @@ function mapListingToRecord(listing: PublicListingWithRelations): DirectoryRecor
           : "Verified user reviews are planned but not yet open for this listing.",
     },
     seo: {
-      title: listing.seoTitle ?? `${organization?.name ?? listing.title} Teal Registry profile`,
+      title: listing.seoTitle ?? `${displayName} Teal Registry profile`,
       description:
         listing.seoDescription ??
         listing.shortBlurb ??
-        `Review the Teal Registry profile for ${organization?.name ?? listing.title}.`,
+        `Review the Teal Registry profile for ${displayName}.`,
       keywords:
         listing.seoKeywords.length > 0
           ? listing.seoKeywords
-          : [organization?.name ?? listing.title, "Teal Registry", "regenerative organization"],
+          : [displayName, "Teal Registry", "public research profile"],
     },
   };
 }
@@ -259,3 +271,4 @@ export async function getDirectoryRecordByBadgeId(badgeId: string) {
   const records = await getDirectoryRecords();
   return records.find((record) => record.badgeId === decoded);
 }
+
