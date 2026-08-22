@@ -4,11 +4,67 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PageShell } from "@/components/page-shell";
 import { caseStudies } from "@/data/case-studies";
-import { directoryRecords } from "@/data/registry";
+import { directoryRecords, type DirectoryRecord } from "@/data/registry";
 import { getDirectoryRecordBySlug, isOfficialBadgeId } from "@/lib/registry-records";
 
 export const dynamic = "force-dynamic";
 
+type TealFitAnalysis = {
+  verdict: string;
+  summary: string;
+  supports: string[];
+  limits: string[];
+  needsEvidence: string[];
+};
+
+function buildTealFitAnalysis(record: DirectoryRecord): TealFitAnalysis {
+  const slug = record.slug.toLowerCase();
+
+  if (slug === "holacracy" || slug === "holacracyone") {
+    return {
+      verdict: "Partial fit: strong self-management framework, not proof of full Teal by itself.",
+      summary:
+        "Holacracy is a real self-management framework, but it should not be presented as fully Teal without more evidence. The public materials support role clarity, distributed authority, and governance process. That is one important part of Teal. It does not, by itself, prove Evolutionary Purpose, Wholeness, regenerative intention, or shared stewardship in an adopting organization.",
+      supports: [
+        "Holacracy describes a role-based self-management system that replaces traditional manager authority with distributed authority and explicit governance rules.",
+        "The Constitution gives role leads authority to act within defined domains and constraints, which can reduce permission-seeking and hidden hierarchy.",
+        "Representative/circle mechanisms show some governance feedback paths, but they are procedural signals rather than proof of full shared stewardship.",
+      ],
+      limits: [
+        "Self-management is not the whole Teal standard. Ownership, money, strategy, hiring, compensation, purpose, and culture can remain outside the Holacracy system.",
+        "A company can use Holacracy for operational clarity without becoming regenerative, whole-person-centered, or genuinely purpose-led.",
+        "This page is not a recognized-framework decision, certification, accreditation, endorsement, or verified Teal claim.",
+      ],
+      needsEvidence: [
+        "Does the adopting organization have a living purpose that changes budgets, priorities, and tradeoffs?",
+        "Are power, ownership, representation, accountability, and stewardship experienced as shared by the people affected?",
+        "Are conflict repair, psychological safety, care, learning, and human dignity protected outside the meeting process?",
+      ],
+    };
+  }
+
+  const isResearch = record.listingType === "Public research profile";
+
+  return {
+    verdict: isResearch ? "Public research only. No Teal conclusion yet." : "Evidence reviewed only within the stated scope.",
+    summary: isResearch
+      ? `${record.name} has public signals worth organizing, but this listing does not decide whether the work is Teal. A credible conclusion needs source-backed evidence across Evolutionary Purpose, Self-Organization, and Wholeness.`
+      : `${record.name} should be understood through the exact scope shown on this page. A credential does not imply unreviewed claims outside that scope.`,
+    supports: record.tealSignals.map((signal) => `${signal.title}: ${signal.summary}`),
+    limits: isResearch
+      ? [
+          "Public visibility is not independent verification.",
+          "A promising governance practice does not prove a complete Teal operating system.",
+          "Starter research pages must be corrected or claimed before stronger public claims are made.",
+        ]
+      : ["Claims beyond the listed scope are not implied.", "Renewal, misuse, and correction controls still apply."],
+    needsEvidence: [
+      "Source-backed examples of purpose guiding real decisions.",
+      "Source-backed examples of decision rights, representation, accountability, and power flow.",
+      "Source-backed examples of conflict repair, learning, care, and whole-person practice.",
+    ],
+  };
+}
 type RegistryDetailProps = {
   params: Promise<{ slug: string }>;
 };
@@ -62,6 +118,7 @@ export default async function RegistryDetailPage({ params }: RegistryDetailProps
   const pageUrl = `${siteUrl}/registry/${record.slug}`;
   const officialSource = record.sourceLinks.find((source) => source.href.startsWith("http"));
   const relatedCaseStudy = caseStudies.find((study) => study.directorySlug === record.slug);
+  const tealFitAnalysis = buildTealFitAnalysis(record);
   const claimBoundary =
     record.listingType === "Public research profile"
       ? "This is a public research profile. It is not a certification, accreditation, endorsement, or verified Teal claim."
@@ -258,6 +315,41 @@ export default async function RegistryDetailPage({ params }: RegistryDetailProps
           </div>
         </section>
       ) : null}
+      <section className="content-section teal-fit-section">
+        <div className="section-heading compact">
+          <h2>Is this actually Teal?</h2>
+          <p>{tealFitAnalysis.summary}</p>
+        </div>
+        <article className="teal-verdict-panel">
+          <strong>{tealFitAnalysis.verdict}</strong>
+        </article>
+        <div className="teal-fit-grid">
+          <article>
+            <h3>What supports the claim</h3>
+            <ul>
+              {tealFitAnalysis.supports.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </article>
+          <article>
+            <h3>What limits the claim</h3>
+            <ul>
+              {tealFitAnalysis.limits.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </article>
+          <article>
+            <h3>Evidence still needed</h3>
+            <ul>
+              {tealFitAnalysis.needsEvidence.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </article>
+        </div>
+      </section>
       <section className="content-section listing-section">
         <div className="section-heading compact">
           <h2>Who this page helps</h2>
@@ -381,4 +473,8 @@ export default async function RegistryDetailPage({ params }: RegistryDetailProps
     </PageShell>
   );
 }
+
+
+
+
 
