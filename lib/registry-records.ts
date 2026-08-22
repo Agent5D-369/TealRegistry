@@ -111,7 +111,10 @@ function mapListingToRecord(listing: PublicListingWithRelations): DirectoryRecor
   const verification = listing.verificationRecord;
   const badge = verification?.badgeLicenses[0];
   const listingType = (listing.listingType as DirectoryRecord["listingType"]) ?? "Public research profile";
-  const isPublicResearch = !verification && listingType === "Public research profile";
+  const isPublicResearch =
+    listingType === "Public research profile" ||
+    listing.status === "Public research profile" ||
+    organization?.publicStatus === "Public research profile";
   const displayName = organization?.name ?? listing.title;
   const databaseSummary =
     listing.shortBlurb ??
@@ -151,12 +154,12 @@ function mapListingToRecord(listing: PublicListingWithRelations): DirectoryRecor
     verificationId: verification?.title ?? listing.publicSlug,
     badgeId: badge?.badgeId ?? (isPublicResearch ? "No badge issued" : "Pending"),
     badgeImage: badgeImageFromArtwork(badge?.badgeType?.artworkFile, isPublicResearch),
-    publicSummary:
-      verification?.publicNote ??
-      (isPublicResearch ? publicResearchSummary : databaseSummary),
+    publicSummary: isPublicResearch
+      ? publicResearchSummary
+      : verification?.publicNote ?? databaseSummary,
     evidence: [
       listing.status,
-      verification ? "Verification record linked" : "Public research profile",
+      isPublicResearch ? "Not a verified Teal claim" : verification ? "Verification record linked" : "Public research profile",
       badge ? `Badge ${badge.status.toLowerCase()}` : "Badge not issued",
     ],
     tagline:
@@ -271,4 +274,5 @@ export async function getDirectoryRecordByBadgeId(badgeId: string) {
   const records = await getDirectoryRecords();
   return records.find((record) => record.badgeId === decoded);
 }
+
 
