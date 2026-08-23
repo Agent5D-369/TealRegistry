@@ -59,6 +59,14 @@ export default async function RegistryPage() {
                   <dt>Scope</dt>
                   <dd>{record.scope}</dd>
                 </div>
+                <div>
+                  <dt>Source</dt>
+                  <dd>{record.sourceLinks.some((source) => source.href.startsWith("http")) ? "Official link" : "Needed"}</dd>
+                </div>
+                <div>
+                  <dt>Badge</dt>
+                  <dd>{record.badgeId === "No badge issued" ? "Not issued" : record.badgeId}</dd>
+                </div>
               </dl>
             </Link>
           ))}

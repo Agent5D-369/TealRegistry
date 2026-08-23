@@ -3149,3 +3149,68 @@ select {
     gap: var(--space-sm);
   }
 }
+
+/* Registry listing quality controls. */
+.listing-quality-section {
+  padding-top: 0;
+}
+
+.listing-quality-grid {
+  display: grid;
+  gap: var(--space-sm);
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.listing-quality-grid article {
+  background: var(--color-surface);
+  border: 1px solid var(--color-rule);
+  border-radius: var(--radius-card);
+  display: grid;
+  gap: var(--space-2xs);
+  padding: var(--space-md);
+}
+
+.listing-quality-grid span {
+  color: var(--color-gold-ink);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.listing-quality-grid strong {
+  color: var(--color-accent-strong);
+  font-size: var(--text-lg);
+  line-height: 1.15;
+}
+
+.listing-quality-grid p {
+  color: var(--color-muted);
+  font-size: var(--text-sm);
+  line-height: 1.45;
+  margin: 0;
+}
+
+.directory-card dl {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.directory-card dd {
+  color: var(--color-ink);
+  font-weight: 850;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 1100px) {
+  .listing-quality-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .listing-quality-grid,
+  .directory-card dl {
+    grid-template-columns: 1fr;
+  }
+}

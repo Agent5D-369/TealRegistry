@@ -170,6 +170,41 @@ export default async function RegistryDetailPage({ params }: RegistryDetailProps
     : record.listingType === "Public research profile"
       ? "Public research only"
       : "Review needed before stronger claims";
+  const externalSourceCount = record.sourceLinks.filter((source) => source.href.startsWith("http")).length;
+  const internalContextCount = record.sourceLinks.length - externalSourceCount;
+  const listingQuality = [
+    {
+      label: "Official source",
+      value: officialSource ? "Linked" : "Needed",
+      note: officialSource
+        ? "The profile links out to the source owner instead of copying their site."
+        : "Add an official website or owner-confirmed source before relying on this page.",
+    },
+    {
+      label: "Claim boundary",
+      value: "Explicit",
+      note: "The page states whether this is research, review, certification, accreditation, or no badge at all.",
+    },
+    {
+      label: "Teal conclusion",
+      value: hasIssuedBadge ? "Scoped" : "Withheld",
+      note: hasIssuedBadge
+        ? "Any conclusion is limited to the exact scope shown here."
+        : "The page asks Teal questions without calling the organization Teal.",
+    },
+    {
+      label: "Source depth",
+      value: `${externalSourceCount} external / ${internalContextCount} internal`,
+      note: externalSourceCount > 1
+        ? "Multiple sources are linked."
+        : "Starter profiles need more independent, public, owner-approved, or review evidence sources.",
+    },
+    {
+      label: "Owner package",
+      value: "Ready to claim",
+      note: "The owner can correct facts, add approved media, add sources, and request review from this page.",
+    },
+  ];
   const evidenceQuality = [
     {
       label: "Registry status",
@@ -207,7 +242,7 @@ export default async function RegistryDetailPage({ params }: RegistryDetailProps
     },
     {
       question: `What should people searching for ${record.name} know first?`,
-      answer: `${record.name} is listed here as ${record.listingType}. The page gathers source-backed context, Teal signal questions, claim boundaries, review status, and next steps for founders, funders, members, partners, and researchers.`,
+      answer: `${record.name} is listed here as ${record.listingType}. The page gathers source-linked context, Teal signal questions, claim boundaries, review status, and next steps for founders, funders, members, partners, and researchers.`,
     },
     {
       question: `Where is the official website for ${record.name}?`,
@@ -337,6 +372,24 @@ export default async function RegistryDetailPage({ params }: RegistryDetailProps
             ))}
           </div>
         </article>
+      </section>
+      <section className="content-section listing-quality-section">
+        <div className="section-heading compact">
+          <h2>Listing quality controls</h2>
+          <p>
+            Every public profile uses the same quality spine: source links, visible claim boundaries,
+            no unsupported Teal conclusion, and a clear owner path to improve the record.
+          </p>
+        </div>
+        <div className="listing-quality-grid">
+          {listingQuality.map((item) => (
+            <article key={item.label}>
+              <span>{item.label}</span>
+              <strong>{item.value}</strong>
+              <p>{item.note}</p>
+            </article>
+          ))}
+        </div>
       </section>
       <section className="detail-layout">
         <article className="profile-panel">

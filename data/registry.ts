@@ -100,7 +100,7 @@ function createStarterProfile(input: StarterProfileInput, index: number): Direct
     verificationId: `TR-PUBLIC-${String(index + 1).padStart(4, "0")}`,
     badgeId: "No badge issued",
     badgeImage: starterBadgeImage(),
-    publicSummary: `${input.name} is a public research profile for people searching ${input.name}, ${input.category.toLowerCase()}, and ${input.theme}. ${relationshipLanguage} Teal Registry organizes source-backed context, claim boundaries, and next steps without implying certification, accreditation, endorsement, or Teal recognition.`,
+    publicSummary: `${input.name} is a public research profile for people searching ${input.name}, ${input.category.toLowerCase()}, and ${input.theme}. ${relationshipLanguage} Teal Registry organizes source-linked starter context, claim boundaries, and next steps without implying certification, accreditation, endorsement, or Teal recognition.`,
     evidence: [
       "Public research profile",
       "Claim not verified by Teal Registry",
@@ -111,7 +111,7 @@ function createStarterProfile(input: StarterProfileInput, index: number): Direct
     audience: ["Founders", "Funders", "Partners", "Prospective members", "Researchers"],
     highlights: [
       `${input.name} is publicly associated with ${input.theme}`,
-      "Entity-rich profile structured for human readers, Google search, AI search, and answer engines",
+      "Entity-rich starter profile structured for human readers, Google search, AI search, and answer engines",
       "Clear path to claim the listing, correct facts, add approved media, and request review",
     ],
     tealSignals: [
@@ -136,9 +136,12 @@ function createStarterProfile(input: StarterProfileInput, index: number): Direct
         ? "A framework may support one Teal principle without proving all three. Recognition requires a separate mapping decision; public research pages are not recognized-framework badges."
         : "A public research profile may show interesting signals without proving Teal alignment, verification, certification, accreditation, or endorsement.",
       "Teal Registry does not copy protected website text or images into starter listings. Media should be owner-provided, clearly licensed, or created as original registry graphics.",
-      "This listing should be corrected or expanded by the organization before stronger claims are made.",
+      "This listing should be corrected, expanded, and source-reviewed by the organization before stronger claims are made.",
     ],
-    sourceLinks: [{ label: `${input.name} official website`, href: input.website }],
+    sourceLinks: [
+      { label: `${input.name} official website`, href: input.website },
+      { label: "Teal Registry standards used for this profile", href: "/standards" },
+    ],
     mediaPolicy:
       "Use owner-provided media, clearly licensed media, or original Teal Registry visuals. Do not scrape and reuse copyrighted website photography without permission.",
     reviewSummary: {
@@ -149,7 +152,7 @@ function createStarterProfile(input: StarterProfileInput, index: number): Direct
     },
     seo: {
       title: label,
-      description: `${input.name} public research profile: ${input.theme}. Review public signals, Teal claim boundaries, source notes, directory context, and related self-organization questions without implying certification.`,
+      description: `${input.name} public research profile: ${input.theme}. Review public signals, Teal claim boundaries, official-source link, directory context, and related self-organization questions without implying certification.`,
       keywords: [input.name, `${input.name} profile`, `${input.name} public research`, `${input.name} organization`, input.category, input.theme, "Teal Registry", "public research profile", "Teal claim boundary", "self organization", "sociocracy", "intentional community", ...input.keywords],
     },
   };
