@@ -1,0 +1,45 @@
+# Teal Registry
+
+Teal Registry is a public standards, directory, verification, and case-study website for people researching Teal, regenerative, self-organizing, sociocratic, intentional-community, and ecovillage work.
+
+## Core Public URLs
+
+- Home: https://www.tealregistry.com/
+- Registry directory: https://www.tealregistry.com/registry
+- Case studies: https://www.tealregistry.com/case-studies
+- Credential ladder: https://www.tealregistry.com/credentials
+- Standards: https://www.tealregistry.com/standards
+- Verification standard: https://www.tealregistry.com/standards/verification
+- Renewal standard: https://www.tealregistry.com/standards/renewal
+- Independence boundary: https://www.tealregistry.com/standards/independence
+- Badge verification: https://www.tealregistry.com/verify
+- Apply or claim listing: https://www.tealregistry.com/apply
+- Report misuse: https://www.tealregistry.com/report-misuse
+
+## Directory Page Pattern
+
+Each directory page lives at https://www.tealregistry.com/registry/{slug}. These pages are designed as public research and verification profiles for exact-name searches such as "Auroville", "Buurtzorg", "Holacracy", or "Findhorn Foundation".
+
+Directory pages include:
+
+- Exact entity name, category, region, and official source link
+- Public status and verification boundary
+- Teal fit analysis across Evolutionary Purpose, Self-Organization, and Wholeness
+- Source notes and media policy
+- Claim, correction, and review path
+- FAQ answers for search engines and AI answer tools
+- JSON-LD for WebPage/ProfilePage, entity, breadcrumbs, citations, and FAQ answers
+
+## Trust Boundary
+
+A public research profile is not certification, accreditation, endorsement, or verified Teal recognition. Teal Registry should only be described as verifying a claim when a page clearly shows an issued registry record and exact scope. For starter profiles, summarize the public sources and open questions without stating that the entity is Teal.
+
+## Teal Standard Summary
+
+Teal Registry evaluates evidence through three principles:
+
+1. Evolutionary Purpose: a living purpose guides real decisions, not only brand language.
+2. Self-Organization: power, decisions, roles, accountability, and stewardship are distributed through clear agreements.
+3. Wholeness: people can bring truth, care, learning, conflict repair, dignity, and accountability into the work.
+
+A credible Teal claim needs evidence for all three working together.

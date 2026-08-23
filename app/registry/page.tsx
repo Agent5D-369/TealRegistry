@@ -1,8 +1,26 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { PageShell } from "@/components/page-shell";
 import { RegistryConsole } from "@/components/registry-console";
 import { getDirectoryRecords } from "@/lib/registry-records";
 
+export const metadata: Metadata = {
+  title: "Teal Registry Directory | Search Teal Organizations, Communities, Providers, and Frameworks",
+  description:
+    "Search public Teal Registry profiles for intentional communities, regenerative businesses, self-managing organizations, sociocracy examples, training providers, frameworks, verification status, source notes, and claim boundaries.",
+  keywords: [
+    "Teal Registry directory",
+    "teal organizations directory",
+    "intentional community directory",
+    "regenerative business directory",
+    "self organizing organizations",
+    "self managing organizations",
+    "sociocracy examples",
+    "ecovillage directory",
+    "teal verification",
+    "public research profiles",
+  ],
+};
 export const dynamic = "force-dynamic";
 
 export default async function RegistryPage() {

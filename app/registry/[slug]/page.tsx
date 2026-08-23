@@ -73,6 +73,39 @@ export function generateStaticParams() {
   return directoryRecords.map((record) => ({ slug: record.slug }));
 }
 
+function buildDirectorySeo(record: DirectoryRecord, siteUrl: string) {
+  const pageUrl = `${siteUrl}/registry/${record.slug}`;
+  const entityPhrases = [
+    record.name,
+    `${record.name} profile`,
+    `${record.name} Teal Registry`,
+    `${record.name} official website`,
+    `${record.name} verification status`,
+    `${record.name} self-organization`,
+    `${record.name} governance`,
+    `${record.name} reviews`,
+    `${record.name} public research`,
+    `${record.name} regenerative organization`,
+    record.sector,
+    record.region,
+    record.entityType,
+  ];
+  const keywords = Array.from(new Set([...entityPhrases, ...record.seo.keywords].filter(Boolean)));
+  const title = `${record.name} Profile, Sources, Teal Fit, and Verification Status`;
+  const description =
+    `${record.name} Teal Registry page with public sources, official website link, verification boundary, Teal fit questions, claim/correction path, and search-ready context for ${record.sector}.`.slice(
+      0,
+      300,
+    );
+
+  return { title, description, keywords, pageUrl };
+}
+
+function getEntitySchemaType(record: DirectoryRecord) {
+  if (record.entityType === "Individual") return "Person";
+  if (record.entityType === "Framework") return "CreativeWork";
+  return "Organization";
+}
 export async function generateMetadata({ params }: RegistryDetailProps): Promise<Metadata> {
   const { slug } = await params;
   const record = await getDirectoryRecordBySlug(slug);
@@ -82,29 +115,35 @@ export async function generateMetadata({ params }: RegistryDetailProps): Promise
     return {};
   }
 
+  const seo = buildDirectorySeo(record, siteUrl);
+
   return {
-    title: record.seo.title,
-    description: record.seo.description,
-    keywords: record.seo.keywords,
+    title: seo.title,
+    description: seo.description,
+    keywords: seo.keywords,
     alternates: {
-      canonical: `${siteUrl}/registry/${record.slug}`,
+      canonical: seo.pageUrl,
     },
     openGraph: {
-      title: record.seo.title,
-      description: record.seo.description,
+      title: seo.title,
+      description: seo.description,
       type: "profile",
-      url: `${siteUrl}/registry/${record.slug}`,
+      url: seo.pageUrl,
       images: [{ url: record.badgeImage, alt: `${record.name} Teal Registry profile` }],
     },
     twitter: {
       card: "summary_large_image",
-      title: record.seo.title,
-      description: record.seo.description,
+      title: seo.title,
+      description: seo.description,
       images: [record.badgeImage],
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: { index: true, follow: true, "max-image-preview": "large" },
     },
   };
 }
-
 export default async function RegistryDetailPage({ params }: RegistryDetailProps) {
   const { slug } = await params;
   const record = await getDirectoryRecordBySlug(slug);
@@ -116,6 +155,7 @@ export default async function RegistryDetailPage({ params }: RegistryDetailProps
   const hasIssuedBadge = isOfficialBadgeId(record.badgeId);
   const siteUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://www.tealregistry.com";
   const pageUrl = `${siteUrl}/registry/${record.slug}`;
+  const seo = buildDirectorySeo(record, siteUrl);
   const officialSource = record.sourceLinks.find((source) => source.href.startsWith("http"));
   const relatedCaseStudy = caseStudies.find((study) => study.directorySlug === record.slug);
   const tealFitAnalysis = buildTealFitAnalysis(record);
@@ -154,30 +194,65 @@ export default async function RegistryDetailPage({ params }: RegistryDetailProps
       note: hasIssuedBadge ? "Confirm the current badge record." : "Owner can correct facts, add approved media, or request review.",
     },
   ];
+  const directoryFaq = [
+    {
+      question: `Is ${record.name} verified by Teal Registry?`,
+      answer: `${record.status}. ${claimBoundary}`,
+    },
+    {
+      question: `Is ${record.name} certified as Teal?`,
+      answer: hasIssuedBadge
+        ? `${record.name} has a registry record only for this stated scope: ${record.scope}`
+        : `No. This ${record.name} page is useful public research, but it is not certification, accreditation, endorsement, or verified Teal recognition.`,
+    },
+    {
+      question: `What should people searching for ${record.name} know first?`,
+      answer: `${record.name} is listed here as ${record.listingType}. The page gathers source-backed context, Teal signal questions, claim boundaries, review status, and next steps for founders, funders, members, partners, and researchers.`,
+    },
+    {
+      question: `Where is the official website for ${record.name}?`,
+      answer: officialSource
+        ? `The official source linked from this profile is ${officialSource.href}. Teal Registry links to sources instead of copying protected website text or photography into starter profiles.`
+        : `No official source is linked yet. The owner can claim or correct this ${record.name} page and add approved sources.`,
+    },
+    {
+      question: `What does this ${record.name} listing prove?`,
+      answer: `It proves only what the public record says: ${record.scope}. The listing also shows source notes, review limits, and how the organization can claim or correct the profile.`,
+    },
+  ];
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
       {
-        "@type": "WebPage",
+        "@type": ["WebPage", "ProfilePage"],
         "@id": pageUrl,
         url: pageUrl,
-        name: record.seo.title,
-        description: record.seo.description,
+        name: seo.title,
+        headline: seo.title,
+        description: seo.description,
         isPartOf: {
           "@type": "WebSite",
           name: "Teal Registry",
           url: siteUrl,
         },
         about: { "@id": `${pageUrl}#entity` },
+        mainEntity: { "@id": `${pageUrl}#entity` },
+        keywords: seo.keywords.join(", "),
+        primaryImageOfPage: record.badgeImage ? `${siteUrl}${record.badgeImage}` : undefined,
+        citation: record.sourceLinks
+          .filter((source) => source.href.startsWith("http"))
+          .map((source) => ({ "@type": "CreativeWork", name: source.label, url: source.href })),
       },
       {
-        "@type": record.entityType === "Individual" ? "Person" : "Organization",
+        "@type": getEntitySchemaType(record),
         "@id": `${pageUrl}#entity`,
         name: record.name,
         description: record.publicSummary,
         url: record.website,
         areaServed: record.region,
-        keywords: record.seo.keywords.join(", "),
+        keywords: seo.keywords.join(", "),
+        category: record.sector,
+        knowsAbout: ["Evolutionary Purpose", "Self-Organization", "Wholeness", record.sector, record.region],
         sameAs: record.website ? [record.website] : undefined,
         aggregateRating: record.reviewSummary.average
           ? {
@@ -196,32 +271,14 @@ export default async function RegistryDetailPage({ params }: RegistryDetailProps
       },
       {
         "@type": "FAQPage",
-        mainEntity: [
-          {
-            "@type": "Question",
-            name: `Is ${record.name} verified by Teal Registry?`,
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: `${record.status}. ${claimBoundary}`,
-            },
+        mainEntity: directoryFaq.map((item) => ({
+          "@type": "Question",
+          name: item.question,
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: item.answer,
           },
-          {
-            "@type": "Question",
-            name: `What should people searching for ${record.name} know first?`,
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: `${record.name} is listed here as ${record.listingType}. The page summarizes public context, Teal signal questions, source notes, claim boundaries, and next steps for funders, members, partners, and researchers.`,
-            },
-          },
-          {
-            "@type": "Question",
-            name: `What does this ${record.name} listing prove?`,
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: `It proves only what the public record says: ${record.scope}. The listing also shows source notes, review limits, and how the organization can claim or correct the profile.`,
-            },
-          },
-        ],
+        })),
       },
     ],
   };
@@ -452,30 +509,19 @@ export default async function RegistryDetailPage({ params }: RegistryDetailProps
       </section>
       <section className="content-section answer-engine-section">
         <div className="section-heading compact">
-          <h2>Questions this page answers</h2>
+          <h2>Common questions about {record.name}</h2>
           <p>
-            These answers are intentionally direct so humans, search engines, and AI answer tools
-            can understand the public record without guessing.
+            These answers are written for people searching for {record.name}, and for search and AI
+            answer tools that need the public record stated plainly.
           </p>
         </div>
         <div className="answer-grid">
-          <article>
-            <h3>Is this a verified Teal organization?</h3>
-            <p>{claimBoundary}</p>
-          </article>
-          <article>
-            <h3>What is the current public status?</h3>
-            <p>
-              {record.name} is listed as <strong>{record.status}</strong> for this scope: {record.scope}
-            </p>
-          </article>
-          <article>
-            <h3>What should the owner do next?</h3>
-            <p>
-              Claim the page, correct facts, add approved source material, and decide whether to
-              request independent review or an enhanced public listing.
-            </p>
-          </article>
+          {directoryFaq.map((item) => (
+            <article key={item.question}>
+              <h3>{item.question}</h3>
+              <p>{item.answer}</p>
+            </article>
+          ))}
         </div>
       </section>
       <section className="content-section detail-layout">

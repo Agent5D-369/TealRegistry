@@ -29,10 +29,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     .filter((record) => isOfficialBadgeId(record.badgeId))
     .map((record) => `/verify/${encodeURIComponent(record.badgeId)}`);
 
-  return [...staticRoutes, ...registryRoutes, ...caseStudyRoutes, ...audienceRoutes, ...glossaryRoutes, ...verifyRoutes].map((route) => ({
-    url: `${siteUrl}${route}`,
-    lastModified: now,
-    changeFrequency: route.startsWith("/registry/") || route.startsWith("/case-studies/") ? "weekly" : "monthly",
-    priority: route.startsWith("/registry/") || route.startsWith("/case-studies/") ? 0.9 : 0.7,
-  }));
+  return [...staticRoutes, ...registryRoutes, ...caseStudyRoutes, ...audienceRoutes, ...glossaryRoutes, ...verifyRoutes].map((route) => {
+    const isRegistryProfile = route.startsWith("/registry/");
+    const isCaseStudy = route.startsWith("/case-studies/");
+    const isPublicHub = route === "/registry" || route === "/case-studies" || route === "/verify";
+
+    return {
+      url: `${siteUrl}${route}`,
+      lastModified: now,
+      changeFrequency: isRegistryProfile || isCaseStudy ? "weekly" : "monthly",
+      priority: isRegistryProfile ? 0.95 : isCaseStudy ? 0.92 : isPublicHub ? 0.88 : 0.7,
+    };
+  });
 }
