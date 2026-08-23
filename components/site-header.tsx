@@ -25,7 +25,7 @@ export function SiteHeader() {
         <Link className="ghost-button" href={portalRoutes[0].href}>
           Login
         </Link>
-        <Link className="solid-button" href="/registry">
+        <Link className="solid-button" href="/verify">
           Verify
         </Link>
       </div>

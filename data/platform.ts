@@ -21,6 +21,7 @@ export const publicRoutes = [
   { href: "/case-studies", label: "Case Studies" },
   { href: "/credentials", label: "Credentials" },
   { href: "/standards", label: "Standards" },
+  { href: "/about", label: "About" },
   { href: "/apply", label: "Apply" },
   { href: "/report-misuse", label: "Report Misuse" },
 ];

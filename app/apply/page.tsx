@@ -1,6 +1,7 @@
 import { PageShell } from "@/components/page-shell";
 import { ApplyIntakeForm } from "@/components/apply-intake-form";
 import { applicationPathways } from "@/data/platform";
+import { applicationTracks } from "@/data/trust-content";
 
 export default function ApplyPage() {
   return (
@@ -23,6 +24,24 @@ export default function ApplyPage() {
                   <li key={step}>{step}</li>
                 ))}
               </ol>
+            </article>
+          ))}
+        </div>
+      </section>
+      <section className="content-section">
+        <div className="section-heading compact">
+          <h2>Choose the right track</h2>
+          <p>
+            Separate tracks prevent a land project credential from being confused with a practitioner
+            credential, a training record, or a provider accreditation.
+          </p>
+        </div>
+        <div className="trust-ledger">
+          {applicationTracks.map((track) => (
+            <article key={track.title}>
+              <span>{track.who}</span>
+              <h3>{track.title}</h3>
+              <p>{track.evidence}</p>
             </article>
           ))}
         </div>

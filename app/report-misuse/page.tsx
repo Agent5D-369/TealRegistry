@@ -1,29 +1,49 @@
 import { PageShell } from "@/components/page-shell";
 import { ReportMisuseForm } from "@/components/report-misuse-form";
+import { misusePublicFlow } from "@/data/trust-content";
 
 export default function ReportMisusePage() {
   return (
     <PageShell
-      title="Report badge misuse"
-      intro="Use this channel when a badge, profile, or Teal claim appears inaccurate, expired, exaggerated, or used outside its reviewed scope."
+      title="Report misuse of Teal Registry status"
+      intro="Use this neutral channel when a badge, status, listing, or Teal Registry claim appears inaccurate, expired, exaggerated, or outside its reviewed scope."
       actions={[
-        { href: "mailto:standards@tealregistry.com?subject=Badge%20Misuse%20Report", label: "Email a report" },
-        { href: "/registry", label: "Check registry first", variant: "ghost" },
+        { href: "/verify", label: "Verify claim first" },
+        { href: "/registry", label: "Search registry", variant: "ghost" },
       ]}
     >
+      <section className="content-section trust-verdict-layout">
+        <article className="trust-verdict-card primary">
+          <span>Trust rule</span>
+          <h2>Not listed? Not verified.</h2>
+          <p>
+            Only organizations and practitioners listed in the Teal Registry directory are verified
+            or certified. Claims made outside the directory should be treated as unverified.
+          </p>
+        </article>
+        <article className="trust-verdict-card">
+          <span>Tone standard</span>
+          <p>
+            Reporting is not punitive. Most cases are resolved through clarification or correction.
+            Teal Registry reviews evidence; it does not act on hearsay, social pressure, or personal disputes.
+          </p>
+        </article>
+      </section>
+
       <section className="content-section report-layout">
         <article>
-          <h2>How reports are handled</h2>
+          <h2>What happens after a report</h2>
           <p>
-            Teal Registry reviews concerns for public trust impact. Some issues are corrected
-            privately; others may lead to clarification, suspension, revocation, or a public notice.
+            The process is designed to protect public trust without creating public drama. A report
+            may lead to no action, private correction, status clarification, suspension, revocation,
+            or a public notice when public trust is affected.
           </p>
           <div className="workflow-list">
-            {["Received", "Triaged", "Investigated", "Decision made", "Public record updated"].map((step) => (
-              <div className="workflow-item" key={step}>
+            {misusePublicFlow.map((step) => (
+              <div className="workflow-item" key={step.title}>
                 <span>
-                  <strong>{step}</strong>
-                  <small>Reports move through a documented review path before action is taken.</small>
+                  <strong>{step.title}</strong>
+                  <small>{step.body}</small>
                 </span>
               </div>
             ))}

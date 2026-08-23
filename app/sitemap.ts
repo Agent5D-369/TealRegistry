@@ -6,7 +6,20 @@ import { getDirectoryRecords, isOfficialBadgeId } from "@/lib/registry-records";
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const siteUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://www.tealregistry.com";
   const now = new Date();
-  const staticRoutes = ["", "/registry", "/case-studies", "/credentials", "/standards", "/apply", "/report-misuse"];
+  const staticRoutes = [
+    "",
+    "/about",
+    "/registry",
+    "/case-studies",
+    "/credentials",
+    "/standards",
+    "/standards/verification",
+    "/standards/renewal",
+    "/standards/independence",
+    "/verify",
+    "/apply",
+    "/report-misuse",
+  ];
   const directoryRecords = await getDirectoryRecords();
   const registryRoutes = directoryRecords.map((record) => `/registry/${record.slug}`);
   const caseStudyRoutes = caseStudies.map((study) => `/case-studies/${study.slug}`);

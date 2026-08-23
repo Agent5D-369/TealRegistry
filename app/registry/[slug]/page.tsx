@@ -125,7 +125,35 @@ export default async function RegistryDetailPage({ params }: RegistryDetailProps
       : hasIssuedBadge
         ? "This profile includes an issued registry record. Trust the exact scope shown here, not broader claims made elsewhere."
         : "This profile is useful for discovery, but a stronger claim requires review, decision, and a current public record.";
-
+  const trustVerdict = hasIssuedBadge
+    ? "Current registry record"
+    : record.listingType === "Public research profile"
+      ? "Public research only"
+      : "Review needed before stronger claims";
+  const evidenceQuality = [
+    {
+      label: "Registry status",
+      value: record.status,
+      note: hasIssuedBadge ? "An official record exists for this scope." : "No official badge has been issued.",
+    },
+    {
+      label: "Evidence confidence",
+      value: hasIssuedBadge ? "Reviewed record" : "Public-source starter profile",
+      note: hasIssuedBadge
+        ? "Use the scope, date, and renewal window shown here."
+        : "Useful for discovery, not enough for a Teal conclusion.",
+    },
+    {
+      label: "Source type",
+      value: officialSource ? "Official source linked" : "Source needed",
+      note: officialSource ? "External links open to the source owner." : "The profile needs an official source before relying on details.",
+    },
+    {
+      label: "Next action",
+      value: hasIssuedBadge ? "Verify badge" : "Claim or correct",
+      note: hasIssuedBadge ? "Confirm the current badge record." : "Owner can correct facts, add approved media, or request review.",
+    },
+  ];
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -233,6 +261,25 @@ export default async function RegistryDetailPage({ params }: RegistryDetailProps
           <strong>Trust boundary</strong>
           <p>{claimBoundary}</p>
         </aside>
+      </section>
+      <section className="content-section trust-verdict-layout profile-trust-verdict">
+        <article className="trust-verdict-card primary">
+          <span>Trust verdict</span>
+          <h2>{trustVerdict}</h2>
+          <p>{claimBoundary}</p>
+        </article>
+        <article className="trust-verdict-card">
+          <span>Fast scan</span>
+          <div className="evidence-quality-list">
+            {evidenceQuality.map((item) => (
+              <div key={item.label}>
+                <strong>{item.label}</strong>
+                <b>{item.value}</b>
+                <small>{item.note}</small>
+              </div>
+            ))}
+          </div>
+        </article>
       </section>
       <section className="detail-layout">
         <article className="profile-panel">
