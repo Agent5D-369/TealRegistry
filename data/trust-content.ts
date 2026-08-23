@@ -1,59 +1,119 @@
 export const tealPrinciples = [
   {
-    name: "Self-Management",
+    name: "Self-Organization",
     plain: "Clear authority without one central controller.",
     definition:
-      "A system can coordinate work, authority, and accountability through explicit roles, decision rights, and agreements instead of founder bottlenecks or hidden hierarchy.",
-    evidence: [
-      "Role cards, circle charters, or written role definitions",
-      "Decision-making records using consent, advice, or delegated authority",
-      "Escalation paths that do not default to one personality",
-      "Operating agreements that show how power flows",
+      "The system can coordinate work, authority, and accountability through explicit roles, decision rights, and agreements instead of founder bottlenecks or hidden hierarchy.",
+    practice: [
+      "Roles have defined scope, authority, and accountabilities",
+      "Decisions are made where the information lives",
+      "Authority is explicit, not personality-based",
+      "Leadership exists, but it is contextual and role-bound",
     ],
-    watchFor: "Founder bottlenecks, vague flatness, informal power, or charisma overriding stated roles.",
+    evidence: [
+      "Role charters, role cards, or written role definitions",
+      "Documented decision-making processes such as consent, advice, or delegated authority",
+      "Clear escalation paths that do not default to founders",
+      "Operating agreements that describe how power flows",
+    ],
+    watchFor: "Founder bottlenecks, informal power overriding stated roles, or flat structures with hidden hierarchy.",
+    references: ["Buurtzorg", "Morning Star", "Haier"],
+    referenceNote:
+      "These examples are not presented as flawless or formally verified by Teal Registry. They are useful because self-organization is structurally encoded, not only dependent on charisma.",
   },
   {
     name: "Wholeness",
     plain: "Truth, conflict, care, learning, and accountability can happen without punishment.",
     definition:
-      "People can bring human reality into the work. Conflict is named early, feedback is structured, and emotional signals are treated as information instead of disruption.",
+      "The system supports honest communication, emotional reality, and human complexity without creating incentives to hide, posture, or avoid hard conversations.",
+    practice: [
+      "Conflict is named early rather than suppressed",
+      "Feedback is expected and structured",
+      "Emotional signals are treated as information, not disruption",
+      "People are not required to fragment themselves to belong",
+    ],
     evidence: [
       "Conflict-resolution or tension-processing practices",
       "Feedback norms, repair agreements, or codes of conduct",
       "Clear pathways for raising concerns without retaliation",
       "Examples of conflict handled constructively",
     ],
-    watchFor: "Niceness replacing truth, informal exile, triangulation, silence, fear, or burnout.",
+    watchFor: "Avoidance framed as niceness, explosions after long suppression, informal exile, triangulation, silence, fear, or burnout.",
+    references: ["Patagonia", "AES", "Sociocratic and cooperative organizations with explicit tension-processing practices"],
+    referenceNote:
+      "Wholeness is visible when hard conversations are routine, structured, and safe enough to use before damage compounds.",
   },
   {
     name: "Evolutionary Purpose",
     plain: "Purpose guides real decisions and can adapt as reality changes.",
     definition:
-      "The organization can change direction based on learning, stakeholder feedback, and emerging conditions without identity collapse or power struggle.",
+      "The organization can adapt direction based on learning, stakeholder feedback, and emerging conditions rather than rigid plans, ego-driven control, or sunk cost.",
+    practice: [
+      "Purpose statements guide decisions, not just branding",
+      "Current activities are regularly reviewed against purpose",
+      "Work can be stopped or changed when it no longer fits",
+      "Listening systems integrate feedback from inside and outside the organization",
+    ],
     evidence: [
       "Purpose statements tied to decision criteria",
       "Strategic review notes, pivots, or change logs",
       "Records showing stopped or changed work when it no longer fit",
       "Feedback systems that influence direction",
     ],
-    watchFor: "Purpose used as branding, rigid dogma, ego-driven strategy, or sunk-cost decision-making.",
+    watchFor: "Purpose frozen as dogma, disagreement treated as disloyalty, reputation-driven strategy, or sunk-cost decision-making.",
+    references: ["Buurtzorg", "Patagonia", "Purpose-led B Corps and steward-owned firms"],
+    referenceNote:
+      "Evolutionary purpose is evident when change is metabolized through governance and practice, not resisted as a threat to identity.",
   },
 ];
 
 export const publicStandards = [
   {
-    title: "Teal Core Standard v1.0",
-    publicName: "The Teal Core Standard",
+    title: "Core operating standard",
+    publicName: "The three Teal non-negotiables",
     summary:
-      "Defines the three non-negotiables in observable terms: Self-Management, Wholeness, and Evolutionary Purpose.",
-    publicUse: "Use this to understand what must be present before a Teal claim can be trusted.",
+      "A regenerative organization must show self-organization, wholeness, and evolutionary purpose together. One strong principle cannot cover for a missing one.",
+    publicUse: "Use this to understand the minimum conditions before a Teal claim should be trusted.",
   },
   {
-    title: "Evidence & Interpretation Guide v1.0",
-    publicName: "Evidence and Interpretation Guide",
+    title: "Evidence standard",
+    publicName: "What counts as evidence",
     summary:
-      "Explains what counts as evidence, how reviewers interpret claims, and what can be shared publicly without exposing sensitive internal material.",
-    publicUse: "Use this to prepare evidence, read public listings, or understand why a claim may be limited.",
+      "A story can help people care, but evidence is what makes a public claim safer to trust. Reviewers look for roles, decisions, agreements, conflict practices, purpose records, and examples under real load.",
+    publicUse: "Use this to prepare evidence, read public listings, or see why a claim may be limited.",
+  },
+  {
+    title: "Public claim standard",
+    publicName: "What a badge may and may not say",
+    summary:
+      "Every public claim must state the current status, scope, review basis, date, limits, and whether Teal Registry has independently reviewed it.",
+    publicUse: "Use this to avoid overstating a listing, credential, framework, or training claim.",
+  },
+  {
+    title: "Independence standard",
+    publicName: "Standards stay separate from training and sales",
+    summary:
+      "Training, consulting, sponsorship, or enhanced visibility may help someone prepare, but none of those can grant or influence verification status.",
+    publicUse: "Use this to understand why credibility depends on clean boundaries.",
+  },
+];
+
+export const standardsUseCases = [
+  {
+    title: "Listing",
+    body: "A profile can organize public information, but it must not imply certification unless a review decision exists.",
+  },
+  {
+    title: "Training and implementation",
+    body: "Education can help teams build capacity. It does not prove the operating system has changed.",
+  },
+  {
+    title: "Verification",
+    body: "Claims are reviewed against evidence, not rhetoric, aesthetics, popularity, or intention.",
+  },
+  {
+    title: "Continuous refinement",
+    body: "Standards evolve as practice evolves, but current public records must stay clear and traceable.",
   },
 ];
 

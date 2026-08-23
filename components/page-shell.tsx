@@ -7,13 +7,14 @@ type PageShellProps = {
   intro: string;
   children: ReactNode;
   actions?: Array<{ href: string; label: string; variant?: "solid" | "ghost" }>;
+  heroClassName?: string;
 };
 
-export function PageShell({ title, intro, actions = [], children }: PageShellProps) {
+export function PageShell({ title, intro, actions = [], children, heroClassName }: PageShellProps) {
   return (
     <main>
       <SiteHeader />
-      <section className="page-hero">
+      <section className={heroClassName ? `page-hero ${heroClassName}` : "page-hero"}>
         <div>
           <h1>{title}</h1>
           <p>{intro}</p>

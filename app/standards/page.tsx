@@ -1,28 +1,37 @@
 import Link from "next/link";
 import { PageShell } from "@/components/page-shell";
-import { standards } from "@/data/registry";
 import { tealBasics } from "@/data/platform";
-import { publicStandards, tealPrinciples } from "@/data/trust-content";
+import { publicStandards, standardsUseCases, tealPrinciples } from "@/data/trust-content";
 
 export default function StandardsPage() {
   return (
     <PageShell
-      title="The three unwavering principles of Teal"
-      intro="Teal is not a vibe, a color palette, or a beautiful claim. It is a practical way of working that must show up in real decisions."
+      title="Teal means all three, in real work"
+      intro="A regenerative claim is not enough. Teal Registry looks for observable self-organization, wholeness, and evolutionary purpose working together under real pressure."
+      heroClassName="standards-hero"
       actions={[
         { href: "/standards/verification", label: "How verification works" },
         { href: "/apply", label: "Apply for review", variant: "ghost" },
       ]}
     >
-      <section className="content-section teal-explainer">
-        <div>
+      <section className="content-section teal-explainer standards-intro">
+        <div className="standards-intro-copy">
           <h2>You need all three.</h2>
           <p>
-            For a founder, funder, land steward, team member, or community partner, the plain test
-            is simple. A regenerative organization must show all three.
+            For a founder, funder, land steward, team member, or community partner, the plain
+            test is simple: if one of the three is missing, the organization may be sincere,
+            promising, or values-aligned, but it is not yet operating as Teal.
           </p>
+          <div className="aha-panel compact-aha">
+            <h3>Teal Registry looks for all three working together.</h3>
+            <p>
+              One strong principle cannot cover for a missing one. The standard exists so good
+              projects can see the real operating work before bottlenecks, burnout, or hidden power
+              damage the mission.
+            </p>
+          </div>
         </div>
-        <div className="infographic-steps" aria-label="Teal plain-language infographic">
+        <div className="infographic-steps" aria-label="The three Teal principles">
           {tealBasics.map((item, index) => (
             <article key={item.title}>
               <h3><span>{index + 1}</span>{item.title}</h3>
@@ -31,24 +40,18 @@ export default function StandardsPage() {
             </article>
           ))}
         </div>
-        <div className="aha-panel standards-aha">
-          <h3 className="aha-takeaway">Teal Registry looks for all three working together.</h3>
-          <p>
-            One strong principle cannot cover for a missing one. Teal is the pattern created when
-            purpose, self-organization, and wholeness reinforce each other in real work.
-          </p>
-        </div>
       </section>
 
-      <section className="content-section">
+      <section className="content-section standards-public-set">
         <div className="section-heading compact">
-          <h2>Public standard set</h2>
+          <h2>The public standard set</h2>
           <p>
-            Standards codes are kept for traceability. Public pages use plain names first so founders,
-            funders, members, and partners can understand what is being checked.
+            These are the standards a reader, applicant, reviewer, or funder should be able to
+            understand without knowing internal codes. Technical records can exist behind the
+            scenes; public trust needs plain names and clear boundaries.
           </p>
         </div>
-        <div className="standards-cards">
+        <div className="standards-cards standards-cards-quad">
           {publicStandards.map((standard) => (
             <article key={standard.title}>
               <span>{standard.title}</span>
@@ -60,40 +63,64 @@ export default function StandardsPage() {
         </div>
       </section>
 
-      <section className="content-section">
+      <section className="content-section principle-standard-list">
         <div className="section-heading compact">
-          <h2>What evidence looks like</h2>
+          <h2>What each principle requires</h2>
           <p>
-            Reviewers look for structures and behaviors. A beautiful story helps people care, but
-            evidence is what makes a public claim safer to trust.
+            The standard is not a personality preference. It asks whether structure and behavior
+            can be observed, explained, and reviewed over time.
           </p>
         </div>
-        <div className="evidence-table">
-          {tealPrinciples.map((principle) => (
-            <div key={principle.name}>
-              <strong>{principle.name}</strong>
-              <span>{principle.evidence.join(" / ")}</span>
-            </div>
+        <div className="principle-deep-grid">
+          {tealPrinciples.map((principle, index) => (
+            <article key={principle.name}>
+              <div className="principle-title-row">
+                <span>{index + 1}</span>
+                <div>
+                  <h3>{principle.name}</h3>
+                  <p>{principle.plain}</p>
+                </div>
+              </div>
+              <p>{principle.definition}</p>
+              <div className="principle-columns">
+                <div>
+                  <h4>What it looks like</h4>
+                  <ul>
+                    {principle.practice.map((item) => <li key={item}>{item}</li>)}
+                  </ul>
+                </div>
+                <div>
+                  <h4>Evidence examples</h4>
+                  <ul>
+                    {principle.evidence.map((item) => <li key={item}>{item}</li>)}
+                  </ul>
+                </div>
+              </div>
+              <div className="watch-card">
+                <strong>Common failure pattern</strong>
+                <p>{principle.watchFor}</p>
+              </div>
+              <p className="reference-note">
+                <strong>Reference examples:</strong> {principle.references.join(" / ")}. {principle.referenceNote}
+              </p>
+            </article>
           ))}
         </div>
       </section>
 
-      <section className="content-section">
+      <section className="content-section standards-use-section">
         <div className="section-heading compact">
-          <h2>Traceable standard records</h2>
-          <p>These are the technical records behind the public language.</p>
+          <h2>How the standards are used</h2>
+          <p>
+            The same public standard has different jobs depending on whether someone is reading a
+            listing, preparing evidence, reviewing a claim, or reporting misuse.
+          </p>
         </div>
-        <div className="standards-cards">
-          {standards.map((standard) => (
-            <article key={standard.code}>
-              <span>{standard.status}</span>
-              <h3>{standard.title}</h3>
-              <p>{standard.summary}</p>
-              <div>
-                {standard.criteria.map((criterion) => (
-                  <em key={criterion}>{criterion}</em>
-                ))}
-              </div>
+        <div className="workflow-grid standards-use-grid">
+          {standardsUseCases.map((item) => (
+            <article key={item.title}>
+              <h3>{item.title}</h3>
+              <p>{item.body}</p>
             </article>
           ))}
         </div>

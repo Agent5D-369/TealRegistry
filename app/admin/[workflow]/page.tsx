@@ -7,8 +7,8 @@ const workflowPages = {
     intro: "Manage applicant intake, pathway fit, readiness screening, missing information, and submission status.",
     columns: ["Applicant", "Requested badge", "Status", "Next action"],
     rows: [
-      ["Riverbend Commons", "Teal Aligned", "Screening", "Confirm public scope"],
-      ["Northstar Implementation Team", "Accredited Implementation", "Evidence review", "Assign assessor"],
+      ["Applicant awaiting claim", "Teal Aligned", "Screening", "Confirm public scope"],
+      ["Provider application", "Accredited Implementation", "Evidence review", "Assign assessor"],
       ["Framework partner", "Recognized Framework", "Submitted", "Check mapping evidence"],
     ],
   },
@@ -47,8 +47,8 @@ const workflowPages = {
     intro: "Issue active badge IDs, verification URLs, QR targets, renewal dates, and public profile updates.",
     columns: ["Badge ID", "Holder", "Status", "Verify URL"],
     rows: [
-      ["TR-AL-0001", "Riverbend Commons", "Active", "/verify/TR-AL-0001"],
-      ["Pending", "Northstar Implementation Team", "In review", "Not issued"],
+      ["TR-AL-PENDING", "Applicant awaiting claim", "Draft", "Not issued"],
+      ["Pending", "Provider application", "In review", "Not issued"],
       ["TR-FR-0003", "Practice Framework", "Draft", "Pending decision"],
     ],
   },
@@ -67,7 +67,7 @@ const workflowPages = {
     intro: "Track review windows, expiring badges, renewal evidence, reminder schedules, and updated decisions.",
     columns: ["Holder", "Badge", "Renewal window", "Next step"],
     rows: [
-      ["Riverbend Commons", "Teal Aligned", "Open", "Confirm commitment"],
+      ["Applicant awaiting claim", "Teal Aligned", "Open", "Confirm commitment"],
       ["Provider cohort", "Training accreditation", "60 days", "Submit learner records"],
       ["Advanced holder", "Certified Advanced", "90 days", "Schedule interviews"],
     ],
