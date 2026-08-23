@@ -70,12 +70,12 @@ export default function Home() {
 
       <section className="hero" id="registry">
         <div className="hero-copy">
-          <span className="hero-kicker">For people checking purpose-led work</span>
-          <h1>Know which regenerative claims you can trust.</h1>
+          <span className="hero-kicker">For regenerative-minded founders and teams</span>
+          <h1>Your mission is regenerative. Is your operating system?</h1>
           <p>
-            New to Teal? In plain language, it means work led by a real purpose, shared power,
-            and a culture where people can tell the truth. Teal Registry checks these claims so
-            founders, funders, partners, and communities can see what is real.
+            Many purpose-led businesses still run on old corporate pyramids: founder bottlenecks,
+            hidden power, burnout, and single points of failure. Teal is the practical alternative:
+            purpose-led work, shared authority, and a culture where people can tell the truth.
           </p>
           <div className="hero-principle-strip" aria-label="The three Teal principles">
             {tealBasics.map((item, index) => (
@@ -91,7 +91,7 @@ export default function Home() {
               Check a claim
             </Link>
             <Link className="ghost-button large" href="/standards">
-              Learn what Teal means
+              See the alternative
               <ArrowIcon className="button-icon" />
             </Link>
           </div>
