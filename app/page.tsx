@@ -70,11 +70,12 @@ export default function Home() {
 
       <section className="hero" id="registry">
         <div className="hero-copy">
-          <span className="hero-kicker">For people checking a Teal claim</span>
-          <h1>Know which Teal claims you can trust.</h1>
+          <span className="hero-kicker">For people checking purpose-led work</span>
+          <h1>Know which regenerative claims you can trust.</h1>
           <p>
-            New to Teal? It means work led by a real purpose, shared power, and a culture where
-            people can tell the truth. Teal Registry turns big claims into clear public records.
+            New to Teal? In plain language, it means work led by a real purpose, shared power,
+            and a culture where people can tell the truth. Teal Registry checks these claims so
+            founders, funders, partners, and communities can see what is real.
           </p>
           <div className="hero-principle-strip" aria-label="The three Teal principles">
             {tealBasics.map((item, index) => (
