@@ -70,43 +70,56 @@ export default function Home() {
 
       <section className="hero" id="registry">
         <div className="hero-copy">
-          <h1>Teal means work built on purpose, trust, and shared power.</h1>
+          <span className="hero-kicker">For people checking a Teal claim</span>
+          <h1>Know which Teal claims you can trust.</h1>
           <p>
-            New to Teal? Start here. A Teal organization has a clear purpose, shares power in the
-            open, and makes it safe for people to tell the truth. Teal Registry checks claims so
-            funders, founders, teams, and communities know what is real.
+            New to Teal? It means work led by a real purpose, shared power, and a culture where
+            people can tell the truth. Teal Registry turns big claims into clear public records.
           </p>
+          <div className="hero-principle-strip" aria-label="The three Teal principles">
+            {tealBasics.map((item, index) => (
+              <span key={item.title}>
+                <strong>{index + 1}. {item.title}</strong>
+                {item.missingRisk}
+              </span>
+            ))}
+          </div>
           <div className="hero-actions">
             <Link className="solid-button large" href="/registry">
               <ShieldIcon className="button-icon" />
-              Check a Claim
+              Check a claim
             </Link>
             <Link className="ghost-button large" href="/standards">
-              Learn What Teal Means
+              Learn what Teal means
               <ArrowIcon className="button-icon" />
             </Link>
           </div>
         </div>
-        <div className="integrity-panel" id="verify">
+        <div className="integrity-panel hero-trust-card" id="verify">
           <div className="hero-badge-stack" aria-hidden="true">
             <Image src="/assets/badges/teal-certified.png" alt="" width={180} height={180} />
             <Image src="/assets/badges/teal-verified.png" alt="" width={150} height={150} />
           </div>
-          <h2>A badge answers one simple question: can I trust this claim?</h2>
+          <h2>Before you trust a badge, check the live record.</h2>
           <p>
-            A class can teach. A consultant can help. A registry checks the claim. Each badge tells
-            you what was reviewed, what was not reviewed, and where to find the live record.
+            A course can teach. A consultant can help. A registry checks the claim and shows exactly
+            what was reviewed, what was not reviewed, and what still needs evidence.
           </p>
-          <div className="plain-teal-list">
-            {tealBasics.map((item) => (
-              <div key={item.title}>
-                <strong>{item.title}</strong>
-                <span>{item.body}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+          <ul className="trust-check-list">
+            <li>
+              <strong>What is being claimed?</strong>
+              <span>The page names the exact organization, badge, scope, and status.</span>
+            </li>
+            <li>
+              <strong>What evidence exists?</strong>
+              <span>Public sources, review limits, and missing proof are separated clearly.</span>
+            </li>
+            <li>
+              <strong>What should happen next?</strong>
+              <span>Owners can claim, correct, renew, or request independent review.</span>
+            </li>
+          </ul>
+        </div>      </section>
 
       <div id="registry-console">
         <RegistryConsole />
